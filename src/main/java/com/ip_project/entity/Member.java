@@ -14,6 +14,9 @@ public class Member {
     private String username;
     private String password;
     private String email;
+    private String phone;
+    private String join_date;
+
 
     // Getters and setters
     // ...
