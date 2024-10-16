@@ -1,11 +1,14 @@
 package com.ip_project.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +20,11 @@ public class Member {
     private String phone;
     private String join_date;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    // Getters and setters
-    // ...
+    // Lombok이 자동으로 getter 메서드를 생성하지만,
+    // 명시적으로 추가할 수도 있습니다.
+
+
 }
