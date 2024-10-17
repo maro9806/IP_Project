@@ -4,7 +4,7 @@ spring:
     username: hr
     password: hr
     driver-class-name: oracle.jdbc.OracleDriver
-  jjpa:
+  jpa:
     hibernate:
       ddl-auto: validate
     show-sql: true

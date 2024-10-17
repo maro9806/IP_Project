@@ -16,10 +16,10 @@ public class MemberController {
     @Autowired
     private MemberService service;
 
-    @GetMapping("/login")
+/*    @GetMapping("/login")
     public String login() {
         return "member/login";
-    }
+    }*/
 
     @GetMapping("/join")
     public String join() {
