@@ -10,8 +10,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Member {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ")
+    @SequenceGenerator(name = "MEMBER_SEQ", sequenceName = "MEMBER_SEQ", allocationSize = 1)
     private Long id;
 
     private String username;
