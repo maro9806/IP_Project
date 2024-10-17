@@ -30,7 +30,9 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/member/**").permitAll()
+                        .requestMatchers("/", "/member/**",
+                                "/login", "/loginForm", "/joinForm",
+                                "/project/list").permitAll()
                         .requestMatchers("/board/**").authenticated()
                         .anyRequest().authenticated()
                 )
