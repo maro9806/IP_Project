@@ -23,8 +23,5 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    // Lombok이 자동으로 getter 메서드를 생성하지만,
-    // 명시적으로 추가할 수도 있습니다.
-
 
 }
