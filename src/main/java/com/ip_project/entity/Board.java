@@ -1,6 +1,7 @@
 package com.ip_project.entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
@@ -23,9 +24,8 @@ public class Board {
     @Column(updatable = false) // 수정할때 작성자는 수정이 안되게 하겠다
     private String writer; // 작성자
 
-    @Column(insertable = false, updatable = false, columnDefinition = "datetime default now()")
-    //날짜는 입력할때 기본값으로 now() 함수를 사용하며 수정이 안되게 하겠다
-    private Date indate; // 날짜
+    @Column(columnDefinition = "TIMESTAMP DEFAULT SYSTIMESTAMP")
+    private LocalDateTime indate;
 
     @Column(columnDefinition = "NUMBER(19,0) DEFAULT 0")
     private Long count; // 조회수
