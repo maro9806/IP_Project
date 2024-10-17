@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.ip_project.entity.Member;
 
+import java.util.Optional;
+
 @Repository
 public interface MemberRepository extends JpaRepository<Member, String> {
-
+    Optional<Member> findByUsername(String username);
 }

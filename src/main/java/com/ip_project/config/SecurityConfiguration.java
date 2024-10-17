@@ -30,24 +30,24 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/member/**",
-                                "/login", "/loginForm", "/joinForm",
-                                "/project/list").permitAll()
+                        .requestMatchers("/", "/home", "/member/**", "/login", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/board/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/board/list")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/member/logout")
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
+                        .permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/board/list")
+                        .defaultSuccessUrl("/", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
                         )

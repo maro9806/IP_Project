@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="card-body">
-        <h4 clasd-title">Spring boot</h4>
+        <h4 class="title">Spring boot</h4>
         <div class="row">
             <div class="col-lg-2">
                 <div class="card" style="min-height: 500px; max-height: 1000px">
