@@ -31,7 +31,7 @@
             </a>
         </div>
         <div class="text-center mt-3">
-            <a href="${pageContext.request.contextPath}">Register</a> |
+            <a href="${pageContext.request.contextPath}/">Register</a> |
             <a href="${pageContext.request.contextPath}/member/forgot-password">Forgot Password?</a>
         </div>
     </div>
