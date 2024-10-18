@@ -16,11 +16,6 @@ public class MemberController {
     @Autowired
     private MemberService service;
 
-/*    @GetMapping("/login")
-    public String login() {
-        return "member/login";
-    }*/
-
     @GetMapping("/join")
     public String join() {
         return "member/join";
@@ -30,6 +25,11 @@ public class MemberController {
     public String join(Member vo) {
         service.join(vo);
         return "redirect:/member/join";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
 
 }

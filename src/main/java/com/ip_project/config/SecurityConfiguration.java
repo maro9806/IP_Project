@@ -4,14 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import com.ip_project.service.CustomOAuth2UserService;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfiguration {
 
     @Autowired
@@ -30,29 +28,32 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/member/**", "/login", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/board/**").authenticated()
+                        .requestMatchers("/", "/member/login", "/css/**", "/js/**", "/images/**", "/WEB-INF/views/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/member/login")
-                        .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/", true)
+                        .loginPage("/login")
+                        .loginProcessingUrl("/member/login-process")
+                        .defaultSuccessUrl("/board/list")
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/member/logout")
                         .logoutSuccessUrl("/")
                         .permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/board/list")
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
                         )
                 )
-                .userDetailsService(userDetailsService);
+                .sessionManagement(session -> session
+                        .sessionFixation().migrateSession()
+                        .maximumSessions(1)
+                        .expiredUrl("/member/login?expired=true")
+                );
 
         return http.build();
     }
