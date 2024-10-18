@@ -14,7 +14,7 @@
 <div class="container">
     <div class="login-container">
         <h2 class="text-center mb-4">Login</h2>
-        <form action="${cpath}/login" method="post">
+        <form action="${pageContext.request.contextPath}/member/login-process" method="post">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" class="form-control" id="username" name="username" required>
