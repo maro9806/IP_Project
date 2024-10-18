@@ -28,13 +28,13 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/member/login", "/css/**", "/js/**", "/images/**", "/WEB-INF/views/**").permitAll()
+                        .requestMatchers("/", "/member/login", "/member/join", "/main", "/css/**", "/js/**", "/images/**", "/WEB-INF/views/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
+                        .loginPage("/member/login")  // 여기를 /member/login으로 변경
                         .loginProcessingUrl("/member/login-process")
-                        .defaultSuccessUrl("/board/list")
+                        .defaultSuccessUrl("/")
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -43,8 +43,8 @@ public class SecurityConfiguration {
                         .permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/member/login")
-                        .defaultSuccessUrl("/board/list")
+                        .loginPage("/member/login")  // 이미 /member/login으로 되어 있어 변경 불필요
+                        .defaultSuccessUrl("/")
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
                         )
@@ -57,4 +57,5 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
 }
