@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="cpath" value="${pageContext.request.contextPath }" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +26,18 @@
             </div>
         </div>
     </div>
+    <div class="user-status">
+        <c:choose>
+            <c:when test="${not empty pageContext.request.userPrincipal}">
+                <p>Welcome, ${pageContext.request.userPrincipal.name}!</p>
+                <a href="${pageContext.request.contextPath}/logout">Logout</a>
+            </c:when>
+            <c:otherwise>
+                <a href="${pageContext.request.contextPath}/member/login">Login</a>
+            </c:otherwise>
+        </c:choose>
+    </div>
+
     <div class="card-body">
         <h4 class="title">Spring boot</h4>
         <div class="row">
@@ -33,18 +46,7 @@
                     <div class="card-body">
                         <h4 class="card-title">GUEST</h4>
                         <p class="card-text">회원님 Welcome!</p>
-                        <form action="">
-                            <div class="form-group">
-                                <label for="id">아이디</label>
-                                <input type="text" class="form-control" id="id" name="id">
-                            </div>
-                            <div class="form-group">
-                                <label for="pw">비밀번호</label>
-                                <input type="password" class="form-control" id="pw" name="pw">
-                            </div>
-                            <button type="button" class="btn btn-sm btn-primary form-control">로그인</button>
-
-                        </form>
+                        <a href="${pageContext.request.contextPath}/member/login" class="btn btn-sm btn-primary">로그인</a>
                     </div>
                 </div>
             </div>
