@@ -22,8 +22,14 @@ public class Member {
     private String phone;
     private String join_date;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    // role 필드를 완전히 제거했습니다.
 
-
+    @Builder
+    public Member(String username, String password, String email, String phone, String join_date) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.join_date = join_date;
+    }
 }
