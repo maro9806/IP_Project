@@ -46,7 +46,18 @@
                     <div class="card-body">
                         <h4 class="card-title">GUEST</h4>
                         <p class="card-text">회원님 Welcome!</p>
-                        <a href="${pageContext.request.contextPath}/member/login" class="btn btn-sm btn-primary">로그인</a>
+                        <form action="">
+                            <div class="form-group">
+                                <label for="id">아이디</label>
+                                <input type="text" class="form-control" id="id" name="id">
+                            </div>
+                            <div class="form-group">
+                                <label for="pw">비밀번호</label>
+                                <input type="password" class="form-control" id="pw" name="pw">
+                            </div>
+                            <button type="button" class="btn btn-sm btn-primary form-control">로그인</button>
+
+                        </form>
                     </div>
                 </div>
             </div>
@@ -124,7 +135,7 @@
 
 
 <script type="text/javascript">
-    $("a").on("click", function(e){ // 해당 a태그를 클릭한 요소롤 e라는 변수에 담겠다
+    $("a:not([href^='/member/']):not([href^='#'])").on("click", function(e){
         e.preventDefault();
         let idx = $(this).attr("href");
 
@@ -136,7 +147,6 @@
             success : makeView,
             error : function() { alert("error"); }
         });
-
     });
 
     function makeView(data){

@@ -29,14 +29,17 @@
             <a href="${cpath}/oauth2/authorization/google" class="btn btn-google btn-block">
                 <i class="fab fa-google"></i> Login with Google
             </a>
+            <a href="${cpath}/oauth2/authorization/kakao" class="btn btn-kakao btn-block">
+                <i class="fab fa-kickstarter-k"></i> Login with Kakao
+            </a>
         </div>
         <div class="text-center mt-3">
-            <a href="${pageContext.request.contextPath}/member/join">Register</a> |
+            <a href="${pageContext.request.contextPath}/">Register</a> |
             <a href="${pageContext.request.contextPath}/member/forgot-password">Forgot Password?</a>
         </div>
     </div>
 </div>
-
+ 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

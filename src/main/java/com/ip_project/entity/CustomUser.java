@@ -13,15 +13,14 @@ public class CustomUser extends User {
         super(
                 member != null ? member.getUsername() : "",
                 member != null ? member.getPassword() : "",
-                member != null && member.getRole() != null
-                        ? AuthorityUtils.createAuthorityList(member.getRole().toString())
-                        : AuthorityUtils.NO_AUTHORITIES
+                AuthorityUtils.createAuthorityList("ROLE_USER") // 모든 사용자에게 기본 "ROLE_USER" 권한 부여
         );
         this.member = member;
     }
 
+
     // 기본 생성자
     public CustomUser() {
-        super("", "", AuthorityUtils.NO_AUTHORITIES);
+        super("", "", AuthorityUtils.createAuthorityList("ROLE_USER"));
     }
 }
