@@ -16,6 +16,7 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+    static-path-pattern: /resources/static/**
   profiles:
     include: oauth
   security:
@@ -24,6 +25,8 @@ spring:
         registration:
           google:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+
+
 
 logging:
   level:
