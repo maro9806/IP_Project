@@ -1,26 +1,20 @@
 package com.ip_project.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import com.ip_project.service.CustomOAuth2UserService;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfiguration {
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -28,11 +22,11 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/member/login", "/member/join", "/main", "/css/**", "/js/**", "/images/**", "/WEB-INF/views/**").permitAll()
+                        .requestMatchers("/", "/main", "/error", "/member/login", "/member/join", "/resources/**", "/css/**", "/js/**", "/images/**", "/WEB-INF/views/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/member/login")  // 여기를 /member/login으로 변경
+                        .loginPage("/member/login")
                         .loginProcessingUrl("/member/login-process")
                         .defaultSuccessUrl("/")
                         .permitAll()
@@ -41,21 +35,8 @@ public class SecurityConfiguration {
                         .logoutUrl("/member/logout")
                         .logoutSuccessUrl("/")
                         .permitAll()
-                )
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/member/login")  // 이미 /member/login으로 되어 있어 변경 불필요
-                        .defaultSuccessUrl("/")
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService)
-                        )
-                )
-                .sessionManagement(session -> session
-                        .sessionFixation().migrateSession()
-                        .maximumSessions(1)
-                        .expiredUrl("/member/login?expired=true")
                 );
 
         return http.build();
     }
-
 }
