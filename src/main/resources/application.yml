@@ -16,19 +16,21 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: YOUR_GOOGLE_CLIENT_ID
-            client-secret: YOUR_GOOGLE_CLIENT_SECRET
+  profiles:
+    include: oauth
   jmx:
     enabled: false
     application:
       admin:
         enabled: true
         jmx-name: org.springframework.boot:type=Admin,name=SpringApplication
+  spring:
+    security:
+      oauth2:
+        client:
+          registration:
+            google:
+              redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
 logging:
   level:
     org.springframework.security: DEBUG

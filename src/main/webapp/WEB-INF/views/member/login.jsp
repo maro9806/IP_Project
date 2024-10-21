@@ -26,10 +26,10 @@
             <button type="submit" class="btn btn-primary btn-block">Login</button>
         </form>
         <div class="social-login">
-            <a href="${cpath}/oauth2/authorization/google" class="btn btn-google btn-block">
+            <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="btn btn-google btn-block">
                 <i class="fab fa-google"></i> Login with Google
             </a>
-            <a href="${cpath}/oauth2/authorization/kakao" class="btn btn-kakao btn-block">
+            <a href="${pageContext.request.contextPath}/oauth2/authorization/kakao" class="btn btn-kakao btn-block">
                 <i class="fab fa-kickstarter-k"></i> Login with Kakao
             </a>
         </div>

@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // 해당 URL 패턴들은 모든 사용자가 접근 가능
-                        .requestMatchers("/", "/main", "/login", "/member/login", "/member/join", "/main", "/css/**", "/js/**", "/images/**", "/WEB-INF/views/**").permitAll()
+                        .requestMatchers("/", "/main", "/member/login", "/member/join", "/main", "/css/**", "/js/**", "/images/**", "/WEB-INF/views/**").permitAll()
                         .anyRequest().authenticated()   // 나머지 모든 요청은 인증된 사용자만 접근 가능
                 )
                 .formLogin(form -> form
