@@ -13,8 +13,12 @@ public class MemberService {
     @Autowired
     private MemberRepository repository;
 
+    private final PasswordEncoder encoder;
+
     @Autowired
-    private PasswordEncoder encoder;
+    public MemberService(PasswordEncoder passwordEncoder) {
+        this.encoder = passwordEncoder;
+    }
 
     public void join(Member vo) {
         vo.setPassword(encoder.encode(vo.getPassword()));

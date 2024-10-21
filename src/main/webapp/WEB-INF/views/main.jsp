@@ -1,128 +1,166 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="cpath" value="${pageContext.request.contextPath }" />
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
 <!DOCTYPE html>
-<html>
+<html lang="ko">
+
 <head>
+    <title>IPro</title>
     <meta charset="UTF-8">
-    <title>Insert title here</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<c:url value='/resources/static/main.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/static/globalfont.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/static/navbar.css'/>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
-<div class="card">
-    <div class="card-header">
-        <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-                <h1>웹기반 인공지능 Track2_A</h1>
-                <p>Spring Boot와 JPA를 활용한 게시판...</p>
+<!-- Navbar 포함 -->
+<jsp:include page="navbar.jsp" />
+<!-- Navbar 이용해서 로고이미지, 메뉴 총 4개, 검색 창, 마이페이지 버튼, 프로필 이미지, 알람 아이콘, 로그인 아이디, 로그아웃 아이콘-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Carousel -->
+            <div id="adCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <!-- 슬라이드 이미지 -->
+                    <div class="carousel-item active">
+                        <img src="<c:url value='/resources/static/img/cat.svg'/>" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="<c:url value='/resources/static/img/cat.svg'/>" class="d-block w-100" alt="...">
+                    </div>
+                </div>
+                <!-- 이미지 수동 이동 버튼  -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#adCarousel"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#adCarousel"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
         </div>
-    </div>
-    <div class="card-body">
-        <h4 class="title">Spring boot</h4>
-        <div class="row">
-            <div class="col-lg-2">
-                <div class="card" style="min-height: 500px; max-height: 1000px">
-                    <div class="card-body">
-                        <h4 class="card-title">GUEST</h4>
-                        <p class="card-text">회원님 Welcome!</p>
-                        <form action="">
-                            <c:choose>
-                                <c:when test="${not empty pageContext.request.userPrincipal}">
-                                    <p>Welcome, ${pageContext.request.userPrincipal.name}!</p>
-                                    <a href="${pageContext.request.contextPath}/member/logout" class="btn btn-warning">Logout</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="${pageContext.request.contextPath}/member/login" class="btn btn-primary">Login</a>
-                                </c:otherwise>
-                            </c:choose>
-
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="card" style="min-height: 500px; max-height: 1000px">
-                    <div class="card-body">
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>번호</th>
-                                <th>제목</th>
-                                <th>작성자</th>
-                                <th>작성일</th>
-                                <th>조회수</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach var="vo" items="${list}" varStatus="i">
-                                <tr>
-                                    <td>${i.count}</td>
-                                    <td>
-                                        <a href="${vo.idx}">
-                                                ${vo.title}
-                                        </a>
-                                    </td>
-                                    <td>${vo.writer}</td>
-                                    <td><fmt:formatDate pattern="yyyy-MM-dd" value="${vo.indate}"/> </td>
-                                    <td>${vo.count}</td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="card" style="min-height: 500px; max-height: 1000px">
-                    <div class="card-body">
-                        <form action="${cpath}/register" method="post">
-                            <div class="form-group">
-                                <label for="title">제목</label>
-                                <input placeholder="Enter Title" type="text" class="form-control" id="title" name="title">
-                            </div>
-                            <div class="form-group">
-                                <label for="content">내용</label>
-                                <textarea placeholder="Enter Content" id="content" name="content" class="form-control" rows="7" cols=""></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="writer">작성자</label>
-                                <input placeholder="Enter Writer" type="text" class="form-control" id="writer" name="writer">
-                            </div>
-
-                            <div id="regDiv">
-                                <button type="submit" class="btn btn-sm btn-primary">등록</button>
-                                <button type="reset" class="btn btn-sm btn-warning">취소</button>
-                            </div>
-
-                            <div id="updateDiv" style="display: none;">
-                                <button type="button" onclick="location.href='${cpath}/list'" id="list" class="btn btn-sm btn-primary">목록</button>
-                                <span id="update">
-		    						<button type="button" onclick="updateFormDo()" id="updateForm" class="btn btn-sm btn-warning">수정</button>
-		    						</span>
-                                <input type="hidden" id="idx" name="idx">
-                                <button type="button" onclick="remove()" id="delete" class="btn btn-sm btn-danger">삭제</button>
-                            </div>
-
-                        </form>
-                    </div>
+        <div class="col-md-4">
+            <!-- Login Section -->
+            <div class="login-section">
+                <div class="login-message">
+                    <c:choose>
+                        <c:when test="${not empty pageContext.request.userPrincipal}">
+                            <p>Welcome, ${pageContext.request.userPrincipal.name}!</p>
+                            <a href="${pageContext.request.contextPath}/member/logout" class="btn btn-warning">Logout</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/member/login" class="login-btn">Login</a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card-footer">스프링-박병관</div>
+</div>
+
+<div class="container2">
+    <div class="row" style="margin-top: 110px;">
+        <div class="col-12">
+            <h2>면접 공고</h2>
+        </div>
+        <div class="scroll-container">
+            <div class="scroll-content">
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card Image">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Card 1</h5>
+                        <p class="card-text">corp name</p>
+                    </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card Image">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Card 2</h5>
+                        <p class="card-text">corp name</p>
+                    </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card Image">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Card 3</h5>
+                        <p class="card-text">corp name</p>
+                    </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card Image">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Card 4</h5>
+                        <p class="card-text">corp name</p>
+                    </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card Image">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Card 5</h5>
+                        <p class="card-text">corp name</p>
+                    </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card Image">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Card 6</h5>
+                        <p class="card-text">corp name</p>
+                    </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card Image">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Card 7</h5>
+                        <p class="card-text">corp name</p>
+                    </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card Image">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Card 8</h5>
+                        <p class="card-text">corp name</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
-<script type="text/javascript">
+
+<!-- Image Container -->
+<div class="img-wrapper">
+    <img src="https://c.animaapp.com/lMGyGZqo/img/vector-5-1.svg" class="img-content" alt="Vector image">
+</div>
+
+
+<script>
+    const scrollContainer = document.querySelector('.scroll-container');
+
+    scrollContainer.addEventListener('wheel', (evt) => {
+        evt.preventDefault();
+        const scrollSpeed = 40;
+        scrollContainer.scrollLeft += evt.deltaY * scrollSpeed;
+    });
+
     $("a:not([href^='/member/'])").on("click", function(e){
         e.preventDefault();
         let idx = $(this).attr("href");
@@ -136,39 +174,8 @@
             error : function() { alert("error"); }
         });
     });
-
-    function makeView(data){
-        $("#title").val(data.title);
-        $("#title").attr("readonly", true);
-
-        $("#writer").val(data.writer);
-        $("#writer").attr("readonly", true);
-
-        $("#content").val(data.content);
-        $("#content").attr("readonly", true);
-
-        $("#idx").val(data.idx);
-
-        $("#regDiv").css("display", "none");
-        $("#updateDiv").css("display", "block");
-    }
-
-    function remove(){
-        let idx = $("#idx").val();
-        location.href = "${cpath}/remove?idx=" + idx;
-    }
-
-    function updateFormDo(){
-        $("#title").attr("readonly", false);
-        $("#content").attr("readonly", false);
-
-        let upBtn = "<button type='submit' class='btn btn-sm btn-warning'>수정하기</button>";
-        $("#update").html(upBtn);
-    }
-
-
-
 </script>
 
 </body>
+
 </html>
