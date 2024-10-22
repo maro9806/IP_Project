@@ -6,6 +6,7 @@
 
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <title>IPro</title>
     <meta charset="UTF-8">
@@ -19,6 +20,7 @@
 <!-- Navbar 포함 -->
 <jsp:include page="navbar.jsp" />
 <!-- Navbar 이용해서 로고이미지, 메뉴 총 4개, 검색 창, 마이페이지 버튼, 프로필 이미지, 알람 아이콘, 로그인 아이디, 로그아웃 아이콘-->
+
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -58,87 +60,85 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div class="container2">
-        <div class="row" style="margin-top: 110px;">
-            <div class="col-12">
-                <h4 style="font-weight: bold;">로그인 하고 AI 맞춤 면접 추천받기</h4>
-            </div>
-            <div class="scroll-container">
-                <div class="scroll-content">
-                    <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/Nexonmain.svg'/>" class="card-img-top" alt="Card 1 Image">
-                        <div class="card-body">
-                            <p class="card-title">넥슨</p>
-                            <h5 class="card-text">[넥토리얼]</h5>
-                            <h5 class="card-text">게임프로그래밍</h5>
-                            <p class="card-date">2024-11-11(월)23:59</p>
-                        </div>
+<div class="container2">
+    <div class="row" style="margin-top: 110px;">
+        <div class="col-12">
+            <h4 style="font-weight: bold;">로그인 하고 AI 맟춤 면접 추천받기</h4>
+        </div>
+        <div class="scroll-container">
+            <div class="scroll-content">
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/Nexonmain.svg'/>" class="card-img-top" alt="Card 1 Image">
+                    <div class="card-body">
+                        <p class="card-title">넥슨</p>
+                        <h5 class="card-text">[넥토리얼]</h5>
+                        <h5 class="card-text">게임프로그래밍</h5>
+                        <p class="card-date">2024-11-11(월)23:59</p>
                     </div>
-                    <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/Kakaomain.svg'/>" class="card-img-top" alt="Card 2 Image">
-                        <div class="card-body">
-                            <p class="card-title">카카오</p>
-                            <h5 class="card-text">광고 SDK 개발 </h5>
-                            <h5 class="card-text">FE개발자 (경력)</h5>
-                            <p class="card-date">2024-11-11(월)23:59</p>
-                        </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/Kakaomain.svg'/>" class="card-img-top" alt="Card 2 Image">
+                    <div class="card-body">
+                        <p class="card-title">카카오</p>
+                        <h5 class="card-text">광고 SDK 개발 </h5>
+                        <h5 class="card-text">FE개발자 (경력)</h5>
+                        <p class="card-date">2024-11-11(월)23:59</p>
                     </div>
-                    <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/Netmarblemain.svg'/>" class="card-img-top" alt="Card 3 Image">
-                        <div class="card-body">
-                            <p class="card-title">넷마블</p>
-                            <h5 class="card-text">나 혼자만 레벨업</h5>
-                            <h5 class="card-text">UI 디자인</h5>
-                            <p class="card-date">2024-11-11(월)23:59</p>
-                        </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/Netmarblemain.svg'/>" class="card-img-top" alt="Card 3 Image">
+                    <div class="card-body">
+                        <p class="card-title">넷마블</p>
+                        <h5 class="card-text">나 혼자만 레벨업</h5>
+                        <h5 class="card-text">UI 디자인</h5>
+                        <p class="card-date">2024-11-11(월)23:59</p>
                     </div>
-                    <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 4 Image">
-                        <div class="card-body">
-                            <p class="card-title">Card 4</p>
-                            <h5 class="card-text">corp name</h5>
-                            <p class="card-date">2024-11-11(월)23:59</p>
-                        </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 4 Image">
+                    <div class="card-body">
+                        <p class="card-title">Card 4</p>
+                        <h5 class="card-text">corp name</h5>
+                        <p class="card-date">2024-11-11(월)23:59</p>
                     </div>
-                    <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 5 Image">
-                        <div class="card-body">
-                            <p class="card-title">Card 5</p>
-                            <h5 class="card-text">corp name</h5>
-                            <p class="card-date">2024-11-11(월)23:59</p>
-                        </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 5 Image">
+                    <div class="card-body">
+                        <p class="card-title">Card 5</p>
+                        <h5 class="card-text">corp name</h5>
+                        <p class="card-date">2024-11-11(월)23:59</p>
                     </div>
-                    <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 6 Image">
-                        <div class="card-body">
-                            <p class="card-title">Card 6</p>
-                            <h5 class="card-text">corp name</h5>
-                            <p class="card-date">2024-11-11(월)23:59</p>
-                        </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 6 Image">
+                    <div class="card-body">
+                        <p class="card-title">Card 6</p>
+                        <h5 class="card-text">corp name</h5>
+                        <p class="card-date">2024-11-11(월)23:59</p>
                     </div>
-                    <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 7 Image">
-                        <div class="card-body">
-                            <p class="card-title">Card 7</p>
-                            <h5 class="card-text">corp name</h5>
-                            <p class="card-date">2024-11-11(월)23:59</p>
-                        </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 7 Image">
+                    <div class="card-body">
+                        <p class="card-title">Card 7</p>
+                        <h5 class="card-text">corp name</h5>
+                        <p class="card-date">2024-11-11(월)23:59</p>
                     </div>
-                    <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 8 Image">
-                        <div class="card-body">
-                            <p class="card-title">Card 8</p>
-                            <h5 class="card-text">corp name</h5>
-                            <p class="card-date">2024-11-11(월)23:59</p>
-                        </div>
+                </div>
+                <div class="card corp-card">
+                    <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 8 Image">
+                    <div class="card-body">
+                        <p class="card-title">Card 8</p>
+                        <h5 class="card-text">corp name</h5>
+                        <p class="card-date">2024-11-11(월)23:59</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>
 
 <div class="container3">
