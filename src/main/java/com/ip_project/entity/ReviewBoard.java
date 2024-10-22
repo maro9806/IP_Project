@@ -1,6 +1,5 @@
 package com.ip_project.entity;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
@@ -9,7 +8,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 @Data
 @Entity // Hibernate가 아래 vo 설계대로 테이블을 생성하기 위한 키워드
-public class Board {
+public class ReviewBoard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOARD_SEQ")
