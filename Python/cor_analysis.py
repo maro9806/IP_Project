@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 def get_news(query):
     # NewsAPI 키 각자 경로로 지정 필수
-    api_key = r"C:\Users\USER\Desktop\실전프로젝트\back\IP_Project\Python"
+    api_key = r"C:/Users/USER/Desktop/실전프로젝트/back/IP_Project/Python/cor_analysiskey.txt"
 
     # 검색할 키워드
     # query = "당근마켓"
