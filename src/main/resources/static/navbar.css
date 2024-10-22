@@ -1,0 +1,151 @@
+#header {
+  font-family:  'Noto Sans KR', sans-serif;
+  /* font-family: 'Nanum Gothic', sans-serif; */
+  font-weight:600;
+  z-index:1000;
+}
+
+.navbar {
+  height:70px;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+  display:flex;
+  justify-content:space-between;
+  background-color: #fdfdfd;
+
+}
+/* navbar.css */
+
+/* 마이페이지 버튼 스타일 */
+.mypage-btn {
+  background-color: white; /* 배경 흰색 */
+  color: black; /* 텍스트 검정 */
+  border: 2px solid rgb(74, 72, 72); /* 검정 테두리 */
+  border-radius: 50px; /* 둥근 모서리 */
+  padding: 8px 20px; /* 버튼 안쪽 여백 */
+  font-size: 14px; /* 글자 크기 */
+  cursor: pointer; /* 마우스 포인터 */
+  font-weight: 0px;
+}
+
+.mypage-btn2 {
+  background-color: rgb(18, 18, 18); /* 배경 흰색 */
+  color: rgb(246, 246, 246); /* 텍스트 검정 */
+  border: 2px solid rgb(74, 72, 72); /* 검정 테두리 */
+  border-radius: 50px; /* 둥근 모서리 */
+  padding: 8px 20px; /* 버튼 안쪽 여백 */
+  font-size: 14px; /* 글자 크기 */
+  cursor: pointer; /* 마우스 포인터 */
+  font-weight: 0px;
+}
+
+.mypage-btn:hover {
+  background-color: black; /* 호버 시 배경 검정 */
+  color: white; /* 호버 시 텍스트 흰색 */
+}
+
+.mypage-btn2:hover {
+  background-color: rgb(75, 99, 171); /* 호버 시 배경 빨강 */
+  color: white; /* 텍스트 흰색 유지 */
+  border-color:rgb(70, 95, 172);
+}
+
+/* a 태그 내부 버튼의 스타일 초기화 */
+a {
+  text-decoration: none;
+}
+
+#logo {
+  height:25px;
+}
+
+.navbar img {
+  height:39px;
+}
+
+.nav-left {
+  /* font-family: 'Roboto', sans-serif; */
+  /* font-weight: bold; */
+  display: flex;
+  align-items:center;
+  gap: 30px;
+  padding: 0 50px;
+}
+
+.badge {
+  font-size: 10px; /* 작은 크기 */
+  color: #e91c1c; /* 빨간색 텍스트 */
+  font-weight: bold; /* 두께 */
+  position: absolute;
+  top: 20px; /* 위쪽으로 약간 띄움 */
+  /* background-color: white; 배경 흰색 (원할 경우) */
+  padding: 1px 4px; /* 배경 안의 텍스트 여백 */
+  /* border-radius: 5px; 둥근 모서리 */
+  /* border: 1px solid red; 테두리 추가 */
+}
+
+.nav-right {
+  /* font-family: 'Roboto', sans-serif; */
+  font-weight: bold;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.nav-right-btn {
+  display: flex;
+  gap: 10px;
+}
+
+.logo {
+  height: 30px; /* Adjust logo height */
+}
+
+.navbar .nav-link {
+  font-size: 16px;
+  color: #000; /* Ensure the text color matches your design */
+}
+
+.navbar .nav-link:hover {
+  /* text-decoration: underline;  */
+  color: #4c3996; /* Purple color on hover */
+  /* text-decoration: none; */
+  font-size: 17px;
+  transition: color 0.3s ease;
+
+}
+
+button.mypage {
+  border: 1px solid #000;
+  background-color: #fff;
+  color: #000;
+  margin-right: 10px;
+}
+
+button.status {
+  background-color: #000;
+  color: #fff;
+}
+
+
+/* CSS */
+.footer {
+  background-color: #333;
+  color: white;
+  padding: 20px 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}

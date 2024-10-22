@@ -1,5 +1,6 @@
 package com.ip_project.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import com.ip_project.service.CustomOAuth2UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -17,12 +19,21 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+    private final CustomOAuth2UserService customOAuth2UserService;  // 필드 정의
+
+    @Autowired  // 생성자가 하나일 경우 @Autowired 생략 가능
+    public SecurityConfiguration(CustomOAuth2UserService customOAuth2UserService) {
+        this.customOAuth2UserService = customOAuth2UserService;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/main", "/error", "/member/login", "/member/join", "/resources/**", "/css/**", "/js/**", "/images/**", "/WEB-INF/views/**").permitAll()
+                        .requestMatchers("/", "/main", "/error", "/member/login", "/member/join",
+                                "/resources/**", "/css/**", "/js/**", "/images/**",
+                                "/WEB-INF/views/**", "/oauth2/**").permitAll()  // "/oauth2/**" 추가
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -30,6 +41,13 @@ public class SecurityConfiguration {
                         .loginProcessingUrl("/member/login-process")
                         .defaultSuccessUrl("/")
                         .permitAll()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/member/login")
+                        .defaultSuccessUrl("/")
+                        .userInfoEndpoint(endpoint -> endpoint
+                                .userService(customOAuth2UserService)
+                        )
                 )
                 .logout(logout -> logout
                         .logoutUrl("/member/logout")
@@ -39,4 +57,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
+
 }

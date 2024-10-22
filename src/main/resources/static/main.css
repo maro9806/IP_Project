@@ -1,0 +1,502 @@
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin-top: 55px;
+}
+
+.container2 {
+  margin-top: 50px;
+  margin-bottom: 130px;
+  padding-right: 300px;
+  padding-left: 300px;
+}
+
+.col-12 {
+  padding-bottom: 22px;
+}
+
+.carousel {
+  margin: 0px;
+}
+
+/* 로그인 */
+.login-section {
+  font-family: 'Courier New', Courier, monospace;
+  width: 300px;
+  height: 125px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 15px;
+  /* 15px space between carousel and login */
+}
+
+.login-message p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.login-btn {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #333;
+}
+
+
+
+/* Scrollable container with hidden scrollbar */
+.scroll-container {
+  overflow-x: scroll;
+  white-space: nowrap;
+  margin-top: 20px;
+  width: 100%;
+  scroll-behavior: smooth;
+  /* Enables smooth scrolling */
+  -webkit-overflow-scrolling: touch;
+  /* For mobile device smooth scrolling */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, Firefox */
+.scroll-container {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scroll-content {
+  display: inline-flex;
+  gap: 27px;
+  width: max-content;
+  /* Make sure content has enough width to scroll */
+}
+
+.corp-card {
+  width: 240px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 10px;
+  display: inline-block;
+  vertical-align: top;
+}
+.card-title{
+  font-size: small;
+  font-weight: 100;
+}
+.card-text{
+  font-weight: 600;
+}
+.card-date{
+  color: #333;
+  align-items: end;
+  font-size: small;
+  font-weight: 100;
+}
+
+.corp-card img {
+  width: auto;
+  height: auto;
+  border-radius: 5px 5px 0 0;
+}
+
+.card-body {
+  text-align: left;
+}
+
+/* Overlay to position boxes */
+.overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Overlay Image Boxes */
+.img-box {
+  position: absolute;
+  border: 2px dashed #333;
+  /* Dashed border to visualize */
+  background-color: rgba(255, 255, 255, 0.5);
+  /* Semi-transparent white */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Specific Box Sizes and Positions */
+
+/* First new image box */
+.img-1 {
+  width: 551px;
+  height: 90px;
+  top: 50px;
+  /* Adjust this to your needs */
+  left: 240px;
+  /* Align this to the left */
+}
+
+/* Second new image box (aligned to the right) */
+.img-2 {
+  width: 300px;
+  height: 150px;
+  top: 50px;
+  /* Same top position as the first box */
+  right: 240px;
+  /* Align this to the right */
+}
+
+/* Top image box */
+.img-645x260 {
+  width: 645px;
+  height: 260px;
+  top: 150px;
+  /* Positioning based on your layout */
+  left: 240px;
+  /* Positioning from the left */
+}
+
+/* Second image box */
+.img-400x260 {
+  width: 400px;
+  height: 260px;
+  top: 430px;
+  /* Positioning based on your layout */
+  right: 240px;
+  /* Positioning from the left */
+}
+
+
+/**/
+
+
+/* container3 */
+.container3 {
+  position: relative;
+  margin-top: 100px;
+  padding-left: 240px;
+  /* Adjusting to fit the design */
+}
+
+/* Title Section */
+.container3-title {
+  margin-top: 30px;
+  /* Space between top and title */
+  text-align: left;
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  color: #1f1f1f;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  color: #1f1f1f;
+  margin-bottom: 40px;
+  /* Ensure enough space below subtitle */
+}
+
+/* Overlap container */
+.overlap-container {
+  position: relative;
+  width: 1200px;
+  margin-top: 20px;
+  /* Ensures the overlap starts after the subtitle */
+}
+
+/* Large Image (Left) */
+.img-rectangle-large {
+  width: 645px;
+  height: 260px;
+  position: absolute;
+  top: 50px;
+  /* Positioned under the title */
+  left: 0;
+  background-color: #d9d9d9;
+}
+
+/* Small Image (Right) */
+.img-rectangle {
+  width: 400px;
+  height: 260px;
+  position: absolute;
+  top: 320px;
+  /* Positioned under the large image */
+  left: 700px;
+  background-color: #d9d9d9;
+}
+
+/* Question Box 1 */
+.question-box:nth-child(1) {
+  width: 551px;
+  height: 90px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 120px;
+  /* Positioned within the large image */
+  left: 50px;
+}
+
+/* Question Box 2 */
+.question-box:nth-child(2) {
+  width: 551px;
+  height: 90px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 400px;
+  /* Positioned within the small image */
+  left: 50px;
+}
+
+/* AI Coaching Section */
+.ai-coaching {
+  margin-top: 700px;
+  /* Positioned far below the overlap container */
+  text-align: center;
+  font-size: 35px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+
+
+
+
+/**/
+/* container3 */
+.container3 {
+  padding: 0px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.container3 .div {
+  background-color: #ffffff;
+  width: 1440px;
+  height: 1024px;
+  position: relative;
+}
+
+.container3 .overlap-group {
+  position: absolute;
+  width: 1020px;
+  height: 555px;
+  top: 251px;
+  left: 180px;
+}
+
+.container3 .rectangle {
+  width: 400px;
+  top: 295px;
+  left: 620px;
+  position: absolute;
+  height: 260px;
+  background-color: #d9d9d9;
+}
+
+.container3 .rectangle-2 {
+  width: 645px;
+  top: 35px;
+  left: 60px;
+  position: absolute;
+  height: 260px;
+  background-color: #d9d9d9;
+}
+
+.container3 .group {
+  position: absolute;
+  width: 551px;
+  height: 90px;
+  top: 0;
+  left: 0;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+}
+
+.container3 .frame {
+  position: relative;
+  top: 34px;
+  left: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container3 .text-wrapper {
+  position: relative;
+  width: fit-content;
+  margin-top: -1.00px;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #121619;
+  font-size: 16px;
+  letter-spacing: -0.12px;
+  line-height: 22px;
+  white-space: nowrap;
+}
+
+.container3 .frame-wrapper {
+  position: absolute;
+  width: 551px;
+  height: 90px;
+  top: 241px;
+  left: 235px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+}
+
+.container3 .div-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 34px;
+  left: 13px;
+}
+
+.container3 .p {
+  position: relative;
+  width: fit-content;
+  margin-top: -1.00px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #121619;
+  font-size: 16px;
+  letter-spacing: -0.12px;
+  line-height: 22px;
+  white-space: nowrap;
+}
+
+
+.container3 .AI-wrapper {
+  position: absolute;
+  top: 92px;
+  left: 180px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container3 .AI {
+  position: relative;
+  width: fit-content;
+  margin-top: -1.00px;
+  font-size: 36px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #1f1f1f;
+  letter-spacing: -0.12px;
+  line-height: 52px;
+}
+
+.container3 .text-wrapper-2 {
+  position: absolute;
+  height: 52px;
+  top: 878px;
+  left: 578px;
+  font-size: 35px;
+  white-space: nowrap;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #1f1f1f;
+  letter-spacing: -0.12px;
+  line-height: 52px;
+}
+
+
+/**/
+
+
+/* CSS */
+.footer {
+  background-color: #333;
+  color: white;
+  padding: 20px 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.footer-left p {
+  margin: 0;
+}
+
+.footer-right ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  padding: 0;
+}
+
+.footer-right ul li {
+  display: inline;
+}
+
+.footer-right ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-right ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-right ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
