@@ -37,4 +37,7 @@ out/
 .vscode/
 
 ### Oauth ###
-!src/main/resources/application-oauth.yml
+src/main/resources/application-oauth.yml
+
+###key###
+Python/cor_analysiskey.txt
