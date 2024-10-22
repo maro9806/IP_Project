@@ -1,7 +1,7 @@
 #header {
   font-family:  'Noto Sans KR', sans-serif;
   /* font-family: 'Nanum Gothic', sans-serif; */
-  font-weight:bold;
+  font-weight:600;
   z-index:1000;
 }
 
@@ -67,6 +67,8 @@ a {
 }
 
 .nav-left {
+  /* font-family: 'Roboto', sans-serif; */
+  /* font-weight: bold; */
   display: flex;
   align-items:center;
   gap: 30px;
@@ -89,13 +91,13 @@ a {
   /* font-family: 'Roboto', sans-serif; */
   font-weight: bold;
   display: flex;
+  gap: 30px;
   align-items: center;
-  padding:0 50px;
 }
 
 .nav-right-btn {
-  display:flex;
-  gap: 30px;
+  display: flex;
+  gap: 10px;
 }
 
 .logo {

@@ -14,7 +14,7 @@ body {
 
 /* Login box styling */
 .login-box {
-    width: 400px;
+    width: 360px;
     padding: 40px;
     background-color: #fff;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
@@ -37,8 +37,7 @@ body {
 
 /* Logo image */
 .login-box img {
-    height: 50px;
-    width: 100px;
+    margin-bottom: 20px;
 }
 
 /* Title */
@@ -50,11 +49,10 @@ body {
 
 /* Form controls */
 .form-control {
-    width:80%;
     margin-bottom: 20px;
-    padding: 0 20px;
+    padding: 10px;
     height: 45px;
-    font-size: 15px;
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
     transition: border-color 0.3s;
@@ -69,14 +67,13 @@ body {
 .form-check {
     text-align: left;
     margin-bottom: 20px;
-    margin-left: 20px;
 }
 
 /* Login button with hover effect */
 .login-btn {
     background-color: black;
     color: white;
-    width: 90%;
+    width: 100%;
     border: none;
     padding: 12px;
     border-radius: 5px;
@@ -107,7 +104,7 @@ body {
 }
 
 .idpw-container {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -116,15 +113,17 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow for a better visual effect */
     border-radius: 10px;
     z-index: 1000;
-    /*width: 500px; !* Increased width *!*/
+    width: 500px; /* Increased width */
+    height: 300px; /* Set a larger height */
     text-align: center; /* Centered text inside the container */
 }
 
 /* Adjust the form input size */
 .idpw-container .form-control {
-    width: 85%;
-    padding: 10px; /* Increased padding for larger input fields */
-    font-size: 15px; /* Larger font for readability */
+    width: 90%; /* Make the form inputs span almost the entire container width */
+    margin-bottom: 20px;
+    padding: 12px; /* Increased padding for larger input fields */
+    font-size: 16px; /* Larger font for readability */
 }
 
 /* Updated button size */
@@ -145,59 +144,4 @@ body {
 
 .close-btn:hover {
     background-color: #007bff;
-}
-
-.social-login{
-    margin:20px;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-.login-title{
-    font-weight: bold;
-    font-family:'Noto Sans KR', sans-serif;
-    font-size:20px;
-    display:block;
-    margin-bottom:15px;
-}
-
-a {
-    color:black;
-}
-
-.btn-kakao{
-    background-color: yellow;
-    padding: 12px;
-    color: #000000;
-    border: 1px solid transparent;
-    border-radius: 10px;
-}
-.btn-google{
-    background-color: #74a7fb;
-    padding: 12px;
-    color: #000000;
-    border: 1px solid transparent;
-    border-radius: 10px;
-}
-
-.btn-kakao:hover{
-    background-color: #bcbc47;
-    padding: 10px;
-    color: #ffffff;
-    border: 1px solid transparent;
-    border-radius: 10px;
-}
-
-.btn-google:hover{
-    background-color: #4264a1;
-    padding: 10px;
-    color: #ffffff;
-    border: 1px solid transparent;
-    border-radius: 10px;
-}
-
-.footer-links a:hover{
-    text-decoration: none;
-    color:blue;
 }

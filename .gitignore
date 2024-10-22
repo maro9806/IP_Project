@@ -20,7 +20,7 @@ bin/
 ### IntelliJ IDEA ###
 .idea
 *.iws
-*.im
+*.iml
 *.ipr
 out/
 !**/src/main/**/out/
@@ -37,7 +37,7 @@ out/
 .vscode/
 
 ### Oauth ###
-!src/main/resources/application-oauth.yml
+src/main/resources/application-oauth.yml
 
 ###key###
-!Python/cor_analysiskey.txt
+Python/cor_analysiskey.txt

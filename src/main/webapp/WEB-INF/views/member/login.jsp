@@ -18,7 +18,7 @@
 <div class="login-container">
     <div class="login-box">
         <img src="<c:url value='/resources/static/img/logo.svg'/>" alt="Logo" class="logo" width="50">
-        <span class="login-title">AI 면접의 첫 걸음</span>
+        <p style="font-weight: bold;">AI 면접의 첫 걸음</p>
 
         <form action="${pageContext.request.contextPath}/member/login-process" method="POST">
             <input type="text" class="form-control" name="username" placeholder="ID" required>
@@ -40,8 +40,8 @@
         </div>
 
         <div class="footer-links">
-            <a href="${pageContext.request.contextPath}/member/findid">아이디 찾기 |</a>
-            <a href="${pageContext.request.contextPath}/idpw">비밀번호 찾기 |</a>
+            <a href="${pageContext.request.contextPath}/member/findid">아이디 찾기</a>
+            <a href="${pageContext.request.contextPath}/idpw">비밀번호 찾기</a>
             <a href="${pageContext.request.contextPath}/member/join">회원가입</a>
         </div>
     </div>
@@ -50,19 +50,19 @@
 <!-- idpw container -->
 <div id="idpw-container" class="idpw-container hidden">
     <div id="id-section" class="idpw-section hidden">
-        <span class="login-title">아이디 찾기</span>
+        <h3>아이디 찾기</h3>
         <form action="${pageContext.request.contextPath}/member/id_recovery" method="POST">
             <input type="text" class="form-control" name="email" placeholder="이메일을 입력하세요" required>
-            <button type="submit" class="btn btn-dark login-btn">아이디 찾기</button>
+            <button type="submit" class="btn btn-dark idpw-btn">아이디 찾기</button>
         </form>
     </div>
 
     <div id="pw-section" class="idpw-section hidden">
-        <span class="login-title">비밀번호 찾기</span>
+        <h3>비밀번호 찾기</h3>
         <form action="${pageContext.request.contextPath}/member/pw_recovery" method="POST">
             <input type="text" class="form-control" name="username" placeholder="아이디를 입력하세요" required>
             <input type="email" class="form-control" name="email" placeholder="이메일을 입력하세요" required>
-            <button type="submit" class="btn btn-dark login-btn">비밀번호 찾기</button>
+            <button type="submit" class="btn btn-dark idpw-btn">비밀번호 찾기</button>
         </form>
     </div>
 
