@@ -7,27 +7,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.ip_project.entity.Board;
-import com.ip_project.repository.BoardRepository;
+import com.ip_project.entity.ReviewBoard;
+import com.ip_project.repository.ReviewBoardRepository;
 
 @Service
-public class BoardService {
+public class ReviewBoardService {
 
     @Autowired
-    private BoardRepository repository;
+    private ReviewBoardRepository repository;
 
     public void list(Model model) {
-        List<Board> list = repository.findAll();
+        List<ReviewBoard> list = repository.findAll();
         model.addAttribute("list", list);
 
     }
 
-    public Board get(Long idx) {
-        Optional<Board> vo = repository.findById(idx);
+    public ReviewBoard get(Long idx) {
+        Optional<ReviewBoard> vo = repository.findById(idx);
         return vo.get();
     }
 
-    public void register(Board vo) {
+    public void register(ReviewBoard vo) {
         repository.save(vo);
     }
 

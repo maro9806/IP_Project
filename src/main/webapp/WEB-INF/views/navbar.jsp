@@ -5,8 +5,8 @@
         <div class="nav-left">
             <a href="./main.jsp"><img src="<c:url value='/resources/static/img/logo.svg'/>" class="logo" alt="Logo"></a>
             <a class="nav-link" href="#">AI 면접 준비</a>
-            <a class="nav-link" href="#">기업 분석</a>
-            <a class="nav-link" href="#">면접 게시판</a>
+            <a class="nav-link" href="cor_board/list.jsp">기업 분석</a>
+            <a class="nav-link" href="review_board/list.jsp">면접 게시판</a>
             <a class="nav-link" href="#">면접의 고수</a>
         </div>
         <div class="nav-right">
