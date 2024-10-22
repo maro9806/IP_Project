@@ -16,7 +16,7 @@
             </div>
             <img src="<c:url value='/resources/static/img/bell.svg'/>" class="bell" alt="bell">
             <img src="<c:url value='/resources/static/img/profile.svg'/>" class="profile" alt="profile">
-            <img src="<c:url value='/resources/static/img/logout.svg'/>" class="logout" alt="logout">
+            <a href="member/logout"><img src="<c:url value='/resources/static/img/logout.svg'/>" class="logout" alt="logout"></a>
         </div>
     </div>
 </nav>
