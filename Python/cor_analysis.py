@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 def get_news(query):
     # NewsAPI 키
-    api_key = "6a21cbc4bbce4a03aaf8f646b96b004a"
+    api_key = ""
 
     # 검색할 키워드
     # query = "당근마켓"
