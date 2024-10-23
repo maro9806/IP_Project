@@ -1,0 +1,70 @@
+.main-content{
+    padding-top: 100px;
+    padding-right: 50px;
+}
+::-webkit-scrollbar {
+    display: none;
+  }
+/* General content styles */
+.mypcontent h2, .mypcontent h4 {
+    color: #4A4A4A;
+    margin-bottom: 20px;
+}
+
+.video-preview {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.video-box {
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-questions {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-questions h4 {
+    margin-bottom: 15px;
+}
+
+.question-item {
+    margin-bottom: 10px;
+}
+
+.question-item button {
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.question-item button:hover {
+    background-color: #e2e6ea;
+}
+
+.company-info {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-box, .answer-box {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
