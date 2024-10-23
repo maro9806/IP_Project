@@ -34,7 +34,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/", "/main", "/error", "/member/login", "/member/join", "/member/checkId",
                                 "/resources/**", "/css/**", "/js/**", "/images/**",
                                 "/WEB-INF/views/**", "/oauth2/**").permitAll()  // "/oauth2/**" 추가
-                        .requestMatchers("/mypage/**").authenticated()
+                        .requestMatchers("/mypage/**", "/board/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
