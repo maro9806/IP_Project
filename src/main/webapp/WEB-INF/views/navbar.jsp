@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +14,7 @@
 <body>
 <nav id="header" class="navbar bg-light">
     <div class="nav-left">
-        <a href="${pageContext.request.contextPath}/"><img src="<c:url value='/resources/static/img/logo.svg'/>" id= "logo" class="logo" alt="Logo"></a>
+        <a href="${pageContext.request.contextPath}/"><img src="<c:url value='/resources/static/img/logo.svg'/>" id="logo" class="logo" alt="Logo"></a>
         <a class="nav-link" href="#">AI 면접 준비</a>
         <a class="nav-link" href="cor_board/list.jsp">기업 분석</a>
         <a class="nav-link" href="review_board/list.jsp">면접 게시판</a>
@@ -19,11 +22,30 @@
     </div>
     <div class="nav-right">
         <div class="nav-right-btn">
-            <a href="${pageContext.request.contextPath}/mypage/mypage"><button class="mypage-btn">마이페이지</button></a>
-            <a href="#"><button class="mypage-btn2">지원현황</button></a>
-            <a href="#"><img src="<c:url value='/resources/static/img/bell.svg'/>" alt="bell" class="bell"></a>
-            <a href="#"><img src="<c:url value='/resources/static/img/profile.svg'/>" alt="profile" class="profile"></a>
-            <a href="${pageContext.request.contextPath}/member/logout"><img src="<c:url value='/resources/static/img/logout.svg'/>" alt="logout" class="logout"></a>
+            <sec:authorize access="!isAuthenticated()">
+                <!-- 비로그인 상태 -->
+                <a href="${pageContext.request.contextPath}/member/login">
+                    <button class="login-btn">로그인</button>
+                </a>
+                <a href="${pageContext.request.contextPath}/member/join">
+                    <button class="join-btn">회원가입</button>
+                </a>
+            </sec:authorize>
+
+            <sec:authorize access="isAuthenticated()">
+                <!-- 로그인 상태 -->
+                <a href="${pageContext.request.contextPath}/mypage/mypage">
+                    <button class="mypage-btn">마이페이지</button>
+                </a>
+                <a href="#">
+                    <button class="mypage-btn2">지원현황</button>
+                </a>
+                <a href="#"><img src="<c:url value='/resources/static/img/bell.svg'/>" alt="bell" class="bell"></a>
+                <a href="#"><img src="<c:url value='/resources/static/img/profile.svg'/>" alt="profile" class="profile"></a>
+                <a href="${pageContext.request.contextPath}/member/logout">
+                    <img src="<c:url value='/resources/static/img/logout.svg'/>" alt="logout" class="logout">
+                </a>
+            </sec:authorize>
         </div>
     </div>
 </nav>

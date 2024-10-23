@@ -1,8 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -49,12 +49,23 @@
         <div class="col-md-4">
             <!-- Login Section -->
             <div class="login-section">
-                <div class="login-message">
-                    <p>로그인하여 IP:PRO를 이용해보세요</p>
-                    <a href="${pageContext.request.contextPath}/member/login">
-                        <button class="login-btn">IP:PRO 로그인</button>
-                    </a>
-                </div>
+                <sec:authorize access="!isAuthenticated()">
+                    <!-- 비로그인 상태 -->
+                    <div class="login-message">
+                        <p>로그인하여 IP:PRO를 이용해보세요</p>
+                        <a href="${pageContext.request.contextPath}/member/login">
+                            <button class="login-btn">IP:PRO 로그인</button>
+                        </a>
+                    </div>
+                </sec:authorize>
+
+                <sec:authorize access="isAuthenticated()">
+                    <!-- 로그인 상태 -->
+                    <div class="welcome-message">
+                        <p><strong><sec:authentication property="principal.username"/></strong>님 환영합니다!</p>
+                        <p>오늘도 IP:PRO와 함께 성장하세요</p>
+                    </div>
+                </sec:authorize>
             </div>
         </div>
     </div>
