@@ -21,16 +21,16 @@
         <div class="sidebar-title">My IP</div>
         <ul class="sidebar-menu">
             <li>
-                <a href="<c:url value='/mypageint'/>"><i class="fas fa-file-alt"></i>자기소개서 내역</a>
+                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypageint'/>"><i class="fas fa-file-alt"></i>자기소개서 내역</a>
             </li>
             <li>
-                <a href="<c:url value='/mypageque'/>"><i class="fas fa-briefcase"></i>기업 지원 현황</a>
+                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypageque'/>"><i class="fas fa-briefcase"></i>기업 지원 현황</a>
             </li>
             <li>
-                <a href="<c:url value='/mypagevid'/>"><i class="fas fa-microchip"></i>AI 면접 준비 내역</a>
+                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypagevid'/>"><i class="fas fa-microchip"></i>AI 면접 준비 내역</a>
             </li>
             <li>
-                <a href="<c:url value='/mypage'/>"><i class="fas fa-history"></i>지난 면접 내역</a>
+                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypage'/>"><i class="fas fa-history"></i>지난 면접 내역</a>
             </li>
         </ul>
 
