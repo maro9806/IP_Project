@@ -31,7 +31,7 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/main", "/error", "/member/login", "/member/join",
+                        .requestMatchers("/", "/main", "/error", "/member/login", "/member/join", "/member/checkId",
                                 "/resources/**", "/css/**", "/js/**", "/images/**",
                                 "/WEB-INF/views/**", "/oauth2/**").permitAll()  // "/oauth2/**" 추가
                         .anyRequest().authenticated()
