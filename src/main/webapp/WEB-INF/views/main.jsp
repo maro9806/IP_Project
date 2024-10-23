@@ -205,24 +205,9 @@
         scrollContainer.scrollLeft += evt.deltaY * scrollSpeed;
     });
 
-    // jQuery 코드 수정
-    $("a:not([href^='/member/'])").on("click", function(e){
+    // # 링크만 이벤트 중지
+    $("a[href='#']").on("click", function(e){
         e.preventDefault();
-        let idx = $(this).attr("href");
-
-        $.ajax({
-            url : "${pageContext.request.contextPath}/get",
-            type : "get",
-            data : {"idx" : idx},
-            dataType : "json",
-            success : function(response) {
-                // 성공 처리 로직
-                console.log(response);
-            },
-            error : function() {
-                alert("error");
-            }
-        });
     });
 </script>
 </body>
