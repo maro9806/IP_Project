@@ -33,8 +33,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/main", "/error", "/member/login", "/member/join", "/member/checkId",
                                 "/resources/**", "/css/**", "/js/**", "/images/**",
-                                "/WEB-INF/views/**", "/oauth2/**").permitAll()  // "/oauth2/**" 추가
-                        .requestMatchers("/mypage/**", "/board/**").authenticated()
+                                "/WEB-INF/views/**", "/oauth2/**", "/review_board/**", "/aiboard/**").permitAll()  // "/oauth2/**" 추가
+                        .requestMatchers("/mypage/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

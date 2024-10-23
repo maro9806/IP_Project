@@ -1,20 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="../header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
-    <link rel="stylesheet" href="${cpath}/resources/static/join.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/join.css">
 </head>
 <body>
 <jsp:include page="../navbar.jsp" />
 <div class="form-container">
-    <form action="${cpath}/member/join" method="post" id="joinForm">
+    <form action="${pageContext.request.contextPath}/member/join" method="post" id="joinForm">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
         <div class="container1">
