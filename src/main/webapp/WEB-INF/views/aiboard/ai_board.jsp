@@ -1,4 +1,4 @@
-<<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -13,8 +13,6 @@
 </head>
 <body>
 <jsp:include page="../navbar.jsp" />
-<!-- 네비게이션 바가 로드될 위치 -->
-<header id="navbar-placeholder"></header>
 
 <!-- 메인 콘텐츠 -->
 <div class="content">
@@ -114,13 +112,6 @@
 </footer>
 
 <!-- 네비게이션 바 로드 스크립트 -->
-<script>
-  fetch('navbar.html')
-          .then(response => response.text())
-          .then(data => {
-            document.getElementById('navbar-placeholder').innerHTML = data;
-          });
-</script>
 
 
 </body>
