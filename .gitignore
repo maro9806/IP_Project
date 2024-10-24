@@ -40,4 +40,4 @@ out/
 src/main/resources/application-oauth.yml
 
 ###key###
-Python/cor_analysiskey.txt
+Python/api_key.txt
