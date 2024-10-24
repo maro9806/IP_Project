@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521/XE
-    username: hr
-    password: hr
+    url: jdbc:oracle:thin:@project-db-stu3.smhrd.com:1524/XE
+    username: Insa5_SpringA_final_1
+    password: aischool1
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
     hibernate:
