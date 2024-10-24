@@ -52,7 +52,7 @@
     flex-direction:row;
 }
 
-#bar{
+.bar{
     background-color: rgb(108 124 228);
 }
 
@@ -60,34 +60,57 @@
     background-color: rgb(255 255 255);
     color: black;
     border: 1px solid #cfcfcf;
+    width:fit-content;
 }
+#stage1{
+    background-color: rgb(255 255 255);
+    color: black;
+    border: 1px solid #cfcfcf;
+}
+#stage2{
+    background-color: rgb(255 255 255);
+    color: black;
+    border: 1px solid #cfcfcf;
+}
+#stage3{
+    background-color: rgb(255 255 255);
+    color: black;
+    border: 1px solid #cfcfcf;
+}
+#stage4{
+    background-color: rgb(255 255 255);
+    color: black;
+    border: 1px solid #cfcfcf;
+}
+#stage5{
+    background-color: rgb(255 255 255);
+    color: black;
+    border: 1px solid #cfcfcf;
+}
+
 
 
 #box1{
     background-color: rgb(108 124 228);
     border:none;
-    box-shadow: 2ch rgb(0,0,0,0.1);
     color: white;
 }
 
 #box1:hover {
     background-color: rgb(57, 71, 160);
     border:none;
-    box-shadow: 2ch rgb(0,0,0,0.1);
     color: white;
 }
 
 #box2{
     background-color: rgb(123, 202, 66);
     border:none;
-    box-shadow: 2ch rgb(0,0,0,0.1);
     color:white;
 }
 
 #box2:hover{
     background-color: rgb(102, 173, 52);
     border:none;
-    box-shadow: 2ch rgb(0,0,0,0.1);
     color:white;
 }
     

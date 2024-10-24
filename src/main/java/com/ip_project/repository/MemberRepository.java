@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByUsername(String username);
+    Optional<Member> findByIdx(Long idx);
 
     @Query("SELECT COUNT(m) > 0 FROM Member m WHERE m.username = :username")
     boolean existsByUsername(@Param("username") String username);

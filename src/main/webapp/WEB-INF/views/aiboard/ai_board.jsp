@@ -54,42 +54,42 @@
   <br>
   <h5 class="p-title"> - 맞춤 질문 면접</h5>
   <div class="progress" style="width:50%; height:80px; margin: 40px;">
-    <div class="stage">
-    <div class="progress-bar" style="width:20%; margin-right:5px;">
+
+    <div id="stage1" class="progress-bar stage" style="width:20%; margin-right:5px;">
       <h5>1 Stage</h5> <h6>정보 입력</h6>
     </div>
-    <div class="progress-bar" style="width:20%; margin:0 5px;">
+    <div id="stage2" class="progress-bar" style="width:20%; margin:0 5px;">
       <h5>2 Stage</h5> <h6>질문 답변 및 피드백</h6>
     </div>
-    <div class="progress-bar" style="width:20%; margin:0 5px;">
+    <div id="stage3" class="progress-bar" style="width:20%; margin:0 5px;">
       <h5>3 Stage</h5> <h6> 답변 확인 및 저장</h6>
     </div>
-    <div class="progress-bar" style="width:20%; margin:0 5px;">
+    <div id="stage4" class="progress-bar" style="width:20%; margin:0 5px;">
       <h5>4 Stage</h5> <h6>영상 면접 응시</h6>
     </div>
-    <div class="progress-bar" style="width:20%; margin-left:5px;">
+    <div id="stage5" class="progress-bar" style="width:20%; margin-left:5px;">
       <h5>5 Stage</h5> <h6>면접 내역 확인</h6>
     </div>
-    </div>
+
   </div>
 
   <br>
   <h5 class="p-title"> - 공통 질문 면접</h5>
   <div class="progress" style="width:50%; height:80px; margin: 40px;">
-    <div class="stage">
-    <div class="progress-bar stage" style="width:20%; margin-right:5px;">
+    <div id="stage">
+    <div class="progress-bar" style="width:20%; margin-right:5px;">
       <h5>1 Stage</h5> <h6>질문 선택</h6>
     </div>
-    <div class="progress-bar stage" style="width:20%; margin:0 5px;">
+    <div class="progress-bar" style="width:20%; margin:0 5px;">
       <h5>2 Stage</h5> <h6>질문 답변 및 피드백</h6>
     </div>
-    <div class="progress-bar stage" style="width:20%; margin:0 5px;">
+    <div class="progress-bar" style="width:20%; margin:0 5px;">
       <h5>3 Stage</h5> <h6>답변 확인 및 저장</h6>
     </div>
-    <div class="progress-bar stage" style="width:20%; margin:0 5px;">
+    <div class="progress-bar" style="width:20%; margin:0 5px;">
       <h5>4 Stage</h5> <h6>영상 면접 응시</h6>
     </div>
-    <div class="progress-bar stage" style="width:20%; margin-left:5px;">
+    <div class="progress-bar" style="width:20%; margin-left:5px;">
       <h5>5 Stage</h5> <h6>면접 내역 확인</h6>
     </div>
     </div>

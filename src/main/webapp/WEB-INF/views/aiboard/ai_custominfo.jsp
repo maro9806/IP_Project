@@ -70,11 +70,11 @@
         <button type="submit" id="next" class="btn btn-primary">→ NEXT</button>
         <br>
         <div class="progress w-90 mb-5">
-            <div id="bar1" class="progress-bar" style="width:20%">1 Stage</div>
-            <div id="bar2" class="progress-bar" style="width:0%">2 Stage</div>
-            <div id="bar3" class="progress-bar" style="width:0%">3 Stage</div>
-            <div id="bar4" class="progress-bar" style="width:0%">4 Stage</div>
-            <div id="bar5" class="progress-bar" style="width:0%">5 Stage</div>
+            <div id="bar1" class="progress-bar bar" style="width:20%">1 Stage</div>
+            <div id="bar2" class="progress-bar bar" style="width:0%">2 Stage</div>
+            <div id="bar3" class="progress-bar bar" style="width:0%">3 Stage</div>
+            <div id="bar4" class="progress-bar bar" style="width:0%">4 Stage</div>
+            <div id="bar5" class="progress-bar bar" style="width:0%">5 Stage</div>
         </div>
     </div>
 </div>
