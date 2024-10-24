@@ -27,19 +27,22 @@
   <h4 class="h-title">AI 면접 시작하기</h4>
   <section class="container">
 
-    <button id="box1" class="card">
-      <div class="card-body">
-        <h4 class="box-title">맞춤 질문 면접</h4>
+    <form action="${pageContext.request.contextPath}/aiboard/ai_custominfo" method="get" class="card-form">
+      <button type="submit" id="box1" class="card">
+        <div class="card-body">
+          <h4 class="box-title">맞춤 질문 면접</h4>
+        </div>
+      </button>
+    </form>
 
+    <form action="${pageContext.request.contextPath}/aiboard/ai_question" method="get" class="card-form">
+      <button type="submit" id="box2" class="card">
+        <div class="card-body">
+          <h4 class="box-title">공통 질문 면접<</h4>
+        </div>
+      </button>
+    </form>
 
-      </div>
-    </button>
-
-    <button id="box2" class="card">
-      <div class="card-body">
-        <h4 class="box-title">공통 질문 면접</h4>
-      </div>
-    </button>
 
   </section>
   <ul>

@@ -12,4 +12,14 @@ public class AIBoardController {
     public String aiBoard() {
         return "aiboard/ai_board";  // WEB-INF/views/aiboard/ai_board.jsp를 찾음
     }
+
+    @GetMapping("/ai_custominfo")
+    public String aiCustomInfo() {
+        return "aiboard/ai_custominfo";
+    }
+
+    @GetMapping("/ai_question")
+    public String aiQuestion() {
+        return "aiboard/ai_question";
+    }
 }
