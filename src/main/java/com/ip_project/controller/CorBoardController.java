@@ -5,6 +5,7 @@ import com.ip_project.service.CorBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/cor_board")
@@ -17,27 +18,14 @@ public class CorBoardController {
     @RequestMapping("/list")
     public String list(Model model) {
         service.list(model);
-        return "/list";
+        return "cor_board/list";
     }
 
-    @RequestMapping("/get")
-    public String get(Model model, Long id) {
-        CorBoard board = service.get(id);
-        model.addAttribute("board", board);
-        return "/cor_board";
-    }
-
-    @RequestMapping("/register")
-    public String register(Model model) {
+    @GetMapping("/corp")
+    public String corp(Model model) {
         CorBoard board = new CorBoard();
         model.addAttribute("board", board);
-        return "/register";
-    }
-
-    @RequestMapping("/remove")
-    public String remove(Model model, Long id) {
-        service.remove(id);
-        return "/list";
+        return "cor_board/corp";
     }
 
 }

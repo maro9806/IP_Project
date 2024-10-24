@@ -38,7 +38,7 @@
     <form action="${pageContext.request.contextPath}/aiboard/ai_question" method="get" class="card-form">
       <button type="submit" id="box2" class="card">
         <div class="card-body">
-          <h4 class="box-title">공통 질문 면접<</h4>
+          <h4 class="box-title">공통 질문 면접</h4>
         </div>
       </button>
     </form>
