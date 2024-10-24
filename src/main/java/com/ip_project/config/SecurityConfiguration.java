@@ -40,8 +40,10 @@ public class SecurityConfiguration {
                 .formLogin(form -> form
                         .loginPage("/member/login")
                         .loginProcessingUrl("/member/login-process")
-                        .defaultSuccessUrl("/")
-                        .permitAll()
+                        .defaultSuccessUrl("/", true)  // 메인 페이지로 리다이렉트
+                        .failureUrl("/member/login?error=true")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/member/login")
@@ -53,7 +55,7 @@ public class SecurityConfiguration {
                 .logout(logout -> logout
                         .logoutUrl("/member/logout")
                         .logoutSuccessUrl("/")
-                        .permitAll()
+                        .invalidateHttpSession(true)
                 );
 
         return http.build();
