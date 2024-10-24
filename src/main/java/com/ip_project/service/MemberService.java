@@ -30,15 +30,15 @@ public class MemberService {
             throw new RuntimeException("이미 사용중인 아이디입니다.");
         }
 
-        // 현재 날짜 설정
-        String currentDate = LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        vo.setJoin_date(currentDate);
-
-        // 비밀번호 암호화
-        vo.setPassword(encoder.encode(vo.getPassword()));
-
         try {
+            // 비밀번호 암호화
+            vo.setPassword(encoder.encode(vo.getPassword()));
+
+            // 현재 날짜 및 시간 설정 (초 단위까지 표시)
+            String currentDateTime = LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            vo.setJoin_date(currentDateTime);
+
             repository.save(vo);
         } catch (Exception e) {
             throw new RuntimeException("회원가입 처리 중 오류가 발생했습니다.");
@@ -48,5 +48,11 @@ public class MemberService {
     // 아이디 중복 확인
     public boolean isUsernameAvailable(String username) {
         return !repository.existsByUsername(username);
+    }
+
+    // idx로 회원 조회
+    public Member findByIdx(Long idx) {
+        return repository.findByIdx(idx)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
     }
 }
