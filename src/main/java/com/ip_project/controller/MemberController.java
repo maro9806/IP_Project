@@ -41,7 +41,7 @@ public class MemberController {
     // 아이디 중복 확인 API 추가
     @GetMapping("/checkId")
     @ResponseBody
-    public ResponseEntity<Map<String, Boolean>> checkId(@RequestParam String username) {
+    public ResponseEntity<Map<String, Boolean>> checkId(@RequestParam("username") String username) {
         try {
             Map<String, Boolean> response = new HashMap<>();
             boolean isAvailable = service.isUsernameAvailable(username);

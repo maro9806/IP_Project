@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -17,7 +17,7 @@
 
 <body>
 <!-- Navbar 포함 -->
-<jsp:include page="navbar.jsp" />
+<jsp:include page="navbar.jsp"/>
 <!-- Navbar 이용해서 로고이미지, 메뉴 총 4개, 검색 창, 마이페이지 버튼, 프로필 이미지, 알람 아이콘, 로그인 아이디, 로그아웃 아이콘-->
 <div class="container">
     <div class="row">
@@ -60,9 +60,20 @@
                 </sec:authorize>
 
                 <sec:authorize access="isAuthenticated()">
-                    <!-- 로그인 상태 -->
                     <div class="welcome-message">
-                        <p><strong><sec:authentication property="principal.username"/></strong>님 환영합니다!</p>
+                        <!-- OAuth2 로그인 사용자 -->
+                        <sec:authorize
+                                access="hasRole('ROLE_USER') and authentication.principal instanceof T(org.springframework.security.oauth2.core.user.OAuth2User)">
+                            <p><strong><sec:authentication property="principal.attributes[name]"/></strong>님 환영합니다!</p>
+                            <p>이메일: <sec:authentication property="principal.attributes[email]"/></p>
+                        </sec:authorize>
+
+                        <!-- 일반 로그인 사용자 -->
+                        <sec:authorize
+                                access="hasRole('ROLE_USER') and authentication.principal instanceof T(com.ip_project.entity.CustomUser)">
+                            <p><strong><sec:authentication property="principal.username"/></strong>님 환영합니다!</p>
+                        </sec:authorize>
+
                         <p>오늘도 IP:PRO와 함께 성장하세요</p>
                     </div>
                 </sec:authorize>
@@ -78,7 +89,8 @@
             <div class="scroll-container">
                 <div class="scroll-content">
                     <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/Nexonmain.svg'/>" class="card-img-top" alt="Card 1 Image">
+                        <img src="<c:url value='/resources/static/img/Nexonmain.svg'/>" class="card-img-top"
+                             alt="Card 1 Image">
                         <div class="card-body">
                             <p class="card-title">넥슨</p>
                             <h5 class="card-text">[넥토리얼]</h5>
@@ -87,7 +99,8 @@
                         </div>
                     </div>
                     <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/Kakaomain.svg'/>" class="card-img-top" alt="Card 2 Image">
+                        <img src="<c:url value='/resources/static/img/Kakaomain.svg'/>" class="card-img-top"
+                             alt="Card 2 Image">
                         <div class="card-body">
                             <p class="card-title">카카오</p>
                             <h5 class="card-text">광고 SDK 개발 </h5>
@@ -96,7 +109,8 @@
                         </div>
                     </div>
                     <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/Netmarblemain.svg'/>" class="card-img-top" alt="Card 3 Image">
+                        <img src="<c:url value='/resources/static/img/Netmarblemain.svg'/>" class="card-img-top"
+                             alt="Card 3 Image">
                         <div class="card-body">
                             <p class="card-title">넷마블</p>
                             <h5 class="card-text">나 혼자만 레벨업</h5>
@@ -105,7 +119,8 @@
                         </div>
                     </div>
                     <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 4 Image">
+                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
+                             alt="Card 4 Image">
                         <div class="card-body">
                             <p class="card-title">Card 4</p>
                             <h5 class="card-text">corp name</h5>
@@ -113,7 +128,8 @@
                         </div>
                     </div>
                     <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 5 Image">
+                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
+                             alt="Card 5 Image">
                         <div class="card-body">
                             <p class="card-title">Card 5</p>
                             <h5 class="card-text">corp name</h5>
@@ -121,7 +137,8 @@
                         </div>
                     </div>
                     <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 6 Image">
+                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
+                             alt="Card 6 Image">
                         <div class="card-body">
                             <p class="card-title">Card 6</p>
                             <h5 class="card-text">corp name</h5>
@@ -129,7 +146,8 @@
                         </div>
                     </div>
                     <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 7 Image">
+                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
+                             alt="Card 7 Image">
                         <div class="card-body">
                             <p class="card-title">Card 7</p>
                             <h5 class="card-text">corp name</h5>
@@ -137,7 +155,8 @@
                         </div>
                     </div>
                     <div class="card corp-card">
-                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 8 Image">
+                        <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
+                             alt="Card 8 Image">
                         <div class="card-body">
                             <p class="card-title">Card 8</p>
                             <h5 class="card-text">corp name</h5>
@@ -173,7 +192,7 @@
             </div>
         </div>
         <div class="AI-wrapper">
-            <p class="AI">기업과 나를 잇는 면접 코칭 AI<br />면접 질문 준비부터 실전 면접 연습까지</p>
+            <p class="AI">기업과 나를 잇는 면접 코칭 AI<br/>면접 질문 준비부터 실전 면접 연습까지</p>
         </div>
         <div class="text-wrapper-2">맞춤형 AI 면접 코칭</div>
     </div>
@@ -206,7 +225,7 @@
     });
 
     // # 링크만 이벤트 중지
-    $("a[href='#']").on("click", function(e){
+    $("a[href='#']").on("click", function (e) {
         e.preventDefault();
     });
 </script>
