@@ -12,8 +12,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/stage.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/2stage.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/3stage.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
+
 <jsp:include page="../navbar.jsp"/>
 <div class="content">
     <div class="banner mb-5">
@@ -29,8 +32,8 @@
     <hr style="width:100%;">
 
     <!-- 질문 및 답변 테이블 -->
-    <div class="table-container d-flex flex-column align-items-center w-100 mb-5">
-        <table>
+    <div class="table-container d-flex flex-column align-items-center mb-5 ml-5">
+        <table class="text-center" style="width:1000px">
             <thead>
             <tr>
                 <th colspan="3">면접 질문 및 답변</th>
@@ -97,13 +100,19 @@
             </tr>
             </tbody>
         </table>
-        <!-- 다음 단계로 이동하는 버튼 -->
-        <button onclick="location.href='${pageContext.request.contextPath}/aiboard/ai_video'" class="btn btn-dark">영상면접
-            응시하기
-        </button>
+
 
     </div>
-
+    <!-- 버튼 컨테이너 수정 -->
+    <div style="width:90%; margin: 20px auto;">
+        <div style="display: flex; justify-content: flex-end;">
+            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_preparation'"
+                    type="submit" id="next"
+                    class="btn btn-primary">
+                영상면접 보러가기
+            </button>
+        </div>
+    </div>
 </div>
 
 <!-- HTML -->
@@ -141,6 +150,7 @@
         });
     }
 </script>
+
 
 <jsp:include page="../footer.jsp"/>
 </body>
