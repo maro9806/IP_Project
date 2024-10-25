@@ -1,5 +1,6 @@
 package com.ip_project.service;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.StringUtils;
@@ -11,15 +12,27 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class VideoStorageService {
-    private final String storageLocation = "videos/";
+    private Path storageLocation;  // final 제거
+
+    @PostConstruct
+    public void init() {
+        try {
+            Files.createDirectories(Path.of("videos"));
+            this.storageLocation = Path.of("videos").toAbsolutePath().normalize();
+        } catch (IOException e) {
+            throw new StorageException("Could not initialize storage location", e);
+        }
+    }
 
     public String store(MultipartFile file) {
         try {
+            if (file.isEmpty()) {
+                throw new StorageException("Failed to store empty file", null);
+            }
             String filename = StringUtils.cleanPath(file.getOriginalFilename());
             String uniqueFilename = UUID.randomUUID().toString() + "_" + filename;
-            Path targetLocation = Path.of(storageLocation).resolve(uniqueFilename);
+            Path targetLocation = this.storageLocation.resolve(uniqueFilename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return uniqueFilename;
         } catch (IOException e) {

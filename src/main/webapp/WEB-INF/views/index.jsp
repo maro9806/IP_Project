@@ -14,12 +14,11 @@
 </head>
 
 <body>
-<!-- Navbar 포함 -->
-<jsp:include page="navbar.jsp" />
+<%--<jsp:include page="../navbar.jsp" />
 
 
 
-
+<jsp:include page="../navbar.jsp" />--%>
 </body>
 
 </html>

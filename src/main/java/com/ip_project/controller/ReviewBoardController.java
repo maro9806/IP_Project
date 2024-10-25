@@ -3,42 +3,42 @@ package com.ip_project.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.ip_project.entity.ReviewBoard;
 import com.ip_project.service.ReviewBoardService;
-@RequestMapping("/review_board")
+
+import java.util.List;
+
 @Controller
+@RequestMapping("/review_board")
 public class ReviewBoardController {
 
     @Autowired
     private ReviewBoardService service;
 
-
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public String list(Model model) {
-        service.list(model);
-        return "/list";
+        List<ReviewBoard> list = service.list();
+        model.addAttribute("list", list);
+        return "review_board/list";
     }
 
-    @RequestMapping("/get")
-    public @ResponseBody ReviewBoard get(Long idx) {
+    @GetMapping("/get")
+    @ResponseBody
+    public ReviewBoard get(@RequestParam Long idx) {
         return service.get(idx);
     }
 
-
-    @RequestMapping("/register")
-    public String register(ReviewBoard vo) {
+    @PostMapping("/register")
+    public String register(@ModelAttribute ReviewBoard vo) {
         service.register(vo);
         return "redirect:list";
     }
 
-
-    @RequestMapping("/remove")
-    public String remove(Long idx) {
+    @PostMapping("/remove")
+    public String remove(@RequestParam Long idx) {
         service.remove(idx);
         return "redirect:list";
     }
-
 }

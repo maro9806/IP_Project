@@ -81,6 +81,14 @@ public class SecurityConfiguration {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
+                )
+                .formLogin(form -> form
+                        .loginPage("/member/login")
+                        .loginProcessingUrl("/member/login-process")
+                        .defaultSuccessUrl("/", true)  // 메인 페이지로 리다이렉트
+                        .failureUrl("/member/login?error=true")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
                 );
 
         return http.build();
