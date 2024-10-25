@@ -250,30 +250,7 @@
     window.addEventListener('load', updateSubmitButton);
 </script>
 
-<style>
-    .message {
-        font-size: 12px;
-        margin-left: 5px;
-    }
 
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .signup-btn:disabled {
-        background-color: #cccccc;
-        cursor: not-allowed;
-    }
-
-    .signup-btn {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-</style>
-
+<%@ include file="../footer.jsp" %>
 </body>
 </html>
