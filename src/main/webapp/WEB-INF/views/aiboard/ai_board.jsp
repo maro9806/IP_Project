@@ -55,7 +55,7 @@
       </button>
     </form>
 
-    <form action="${pageContext.request.contextPath}/aiboard/ai_question" method="get" class="card-form">
+    <form action="${pageContext.request.contextPath}/aiboard/ai_preparation" method="get" class="card-form">
       <button type="submit" id="box2" class="card">
         <div class="card-body">
           <h4 class="box-title">가상 영상 면접<br> 보러가기</h4>
