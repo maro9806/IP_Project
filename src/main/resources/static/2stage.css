@@ -1,8 +1,8 @@
 body {
     font-family:  'Noto Sans KR', sans-serif;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     margin: 0;
-    padding: auto;
+    padding: 0;
     display:flex;
     flex-direction: column;
 }
@@ -24,12 +24,28 @@ body {
 
 /* Set gray background color and 100% height */
 .sidenav {
-    padding: 20px;
+    padding: 30px;
     background-color: #ffffff;
     width: fit-content;
     border-radius: 5px;
     border: 1px solid #dadada;
     height: fit-content;
+}
+
+.sidenav a{
+    color: black;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.sidenav a:hover {
+    color: #4f4f94;
+    font-weight:bold;
+    text-decoration:underline;
+}
+
+.sidenav table th{
+    color:#4f4f94;
 }
 
 /* On small screens, set height to 'auto' for sidenav and grid */
@@ -44,13 +60,12 @@ body {
 .container2{
     display:flex;
     justify-content: flex-start;
+    width:100%;
     gap:15%;
-    width:70%;
     margin:30px;
 }
 
 .container2.centered {
-    width:80%;
     gap: 5%;                 /* 간격 조정 */
 }
 
@@ -63,7 +78,7 @@ body {
 }
 
 .box2{
-    width:30%;
+    width:50%;
 }
 
 .buttons{

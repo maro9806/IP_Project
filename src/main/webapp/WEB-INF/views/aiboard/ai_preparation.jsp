@@ -14,219 +14,140 @@
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>
-<!-- Interview Setup Section -->
-<div id="setupSection" class="main-content">
-    <div class="container">
-        <!-- Centered greeting message -->
-        <div class="row">
-            <div class="col center-text fade-target">
-                <p><strong>신현준님</strong>, 안녕하세요</p>
-                <p>지금부터 영상 면접을 시작할게요.</p>
-            </div>
-        </div>
 
-        <!-- Card section with video and interview settings (Horizontal layout) -->
-        <div class="row justify-content-center position-relative">
-            <div class="card col-lg-8 d-flex flex-row">
-                <!-- Left section: Video -->
-                <div class="video-section">
-                    <span>video check</span>
-                </div>
-                <!-- Right section: Interview settings -->
-                <div class="form-section fade-target">
-                    <h4>면접 환경 설정</h4>
-                    <div class="mb-3">
-                        <label for="positionSelect" class="form-label">자소서 선택</label>
-                        <input type="text" class="form-control" id="positionSelect" placeholder="선택">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">질문 종류</label><br>
-                        <input type="checkbox" id="company" name="company">
-                        <label for="company">기업</label>
-                        <input type="checkbox" id="job" name="job">
-                        <label for="job">직무</label>
-                        <input type="checkbox" id="experience" name="experience">
-                        <label for="experience">경험</label>
-                    </div>
-                    <button class="btn btn-primary w-100" onclick="startInterview()">면접 시작하기</button>
-                </div>
-            </div>
+<div class="content">
+
+    <div class="banner mb-5">
+        <h3 class="title">AI 면접 코칭</h3>
+        <p class="p-title">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
+    </div>
+
+    <h4 class="h-title">1. 면접 정보 입력하기</h4>
+    <h5>자기소개서 작성 > 기업 및 직무 선택</h5>
+    <hr style="width:100%;">
+
+    <div id="questions-container" style="width:100%; padding:0 15%;">
+        <div class="question-block">
+            <table style="width:100%;">
+                <colgroup>
+                    <col style="width: 30%;">
+                    <col style="width: 70%;">
+                </colgroup>
+                <tr>
+                    <td><b><label for="company-name">기업명</label></b>
+                        <select id="company-name" class="form-control" name="company-name" style="width:250px;">
+                            <option value="" disabled selected hidden></option>
+                            <option value="naver">네이버</option>
+                            <option value="nexon">넥슨</option>
+                            <option value="daangn">당근마켓</option>
+                            <option value="line">라인플러스</option>
+                        </select>
+                    </td>
+                    <td>
+                        <b><label for="job-position">지원 직무 </label></b>
+                        <select id="job-position" class="form-control" name="job-position" style="width:250px;">
+                            <option value="" disabled selected hidden></option>
+                            <option value="dev">개발직군</option>
+                            <option value="design">디자인직군</option>
+                            <option value="marketing">마케팅직군</option>
+                            <option value="planning">기획직군</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr style="border-top:1px solid gray;">
+                    <td><strong>자기소개서 작성하기</strong></td>
+                    <td colspan="2" style="text-align: right;">
+                        <button id="load-button" class="btn btn-dark">자기소개서 불러오기</button>
+                        <button id="add-question-button" class="btn btn-dark">+</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="first-question-row">
+                        <input type="text" id="question-1" class="form-control" name="question[]"
+                               placeholder="문항1. 자기소개서 문항을 작성하세요."/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea id="coverLetter" class="form-control" rows="8" maxlength="1000"
+                                  placeholder="여기에 자기소개서를 작성하세요." name="answer[]"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align:right">
+                        <div id="charCount">0자/1000자 (공백포함)</div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
-</div>
 
-<!-- Question Section -->
-<div id="questionSection" class="main-content hidden">
-    <div class="container">
-        <div class="row">
-            <div class="col center-text">
-                <p><strong>Question 1</strong></p>
-                <p>우리 회사의 개선점과 나아가야할 방향은 무엇이라고 생각하십니까?</p>
-            </div>
-        </div>
-        <div class="row justify-content-center position-relative">
-            <div class="card col-lg-8 d-flex flex-row">
-                <!-- Left section: Video -->
-                <div class="video-section">
-                    <span>video check</span>
-                </div>
-                <!-- Right section: Answer section -->
-                <div class="form-section fade-target">
-                    <h4>답변 확인</h4>
-                    <div class="mb-3">
-                            <textarea class="form-control" placeholder="사용자 답변 출력 페이지"
-                                      style="height: 300px;"></textarea>
-                    </div>
-                    <button class="btn btn-primary w-100" onclick="finishInterview()">답변 완료</button>
-                    <!-- Back button -->
-                    <button class="btn btn-outline-primary w-100 mt-3" onclick="goBack()">처음으로 돌아가기</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_question'" type="submit" id="next"
+            class="btn btn-primary">→ NEXT
+    </button>
 
-<!-- Ending Section  -->
-<div id="endingSection" class="Ending hidden">
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="col center-text text-center">
-            <Strong><p> 수고하셨습니다</p>
-                <p>모든 답변이 완료 되었습니다.</p></Strong>
-            <div class="endingbtn">
-                <button class="btn btn-dark w-25 mt-3">면접 종료</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>
-    let currentInterviewId = null;
-    let mediaRecorder;
-    let recordedChunks = [];
+    const questionsContainer = document.getElementById("questions-container");
+    const addQuestionButton = document.getElementById("add-question-button");
+    let questionCount = 1;
 
-    async function startInterview() {
-        try {
-            // 면접 시작 API 호출
-            const response = await fetch('/aiboard/api/interview', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    applicantName: '신현준', // 실제로는 서버에서 현재 로그인한 사용자 정보를 사용
-                    position: document.getElementById('positionSelect').value,
-                    interviewDate: new Date().toISOString()
-                })
-            });
+    addQuestionButton.addEventListener("click", function () {
+        questionCount++;
 
-            if (!response.ok) {
-                throw new Error('면접 시작에 실패했습니다.');
-            }
+        const questionRow = document.createElement("tr");
+        questionRow.innerHTML = `
+            <td colspan="2">
+                <input type="text" id="question-${questionCount}" class="form-control" name="question[]" placeholder="문항${questionCount}. 자기소개서 문항을 작성하세요." />
+                <button class="btn btn-danger btn-sm remove-question" style="margin-left: 10px;">-</button>
+            </td>
+        `;
+        questionsContainer.querySelector("table").appendChild(questionRow);
 
-            const data = await response.json();
-            currentInterviewId = data.id;
+        const answerRow = document.createElement("tr");
+        answerRow.innerHTML = `
+            <td colspan="2">
+                <textarea id="coverLetter${questionCount}" class="form-control" rows="8" maxlength="1000" placeholder="여기에 자기소개서를 작성하세요." name="answer[]"></textarea>
+            </td>
+        `;
+        questionsContainer.querySelector("table").appendChild(answerRow);
 
-            // 비디오 녹화 시작
-            await startVideoRecording();
+        // 글자 수 카운트 업데이트
+        const charCount = document.createElement("div");
+        charCount.id = "charCount" + questionCount;
+        charCount.textContent = '0자/1000자 (공백포함)';
+        answerRow.appendChild(charCount);
 
-            // UI 전환 (기존 기능 유지)
-            document.getElementById('setupSection').classList.add('hidden');
-            document.getElementById('questionSection').classList.remove('hidden');
-        } catch (error) {
-            alert('Error: ' + error.message);
-        }
-    }
+        // 글자 수 표시하는 이벤트 리스너 추가
+        const coverLetterTextarea = document.getElementById(`coverLetter${questionCount}`);
+        coverLetterTextarea.addEventListener("input", function () {
+            const currentLength = coverLetterTextarea.value ? coverLetterTextarea.value.length : 0;
+            const maxLength = coverLetterTextarea.getAttribute("maxlength") || 1000;
+            charCount.textContent = currentLength + '자/' + maxLength + '자';
+        });
 
-    async function startVideoRecording() {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            const videoElement = document.createElement('video');
-            videoElement.srcObject = stream;
-            videoElement.autoplay = true;
+        // 삭제 버튼 기능 추가
+        const removeButton = questionRow.querySelector(".remove-question");
+        removeButton.addEventListener("click", function () {
+            questionRow.remove();
+            answerRow.remove();
+        });
+    });
 
-            // 기존 video check span 제거
-            const videoSection = document.querySelector('.video-section');
-            videoSection.innerHTML = '';  // 기존 내용 제거
-            videoSection.appendChild(videoElement);
+    // textarea와 글자 수 표시하는 div 요소
+    const coverLetter = document.getElementById("coverLetter");
+    const charCount = document.getElementById("charCount");
 
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.ondataavailable = (event) => {
-                if (event.data.size > 0) {
-                    recordedChunks.push(event.data);
-                }
-            };
-            mediaRecorder.start();
-        } catch (error) {
-            console.error('카메라 접근 오류:', error);
-            alert('카메라 접근에 실패했습니다. 카메라 권한을 확인해주세요.');
-        }
-    }
-
-    async function finishInterview() {
-        try {
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                mediaRecorder.stop();
-                await new Promise(resolve => {
-                    mediaRecorder.onstop = async () => {
-                        const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                        const formData = new FormData();
-                        formData.append('video', blob);
-                        formData.append('interviewId', currentInterviewId);
-
-                        try {
-                            const response = await fetch(`/aiboard/api/interview/${currentInterviewId}/video`, {
-                                method: 'POST',
-                                body: formData
-                            });
-
-                            if (!response.ok) {
-                                throw new Error('비디오 제출에 실패했습니다.');
-                            }
-
-                            resolve();
-                        } catch (error) {
-                            throw error;
-                        }
-                    };
-                });
-            }
-
-            // 기존 UI 전환 유지
-            document.getElementById('questionSection').classList.add('hidden');
-            document.getElementById('endingSection').classList.remove('hidden');
-            document.body.style.overflow = "hidden";
-        } catch (error) {
-            alert('Error: ' + error.message);
-        }
-    }
-
-    function goBack() {
-        // 녹화 중지 및 리소스 정리
-        if (mediaRecorder && mediaRecorder.state === 'recording') {
-            mediaRecorder.stop();
-            const tracks = mediaRecorder.stream.getTracks();
-            tracks.forEach(track => track.stop());
-        }
-
-        // 비디오 요소 제거 및 초기 상태로 복원
-        const videoSection = document.querySelector('.video-section');
-        videoSection.innerHTML = '<span>video check</span>';  // 원래 내용 복원
-        recordedChunks = [];
-
-        // 기존 UI 전환 유지
-        document.getElementById('questionSection').classList.add('hidden');
-        document.getElementById('setupSection').classList.remove('hidden');
-    }
-
-    // 기존 유틸리티 함수 유지
-    function showResults() {
-        alert('면접 내역을 확인하세요.');
-    }
-
-    function changeBackgroundColor() {
-        document.body.style.backgroundColor = "#8292FF";
-    }
+    // textarea의 입력 이벤트를 감지하여 글자 수 계산
+    coverLetter.addEventListener("input", function () {
+        const currentLength = coverLetter.value ? coverLetter.value.length : 0; // 현재 입력된 글자 수 (null 체크)
+        const maxLength = coverLetter.getAttribute("maxlength") || 1000; // 최대 글자 수 가져오기 (기본값 1000)
+        charCount.textContent = currentLength + '자/' + maxLength + '자';
+    });
 </script>
 
+<jsp:include page="../footer.jsp"/>
 </body>
 </html>
