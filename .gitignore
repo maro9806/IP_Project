@@ -41,3 +41,4 @@ src/main/resources/application-oauth.yml
 
 ###key###
 Python/api_key.txt
+Python/.env
