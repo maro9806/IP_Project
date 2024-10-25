@@ -1,0 +1,64 @@
+.main-content{
+    padding-top: 50px;
+    padding-right: 50px;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+.mypint-container {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+}
+
+.mypint-container2 {
+    flex-grow: 1;
+    padding-left: 20px;
+}
+
+.mypint-content {
+    background-color: white;
+    box-sizing: border-box;
+    width: 100%;
+    padding-top: 50px;
+}
+
+.mypint-content-box {
+    background-color: #e9ecef;
+    padding: 50px; /* Set padding to 50px */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    width: calc(100% - 100px); /* Subtracting padding on both sides (50px each) */
+    margin: 0 auto; /* Center the box horizontally */
+    max-width: 1500px; /* Optional: Limit maximum width */
+}
+
+
+.mypint-readonly-box {
+    background-color: rgb(220, 220, 220);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    margin-top: 90px;
+    height: 300px;
+    border-radius: 10px;
+    padding: 10px;
+    overflow: auto;
+}
+
+.mypint-toggle-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mypint-resume-info-box {
+    width: 382px;
+    background-color: #f1f3f5;
+    padding: 15px;
+    margin: 20px 0px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+}

@@ -2,11 +2,8 @@ package com.ip_project.service;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import com.ip_project.entity.ReviewBoard;
 import com.ip_project.repository.ReviewBoardRepository;
 
@@ -16,15 +13,13 @@ public class ReviewBoardService {
     @Autowired
     private ReviewBoardRepository repository;
 
-    public void list(Model model) {
-        List<ReviewBoard> list = repository.findAll();
-        model.addAttribute("list", list);
-
+    public List<ReviewBoard> list() {
+        return repository.findAll();
     }
 
     public ReviewBoard get(Long idx) {
-        Optional<ReviewBoard> vo = repository.findById(idx);
-        return vo.get();
+        return repository.findById(idx)
+                .orElseThrow(() -> new RuntimeException("Review not found with id: " + idx));
     }
 
     public void register(ReviewBoard vo) {
@@ -34,5 +29,4 @@ public class ReviewBoardService {
     public void remove(Long idx) {
         repository.deleteById(idx);
     }
-
 }

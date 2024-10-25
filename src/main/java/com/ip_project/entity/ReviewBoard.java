@@ -1,32 +1,38 @@
 package com.ip_project.entity;
 
+import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
-
-
-import lombok.Data;
-@Data
-@Entity // Hibernate가 아래 vo 설계대로 테이블을 생성하기 위한 키워드
+@Entity
+@Table(name = "REVIEW_BOARD")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ReviewBoard {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOARD_SEQ")
-    @SequenceGenerator(name = "BOARD_SEQ", sequenceName = "BOARD_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REVIEW_SEQ")
+    @SequenceGenerator(name = "REVIEW_SEQ", sequenceName = "REVIEW_SEQ", allocationSize = 1)
     private Long idx;
 
-    private String title; // 제목
+    @Column(name = "COMPANY_NAME", length = 50)
+    private String companyName;
 
-    @Column(length = 2000) // 컬럼의 길이 조절 /안했을때 default =255
-    private String content; // 내용
+    @Column(name = "TITLE", length = 50)
+    private String title;
 
-    @Column(updatable = false) // 수정할때 작성자는 수정이 안되게 하겠다
-    private String writer; // 작성자
+    @Column(name = "CONTENT", length = 5000)
+    private String content;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT SYSTIMESTAMP")
-    private LocalDateTime indate;
+    @Column(name = "CREATE_DATE")
+    private LocalDateTime createDate;
 
-    @Column(columnDefinition = "NUMBER(19,0) DEFAULT 0")
-    private Long count; // 조회수
+    @Column(name = "WRITER", length = 50)
+    private String writer;
 
+    @Column(name = "VIEW_COUNT")
+    private Integer viewCount;
 }

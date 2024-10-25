@@ -1,0 +1,104 @@
+.search-section {
+  padding: 50px 0;
+  text-align: center;
+}
+
+.placeholder {
+  background-color: transparent;
+  height: auto;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+/* Table for 기업 최신 동향 */
+.news-table {
+  width: 100%;
+  background-color: #f8f9fa;
+  border-collapse: collapse;
+}
+
+.news-table th,
+.news-table td {
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  text-align: left;
+}
+
+.swot-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+/* For larger screens */
+@media (min-width: 768px) {
+  .swot-container {
+      flex-direction: row;
+      gap: 20px;
+  }
+  .swot-card {
+      width: calc(25% - 20px); /* Ensure all cards take up 1/4th of the container width */
+      height: 180px; /* Slightly taller */
+  }
+}
+
+
+/*패널 부분*/
+.tab-pane {
+  height: 600px;
+  /* 원하는 최대 높이 설정 */
+  overflow-y: auto;
+  /* 세로 스크롤 적용 */
+}
+#strength {
+  background-image: url("/static/img/S.svg"); /* Strengths 탭의 배경 이미지 */
+  background-size: cover; /* 이미지가 패널 크기에 맞게 조정되도록 설정 */
+  background-position: center;
+  min-height: 400px; /* 최소 높이 설정 */
+}
+
+#weakness {
+  background-image: url("/static/img/W.svg"); /* Weaknesses 탭의 배경 이미지 */
+  background-size: cover;
+  background-position: center;
+  min-height: 400px;
+}
+
+#opportunity {
+  background-image: url("/static/img/O.svg"); /* Opportunities 탭의 배경 이미지 */
+  background-size: cover;
+  background-position: center;
+  min-height: 400px;
+}
+
+#threat {
+  background-image: url("/static/img/T.svg"); /* Threats 탭의 배경 이미지 */
+  background-size: cover;
+  background-position: center;
+  min-height: 400px;
+}
+
+/* corp.css에 추가 */
+.news-table img {
+  max-width: 100px;
+  height: auto;
+  object-fit: cover;
+}
+
+.news-table td {
+  vertical-align: middle;
+}
+
+.news-table p {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.news-table span {
+  font-size: 0.9rem;
+  color: #666;
+}
