@@ -26,6 +26,12 @@ public class AIBoardController {
         return "aiboard/ai_custominfo";
     }
 
+
+    @GetMapping("/ai_check")
+    public String aiCheck() {
+        return "aiboard/ai_check";
+    }
+
     @GetMapping("/ai_question")
     public String aiQuestion() {
         return "aiboard/ai_question";

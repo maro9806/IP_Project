@@ -83,7 +83,7 @@
                 <form>
                     <table>
                         <div class="form-group">
-                            <textarea class="form-control" rows="8" id="answer" placeholder="답변을 입력하세요"></textarea>
+                            <textarea class="form-control" rows="10" id="answer" placeholder="답변을 입력하세요"></textarea>
                             <div id="charCount">0자/1000자 (공백포함)</div> <!-- 글자 수를 표시할 영역 -->
                         </div>
 
@@ -170,7 +170,7 @@
 
     <div class="d-flex flex-column align-items-end" style="width:100%;">
         <button onclick="location.href='${pageContext.request.contextPath}/aiboard/ai_check'" type="submit" id="next"
-                class="btn btn-primary"> → NEXT
+                class="btn btn-primary"> 다음 질문
         </button>
         <br>
         <div class="progress w-100 mb-5">
