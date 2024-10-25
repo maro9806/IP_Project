@@ -26,7 +26,7 @@ public class SecurityConfiguration {
         this.customOAuth2UserService = customOAuth2UserService;
     }
 
-    @Bean
+    /*@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
@@ -59,7 +59,24 @@ public class SecurityConfiguration {
                 );
 
         return http.build();
+    }*/
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/**").permitAll()  // 모든 요청 허용
+                )
+                .formLogin(form -> form.disable())      // 폼 로그인 비활성화
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/member/login")
+                        .defaultSuccessUrl("/")
+                        .userInfoEndpoint(endpoint -> endpoint
+                                .userService(customOAuth2UserService)
+                        )
+                )
+                .logout(logout -> logout.disable());     // 로그아웃 비활성화
+
+        return http.build();
     }
-
-
 }

@@ -3,6 +3,8 @@ package com.ip_project.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -21,15 +23,17 @@ public class Member {
     private String name;
     private String email;
     private String phone;
-    private String join_date;
+
+    @Column(name = "indate")
+    private LocalDateTime indate;
 
     @Builder
-    public Member(String username, String password, String name, String email, String phone, String join_date) {
+    public Member(String username, String password, String name, String email, String phone, LocalDateTime indate) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.join_date = join_date;
+        this.indate = indate;
     }
 }

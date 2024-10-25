@@ -24,7 +24,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void join(Member vo) {
+    public Member join(Member vo) {
         // 아이디 중복 체크
         if (repository.existsByUsername(vo.getUsername())) {
             throw new RuntimeException("이미 사용중인 아이디입니다.");
@@ -34,12 +34,10 @@ public class MemberService {
             // 비밀번호 암호화
             vo.setPassword(encoder.encode(vo.getPassword()));
 
-            // 현재 날짜 및 시간 설정 (초 단위까지 표시)
-            String currentDateTime = LocalDateTime.now()
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            vo.setJoin_date(currentDateTime);
+            // 현재 날짜 및 시간 설정
+            vo.setIndate(LocalDateTime.now());
 
-            repository.save(vo);
+            return repository.save(vo);
         } catch (Exception e) {
             throw new RuntimeException("회원가입 처리 중 오류가 발생했습니다.");
         }
