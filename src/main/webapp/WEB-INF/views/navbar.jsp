@@ -37,14 +37,12 @@
                 <a href="${pageContext.request.contextPath}/mypage/mypage">
                     <button class="mypage-btn">마이페이지</button>
                 </a>
-                <a href="#">
-                    <button class="mypage-btn2">지원현황</button>
-                </a>
+
                 <a href="#"><img src="<c:url value='/resources/static/img/bell.svg'/>" alt="bell" class="bell"></a>
                 <a href="#"><img src="<c:url value='/resources/static/img/profile.svg'/>" alt="profile" class="profile"></a>
                 <form action="${pageContext.request.contextPath}/member/logout" method="post" class="logout-form">
                     <button type="submit" class="logout-btn">
-                        <img src="<c:url value='/resources/static/img/logout.svg'/>" alt="logout" class="logout">
+                        <img src="<c:url value='/resources/static/img/logout.svg'/>" alt="logout" >
                     </button>
                 </form>
             </sec:authorize>

@@ -1,15 +1,19 @@
-<!-- footer.jsp -->
-<footer class="footer">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<footer class="footer mt-4">
   <div class="container">
-    <div class="footer-left">
-      <p>© 2024 Your Company Name</p>
+    <div class="row">
+      <div class="col-md-6">
+        <h5>About Us</h5>
+        <p>면접의 고수 - 더 나은 면접 준비를 위한 플랫폼</p>
+      </div>
+      <div class="col-md-6">
+        <h5>Contact</h5>
+        <p>Email: info@example.com</p>
+      </div>
     </div>
-    <div class="footer-right">
-      <ul>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
+    <hr>
+    <div class="text-center">
+      <p>&copy; 2024 면접의 고수. All rights reserved.</p>
     </div>
   </div>
 </footer>

@@ -1,0 +1,460 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.main-content{
+    padding-top: 50px;
+}
+.container{
+    padding-top: 12px;
+    padding-left: 55px;
+    padding-right: 55px;
+}
+/* Jumbotron styling */
+.jumbotron {
+    background-color: #626FC7;
+    color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.jumbotron h1 {
+    font-size: 40.0px;
+}
+
+.jumbotron p {
+    font-size: 16px;
+}
+
+/* Section title styling */
+.section-title {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: left;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Card grid */
+.card {
+    background-color: #fff;
+    border: 1px solid #fdfdfd;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    background-color: #fdfdfd; 
+    transition: all 0.3s ease; /* Smooth transition for both color and transform */
+}
+
+
+.card-img-top {
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 1px solid #fff;
+}
+
+.card-body {
+    padding-bottom: 5px;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-text1 {
+    color: #555;
+}
+.card-text2 {
+    font-size: 10px;
+    color: #555;
+}
+
+/* review section */
+.row-cols-1 .card {
+    margin-bottom: 5px;
+}
+
+.blockquote-footer {
+    font-size: 14px;
+    color: #999;
+}
+
+/* Add padding/margin to card sections */
+.row-cols-1, .row-cols-md-5 {
+    padding: 20px;
+    margin: 0 0 40px 0;
+}
+.card-body img {
+    border-radius: 5px; /* Adds slight rounding to the image */
+}
+
+.reviewcard-text {
+    font-size: 16.0px;
+    color: #555;
+}
+.reviewcard {
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.reviewcard-body {
+    display: flex;
+    position: relative;
+    padding: 20.0px;
+    min-height: 100px;
+}
+
+/* Image styling */
+.reviewcard img {
+    width: 100px;
+    height: auto;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+/* Title section */
+.corpreviewtitle {
+    flex: 0 0 200px; /* Fixed width */
+    margin-right: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Content container */
+.content-wrapper {
+    flex: 1;
+    position: relative;
+    min-height: 100px;
+    overflow: hidden;
+}
+
+/* Always visible tags */
+.corpreviewtext1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    padding: 10px 0;
+}
+
+/* Hidden review text initially */
+.corpreviewtext2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    padding: 10px 0;
+}
+
+/* Hover effects */
+.reviewcard:hover {
+    border: 2px solid #626FC7;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reviewcard:hover .corpreviewtext1 {
+    opacity: 0;
+}
+
+.reviewcard:hover .corpreviewtext2 {
+    opacity: 1;
+}
+
+/* Review count */
+.review-count {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+/* Tags styling */
+.corpreviewtext1 a {
+    display: inline-block;
+    margin: 2px;
+    padding: 2px 8px;
+    background: #f0f0f0;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .reviewcard-body {
+        flex-direction: column;
+    }
+    
+    .corpreviewtitle {
+        flex: 0 0 auto;
+        margin-bottom: 15px;
+    }
+    
+    .content-wrapper {
+        width: 100%;
+    }
+    
+    .corpreviewtext1, .corpreviewtext2 {
+        font-size: 12px;
+    }
+    
+    .reviewcard:hover {
+        transform: scale(1.01);
+    }
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+    .corpreviewtext1, .corpreviewtext2 {
+        font-size: 12px; /* Smaller font size for smaller screens */
+    }
+    .card:hover {
+        transform: scale(1.01); /* Slightly less zoom on smaller screens */
+    }
+}
+
+
+
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .jumbotron h1 {
+        font-size: 32.0px;
+    }
+
+    .jumbotron p {
+        font-size: 16.0px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 17.6px;
+    }
+}
+
+
+/* Search Section Styles */
+.search-section {
+    margin-bottom: 24px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-dropdown {
+    position: relative;
+    min-width: 150px;
+}
+
+.dropdown-button {
+    width: 100%;
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-input {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 200px;
+}
+
+.search-button {
+    padding: 8px 24px;
+    background: #626FC7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Reset button */
+.reset-button {
+    padding: 8px 16px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Write Button */
+.write-button {
+    float: right;
+    position: relative;
+    bottom: 24px;
+    right: 24px;
+    background: #626FC7;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.write-button:hover {
+    background: #3b4379;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.write-icon {
+    font-size: 19.2px;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.pagination button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+}
+
+.pagination button.active {
+    background: #626FC7;
+    color: white;
+    border-color: #626FC7;
+}
+
+
+.interview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+}
+
+.company-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.company-name {
+    font-weight: 600;
+    margin: 0;
+}
+
+.interview-meta {
+    color: #666;
+    font-size: 14.4px;
+    display: flex;
+    gap: 12px;
+}
+
+.interview-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    border-top: 1px solid transparent;
+}
+
+.interview-card.active .interview-content {
+    max-height: 1000px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.interview-details {
+    padding: 20px;
+}
+
+.row-content {
+    display: flex;
+    gap: 5px; /* Adds space between columns */
+    justify-content: space-between;
+}
+
+.section-col {
+    padding: 15px;
+    flex: 1;
+}
+
+.interview-section {
+    margin-bottom: 16px;
+}
+
+
+
+.interview-icons {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.icon-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13.6px;
+    background: #f0f0f0;
+}
+
+.status.positive {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+
+.section-title {
+    font-size: 24.0px;
+    font-weight: 600;
+    margin-bottom: 24.0px;
+}
+
+/* Hover effect */
+.interview-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

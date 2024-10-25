@@ -1,0 +1,87 @@
+.mypsidebar-container {
+    display: flex;
+    height: calc(100vh - 60px);
+}
+
+.mypsidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    background-color: #2b2b2b;
+    color: white;
+    width: 275px;
+    height: calc(100vh - 60px);
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    border-right: 2px solid #dee2e6;
+}
+
+.sidebar-title {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-menu li {
+    margin: 15px 0;
+}
+
+.sidebar-menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-menu li a:hover {
+    background-color: #3d3d3d;
+    border-radius: 8px;
+}
+
+.sidebar-menu li a i {
+    margin-right: 10px;
+}
+
+.sidebar-divider {
+    border-bottom: 1px solid #dee2e6;
+    margin: 50px 0;
+}
+
+.highlight-item {
+    display: flex;
+    align-items: center;
+    color: white;
+    padding: 10px;
+}
+
+.highlight-item img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.highlight-item p {
+    margin: 0;
+    line-height: 1.5;
+}
+.highlight-item:hover {
+    background-color: #3d3d3d;
+    border-radius: 8px;
+}
+
+
+.mypsidebar-content {
+    margin-left: 320px;
+    margin-top: 60px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    width: 100%;
+    overflow-y: auto;
+}

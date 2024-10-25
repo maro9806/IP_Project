@@ -16,6 +16,7 @@
 </head>
 <body>
 <jsp:include page="../navbar.jsp" />
+<jsp:include page="mypagebar.jsp"/>
 <div class="mypsidebar-container">
     <div class="mypsidebar">
         <div class="sidebar-title">My IP</div>
