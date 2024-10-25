@@ -75,7 +75,13 @@ public class SecurityConfiguration {
                                 .userService(customOAuth2UserService)
                         )
                 )
-                .logout(logout -> logout.disable());     // 로그아웃 비활성화
+                .logout(logout -> logout
+                        .logoutUrl("/member/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
+                );
 
         return http.build();
     }

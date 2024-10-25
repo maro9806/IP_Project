@@ -42,9 +42,11 @@
                 </a>
                 <a href="#"><img src="<c:url value='/resources/static/img/bell.svg'/>" alt="bell" class="bell"></a>
                 <a href="#"><img src="<c:url value='/resources/static/img/profile.svg'/>" alt="profile" class="profile"></a>
-                <a href="${pageContext.request.contextPath}/member/logout">
-                    <img src="<c:url value='/resources/static/img/logout.svg'/>" alt="logout" class="logout">
-                </a>
+                <form action="${pageContext.request.contextPath}/member/logout" method="post" class="logout-form">
+                    <button type="submit" class="logout-btn">
+                        <img src="<c:url value='/resources/static/img/logout.svg'/>" alt="logout" class="logout">
+                    </button>
+                </form>
             </sec:authorize>
         </div>
     </div>
