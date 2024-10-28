@@ -17,7 +17,7 @@
     <div class="sidebar-title">My IP</div>
     <ul class="sidebar-menu">
       <li>
-        <a href="/mypageint"><i class="fas fa-file-alt"></i>자기소개서 내역</a>
+        <a href="/mypage/mypageint"><i class="fas fa-file-alt"></i>자기소개서 내역</a>
       </li>
       <li>
         <a href="/mypageque"><i class="fas fa-question"></i>나의 질문 및 답변</a>

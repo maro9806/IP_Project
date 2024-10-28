@@ -181,6 +181,14 @@ a {
     border-radius: 10px;
 }
 
+.btn-naver{
+    background-color: #49d64d;
+    padding: 12px;
+    color: #000000;
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+
 .btn-kakao:hover{
     background-color: #bcbc47;
     padding: 10px;

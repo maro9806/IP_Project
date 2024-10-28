@@ -29,7 +29,7 @@ public class Member {
     @Column(name = "NAME", nullable = true, length = 255)
     private String name;
 
-    @Column(name = "EMAIL", nullable = true, length = 255)
+    @Column(name = "EMAIL", nullable = true, length = 255, unique = true)
     private String email;
 
     @Column(name = "PHONE", nullable = true, length = 255)
