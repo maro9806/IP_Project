@@ -1,64 +1,98 @@
-.main-content{
-    padding-top: 50px;
-    padding-right: 50px;
+/* 기본 레이아웃 */
+.mypsidebar-container {
+  display: flex;
+  min-height: calc(100vh - 60px);
+  position: relative;
+  padding-bottom: 200px; /* footer 공간 확보 */
 }
 
+.mypsidebar-content {
+  flex: 1;
+  margin-left: 275px; /* 사이드바 너비만큼 마진 */
+  padding: 20px;
+}
+
+/* 기존 Content-Section 스타일 유지하면서 수정 */
+.Content-Section {
+  margin-top: 20px; /* 100px에서 수정 */
+  width: 100%;
+}
+
+/* 스크롤바 숨기기 (기존 유지) */
 ::-webkit-scrollbar {
-    display: none;
-}
-.mypint-container {
-    display: flex;
-    flex-wrap: nowrap;
-    height: 100vh;
+  display: none;
 }
 
-.mypint-container2 {
-    flex-grow: 1;
-    padding-left: 20px;
+/* 카드 스타일 (기존 유지) */
+.card {
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.mypint-content {
-    background-color: white;
-    box-sizing: border-box;
-    width: 100%;
-    padding-top: 50px;
+/* 테이블 스타일 (기존 유지) */
+.table th {
+  font-weight: 600;
+  color: #495057;
 }
 
-.mypint-content-box {
-    background-color: #e9ecef;
-    padding: 50px; /* Set padding to 50px */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    width: calc(100% - 100px); /* Subtracting padding on both sides (50px each) */
-    margin: 0 auto; /* Center the box horizontally */
-    max-width: 1500px; /* Optional: Limit maximum width */
+.table td {
+  color: #495057;
 }
 
-
-.mypint-readonly-box {
-    background-color: rgb(220, 220, 220);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    margin-top: 90px;
-    height: 300px;
-    border-radius: 10px;
-    padding: 10px;
-    overflow: auto;
+/* 배지 스타일 (기존 유지) */
+.badge {
+  padding: 8px 12px;
+  font-weight: normal;
 }
 
-.mypint-toggle-btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* 버튼 스타일 (기존 유지) */
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 0.875rem;
 }
 
-.mypint-resume-info-box {
-    width: 382px;
-    background-color: #f1f3f5;
-    padding: 15px;
-    margin: 20px 0px;
-    border-radius: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
+/* 페이지네이션 스타일 (기존 유지) */
+.pagination .page-link {
+  color: #495057;
+  padding: 8px 12px;
+}
+
+.pagination .active .page-link {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+/* 폼 요소 스타일 (기존 유지) */
+.form-select, .form-control {
+  border-radius: 8px;
+  border-color: #e0e0e0;
+}
+
+/* footer 관련 스타일 추가 */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+}
+
+/* 반응형 처리 */
+@media (max-width: 768px) {
+  .mypsidebar-content {
+    margin-left: 0;
+  }
+}
+.main-content {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+  margin-left: 0;  /* 사이드바가 있는 경우 여백 조정 */
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+.row {
+  width: 100%;
+  margin: 0;
 }

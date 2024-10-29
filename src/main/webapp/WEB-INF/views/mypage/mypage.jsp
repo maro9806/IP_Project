@@ -7,61 +7,195 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <%@ include file="../header.jsp" %>
     <title>My Page</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<c:url value='/resources/static/mypage.css'/>">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="<c:url value='/resources/static/mypagemain.css'/>">
 </head>
 <body>
-<jsp:include page="../navbar.jsp" />
-<jsp:include page="mypagebar.jsp"/>
-<div class="mypsidebar-container">
-    <div class="mypsidebar">
-        <div class="sidebar-title">My IP</div>
-        <ul class="sidebar-menu">
-            <li>
-                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypageint'/>"><i class="fas fa-file-alt"></i>자기소개서 내역</a>
-            </li>
-            <li>
-                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypageque'/>"><i class="fas fa-briefcase"></i>기업 지원 현황</a>
-            </li>
-            <li>
-                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypagevid'/>"><i class="fas fa-microchip"></i>AI 면접 준비 내역</a>
-            </li>
-            <li>
-                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypage'/>"><i class="fas fa-history"></i>지난 면접 내역</a>
-            </li>
-        </ul>
+    <jsp:include page="../navbar.jsp" />
+    <div class="mypsidebar-container">
 
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-title">기업 분석</div>
-
-        <c:forEach var="company" items="${companies}">
-            <div class="highlight-item">
-                <img src="${company.logoUrl}" alt="company logo" onerror="this.src='https://via.placeholder.com/30'">
-                <p>(주)${company.name} (${company.employeeCount}명)</p>
-            </div>
-        </c:forEach>
-    </div>
-
-    <!-- 메인 콘텐츠 영역 -->
     <div class="main-content">
-        <h2>면접 내역</h2>
-        <div class="interview-list">
-            <c:forEach var="interview" items="${interviews}">
-                <div class="interview-item">
-                    <h3>${interview.position}</h3>
-                    <p>지원자: ${interview.applicantName}</p>
-                    <p>날짜: ${interview.interviewDate}</p>
-                    <p>상태: ${interview.status}</p>
+        <div class="row">
+            <div class="col-2">
+                <jsp:include page="mypagebar.jsp"/>
+            </div>
+            <div class="col-10">
+                <div class="content-section">
+                    <h2><strong>___님의 마이페이지</strong></h2>
+
+                    <div class="status-cards">
+                        <div class="status-item">
+                            <div>면접 현황</div>
+                            <div class="status-number">2</div>
+                        </div>
+                        <div class="status-item">
+                            <div>나의 일정</div>
+                            <div class="status-number">3</div>
+                        </div>
+                        <div class="status-item">
+                            <div>지원할만한 공고</div>
+                            <div class="status-number">5</div>
+                        </div>
+                        <div class="status-item">
+                            <div>관심기업</div>
+                            <div class="status-number">4</div>
+                        </div>
+                    </div>
+
+                    <div class="card-container">
+                        <div class="custom-card">
+                            <div class="card-title">_님의 자기소개서 내역</div>
+                            <div class="table-responsive">
+                                <table class="table custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>제목</th>
+                                            <th>기업명</th>
+                                            <th>작성일</th>
+                                            <th>상태</th>
+                                            <th>관리</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>신입 개발자 지원</td>
+                                            <td>(주)네이버</td>
+                                            <td>2024.03.15</td>
+                                            <td><span class="status-badge status-reviewing">검토중</span></td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-small">수정</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>백엔드 개발자</td>
+                                            <td>(주)카카오</td>
+                                            <td>2024.03.10</td>
+                                            <td><span class="status-badge status-completed">완료</span></td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-small">수정</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024 상반기 공채</td>
+                                            <td>(주)라인</td>
+                                            <td>2024.03.05</td>
+                                            <td><span class="status-badge status-pending">작성중</span></td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-small">수정</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="custom-card">
+                            <div class="card-title">지원할만한 공고</div>
+                            <div class="table-responsive">
+                                <table class="table custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>기업명</th>
+                                            <th>공고명</th>
+                                            <th>마감일</th>
+                                            <th>지원</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>(주)삼성전자</td>
+                                            <td>2024 상반기 신입공채</td>
+                                            <td>2024.04.15</td>
+                                            <td>
+                                                <button class="btn btn-outline-success btn-small">지원하기</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>(주)LG전자</td>
+                                            <td>SW 개발자 채용</td>
+                                            <td>2024.04.20</td>
+                                            <td>
+                                                <button class="btn btn-outline-success btn-small">지원하기</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>(주)현대자동차</td>
+                                            <td>IT 시스템 개발</td>
+                                            <td>2024.04.30</td>
+                                            <td>
+                                                <button class="btn btn-outline-success btn-small">지원하기</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-container">
+                        <div class="custom-card">
+                            <div class="card-title">최근 활동</div>
+                            <div class="table-responsive">
+                                <table class="table custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>날짜</th>
+                                            <th>활동내용</th>
+                                            <th>상태</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>2024.03.15</td>
+                                            <td>''기업 모의 면접</td>
+                                            <td><span class="status-badge status-completed">완료</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024.03.14</td>
+                                            <td>면접 답변</td>
+                                            <td><span class="status-badge status-pending">대기중</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="custom-card">
+                            <div class="card-title">관심 기업</div>
+                            <div class="table-responsive">
+                                <table class="table custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>기업명</th>
+                                            <th>채용상태</th>
+                                            <th>관리</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>(주)네이버</td>
+                                            <td><span class="status-badge status-completed">채용중</span></td>
+                                            <td>
+                                                <button class="btn btn-outline-danger btn-small">삭제</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>(주)카카오</td>
+                                            <td><span class="status-badge status-pending">준비중</span></td>
+                                            <td>
+                                                <button class="btn btn-outline-danger btn-small">삭제</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </c:forEach>
+            </div>
         </div>
     </div>
 </div>
-
-<%@ include file="../footer.jsp" %>
 </body>
 </html>

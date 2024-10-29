@@ -64,7 +64,7 @@
 }
 
 /* 버튼 스타일 */
-.mypage-btn, .mypage-btn2, .login-btn, .join-btn {
+.mypage-btn, .mypage-btn2, .join-btn {
   padding: 8px 20px;
   border-radius: 50px;
   font-size: 14px;
@@ -83,6 +83,22 @@
   background-color: rgb(18, 18, 18);
   color: rgb(246, 246, 246);
   border: 2px solid rgb(74, 72, 72);
+}
+
+.login-btn {
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  background-color: black;   /* 추가 */
+  color: white;             /* 추가 */
+  border: none;            /* 추가 */
+}
+
+.login-btn:hover {
+  background-color: #333;  /* 추가 */
 }
 
 /* 아이콘 이미지 */
@@ -145,6 +161,18 @@
   #logo {
     height: 20px;
   }
+  .navbar {
+    position: relative;
+    height: auto;
+  }
+
+  .main-content {
+    margin-top: 0;
+  }
+
+  .mypsidebar-container {
+    margin-top: 0;
+  }
 }
 
 /* 모바일 메뉴 토글 버튼 */
@@ -173,4 +201,24 @@
     flex-direction: column;
     align-items: center;
   }
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+/* 혹시 hover 효과가 있다면 그것도 제거 */
+.logout-btn:hover {
+  background: none;
+  border: none;
+}
+
+/* 포커스 테두리도 제거 */
+.logout-btn:focus {
+  outline: none;
+  box-shadow: none;
 }

@@ -18,9 +18,26 @@ public class ReviewBoardController {
     private ReviewBoardService service;
 
     @GetMapping("/list")
-    public String list(Model model) {
-        List<ReviewBoard> list = service.list();
+    public String list(Model model, @RequestParam(name = "page", defaultValue = "1") int pageNum) {
+        int pageSize = 15; // 한 페이지당 게시글 수
+        int totalCount = service.getTotalCount(); // 전체 게시글 수
+        int totalPages = (int) Math.ceil((double) totalCount / pageSize); // 전체 페이지 수
+
+        // 현재 페이지 그룹의 시작과 끝 페이지 계산
+        int pageGroupSize = 10; // 페이지 그룹 크기
+        int currentGroup = (int) Math.ceil((double) pageNum / pageGroupSize);
+        int groupStart = (currentGroup - 1) * pageGroupSize + 1;
+        int groupEnd = Math.min(currentGroup * pageGroupSize, totalPages);
+
+        List<ReviewBoard> list = service.getListByPage(pageNum, pageSize);
+
         model.addAttribute("list", list);
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("groupStart", groupStart);
+        model.addAttribute("groupEnd", groupEnd);
+        model.addAttribute("pageGroupSize", pageGroupSize);
+
         return "review_board/list";
     }
 

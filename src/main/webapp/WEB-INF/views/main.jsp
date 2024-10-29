@@ -19,44 +19,57 @@
 <jsp:include page="navbar.jsp"/>
 <!-- Navbar 이용해서 로고이미지, 메뉴 총 4개, 검색 창, 마이페이지 버튼, 프로필 이미지, 알람 아이콘, 로그인 아이디, 로그아웃 아이콘-->
 
-    <div class="main-content">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <!-- Carousel -->
-                    <div id="adCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <!-- 슬라이드 이미지 -->
-                            <div class="carousel-item active">
-                                <img src="<c:url value='/resources/static/img/Skict2025.svg'/>" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="<c:url value='/resources/static/img/ITsemi.svg'/>" class="d-block w-100" alt="...">
-                            </div>
+<div class="main-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Carousel -->
+                <div id="adCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <!-- 슬라이드 이미지 -->
+                        <div class="carousel-item active">
+                            <img src="<c:url value='/resources/static/img/Skict2025.svg'/>" class="d-block w-100"
+                                 alt="...">
                         </div>
-                        <!-- 이미지 수동 이동 버튼  -->
-                        <button class="carousel-control-prev" type="button" data-bs-target="#adCarousel"
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#adCarousel"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+                        <div class="carousel-item">
+                            <img src="<c:url value='/resources/static/img/ITsemi.svg'/>" class="d-block w-100"
+                                 alt="...">
+                        </div>
                     </div>
+                    <!-- 이미지 수동 이동 버튼  -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#adCarousel"
+                            data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#adCarousel"
+                            data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-                <div class="col-md-3">
-                    <!-- Login Section -->
-                    <div class="login-section">
+            </div>
+            <div class="col-md-3">
+                <div class="login-section">
+                    <sec:authorize access="!isAuthenticated()">
+                        <!-- 비로그인 상태 -->
                         <div class="login-message">
                             <p>로그인하여 IP:PRO를 이용해보세요</p>
-                            <a href="/login">
-                                <button class="login-btn">IP:PRO 로그인</button>
+                            <a href="${pageContext.request.contextPath}/member/login">
+                                <button class="login-btn">IPRO 로그인</button>
                             </a>
                         </div>
-                    </div>
+                    </sec:authorize>
+
+                    <sec:authorize access="isAuthenticated()">
+                        <!-- 로그인 상태 -->
+                        <div class="login-message">
+                            <p><sec:authentication property="principal.username"/>님 환영합니다!</p>
+                            <a href="${pageContext.request.contextPath}/member/logout">
+                                <button class="login-btn">로그아웃</button>
+                            </a>
+                        </div>
+                    </sec:authorize>
                 </div>
             </div>
         </div>
@@ -68,7 +81,8 @@
                 <div class="scroll-container">
                     <div class="scroll-content">
                         <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/Nexonmain.svg'/>" class="card-img-top" alt="Card 1 Image">
+                            <img src="<c:url value='/resources/static/img/Nexonmain.svg'/>" class="card-img-top"
+                                 alt="Card 1 Image">
                             <div class="card-body">
                                 <p class="card-title">넥슨</p>
                                 <h5 class="card-text">[넥토리얼]</h5>
@@ -77,7 +91,8 @@
                             </div>
                         </div>
                         <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/Kakaomain.svg'/>" class="card-img-top" alt="Card 1 Image">
+                            <img src="<c:url value='/resources/static/img/Kakaomain.svg'/>" class="card-img-top"
+                                 alt="Card 1 Image">
                             <div class="card-body">
                                 <p class="card-title">카카오</p>
                                 <h5 class="card-text">광고 SDK 개발 </h5>
@@ -86,7 +101,8 @@
                             </div>
                         </div>
                         <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/Netmarblemain.svg'/>" class="card-img-top" alt="Card 1 Image">
+                            <img src="<c:url value='/resources/static/img/Netmarblemain.svg'/>" class="card-img-top"
+                                 alt="Card 1 Image">
                             <div class="card-body">
                                 <p class="card-title">넷마블</p>
                                 <h5 class="card-text">나 혼자만 레벨업</h5>
@@ -95,7 +111,8 @@
                             </div>
                         </div>
                         <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 1 Image">
+                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
+                                 alt="Card 1 Image">
                             <div class="card-body">
                                 <p class="card-title">Card 4</p>
                                 <h5 class="card-text">corp name</h5>
@@ -103,7 +120,8 @@
                             </div>
                         </div>
                         <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 1 Image">
+                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
+                                 alt="Card 1 Image">
                             <div class="card-body">
                                 <p class="card-title">Card 5</p>
                                 <h5 class="card-text">corp name</h5>
@@ -111,7 +129,8 @@
                             </div>
                         </div>
                         <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 1 Image">
+                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
+                                 alt="Card 1 Image">
                             <div class="card-body">
                                 <p class="card-title">Card 6</p>
                                 <h5 class="card-text">corp name</h5>
@@ -119,7 +138,8 @@
                             </div>
                         </div>
                         <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 1 Image">
+                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
+                                 alt="Card 1 Image">
                             <div class="card-body">
                                 <p class="card-title">Card 7</p>
                                 <h5 class="card-text">corp name</h5>
@@ -127,7 +147,8 @@
                             </div>
                         </div>
                         <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top" alt="Card 1 Image">
+                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
+                                 alt="Card 1 Image">
                             <div class="card-body">
                                 <p class="card-title">Card 8</p>
                                 <h5 class="card-text">corp name</h5>
@@ -147,7 +168,8 @@
             </div>
         </div>
         <div class="container4">
-            <img src="<c:url value='/resources/static/img/mainintroimg3.svg'/>" class="left-img" alt="AI Interview Image">
+            <img src="<c:url value='/resources/static/img/mainintroimg3.svg'/>" class="left-img"
+                 alt="AI Interview Image">
         </div>
 
         <!-- Container 5 -->
@@ -201,7 +223,7 @@
         });
     </script>
 
-<jsp:include page="footer.jsp"/>
+    <jsp:include page="footer.jsp"/>
 </body>
 
 </html>

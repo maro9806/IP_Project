@@ -1,0 +1,270 @@
+/* Prevent horizontal scroll */
+body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* Adjust main content container */
+.main-content {
+    width: 100%;
+    max-width: 100vw;
+    padding: 0;
+    margin: 0;
+}
+
+/* Adjust profile container padding */
+.profile-container {
+    padding: 16px;
+    margin-top: 80px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Make form elements responsive */
+.profile-form {
+    margin-bottom: 50px;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Ensure row doesn't cause overflow */
+.row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+/* Adjust column paddings */
+.col-10 {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* Make sure images don't cause overflow */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Adjust form groups for better mobile display */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 1rem;
+    }
+
+    .profile-avatar-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .col-md-6 {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+.input-group-text {
+    background-color: #f8f9fa;
+}
+
+input:read-only{
+    background-color: #e9e9e9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .profile-photo-section {
+        margin-bottom: 1rem;
+    }
+
+    .row.g-3 > .col-md-4,
+    .row.g-3 > .col-md-6 {
+        margin-bottom: 1rem;
+    }
+
+    .form-check-inline {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Style for add buttons */
+.btn-outline-primary.btn-sm {
+    padding: 0.25rem 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Style for form sections */
+.profile-form h4 {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 1.5rem;
+}
+/* Additional styles for the tech stack section */
+.selected-stack-container {
+    min-height: 100px;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+}
+
+.tech-stack-container .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem;
+}
+
+.tech-stack-container .btn-close {
+    width: 0.5em;
+    height: 0.5em;
+    margin-left: 0.5rem;
+}
+
+/* Styles for education and career entries */
+.education-entry, .career-entry {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.education-entry:hover, .career-entry:hover {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Style for delete buttons */
+.btn-outline-danger.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .education-entry, .career-entry {
+        padding: 1rem;
+    }
+
+    .col-md-1.d-flex {
+        margin-top: 1rem;
+    }
+}
+
+
+.btn {
+    min-width: 80px;
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+input[readonly],
+select[disabled],
+textarea[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+/* Tech Stack Container Styles */
+.selected-techs-container {
+    min-height: 100px;
+    background-color: #f8f9fa;
+}
+
+/* Tech Tag Styles */
+.tech-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #e7f5ff;
+    border: 1px solid #4dabf7;
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin: 0.25rem;
+}
+
+.tech-name {
+    margin-right: 5px;
+    color: #1971c2;
+}
+
+.delete-tech {
+    background: none;
+    border: none;
+    color: #1971c2;
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 0 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-tech:hover {
+    color: #e03131;
+}
+
+/* Tech Button Styles */
+.tech-btn {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.8rem;
+}
+
+.tech-btn.selected {
+    background-color: #e9ecef;
+    opacity: 0.65;
+}
+
+.tech-category h6 {
+    color: #495057;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tech-btn {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.6rem;
+    }
+}
+
+/* Add to your existing CSS */
+.custom-tech-input {
+    transition: all 0.3s ease;
+}
+
+#addCustomTechBtn {
+    padding: 0px 8px;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.custom-tech-input .input-group {
+    max-width: 300px;
+}
+
+.custom-tech-input .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.custom-tech-input .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Make sure the input text matches other tech buttons */
+.custom-tech-input input {
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .custom-tech-input .input-group {
+        max-width: 100%;
+    }
+}

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ip_project.entity.Member;
 import com.ip_project.service.MemberService;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -23,13 +26,14 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(Member vo) {
+    public String join(Member member) {
         try {
-            service.join(vo);
+            service.join(member);
             return "redirect:/member/login";  // 성공시 로그인 페이지로
         } catch (Exception e) {
-            // 실패시 다시 회원가입 페이지로
-            return "redirect:/member/join?error=" + e.getMessage();
+            // 에러메시지에서 개행문자 제거
+            String errorMsg = e.getMessage().replaceAll("[\\r\\n]", " ");
+            return "redirect:/member/join?error=" + URLEncoder.encode(errorMsg, StandardCharsets.UTF_8);
         }
     }
 

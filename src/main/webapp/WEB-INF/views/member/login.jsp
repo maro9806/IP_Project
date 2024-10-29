@@ -33,6 +33,9 @@
             <button type="submit" class="btn btn-dark login-btn">Login</button>
         </form>
         <div class="social-login">
+            <a href="${pageContext.request.contextPath}/oauth2/authorization/naver" class="btn btn-naver">
+                <i class="fab fa-naver"></i> Login with Naver
+            </a>
             <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="btn btn-google btn-block">
                 <i class="fab fa-google"></i> Login with Google
             </a>
