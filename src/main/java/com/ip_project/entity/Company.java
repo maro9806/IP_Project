@@ -12,7 +12,7 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMPANY_SEQ")
     @SequenceGenerator(name = "COMPANY_SEQ", sequenceName = "COMPANY_SEQ", allocationSize = 1)
-    @Column(name = "COMPANY_IDX", nullable = true, length = 255)
+    @Column(name = "COMPANY_IDX", nullable = false, length = 255)
     private Long companyIdx;
 
     @Column(name = "COMPANY_NAME", nullable = true, length = 255)
