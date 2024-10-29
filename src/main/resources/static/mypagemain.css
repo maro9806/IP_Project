@@ -1,10 +1,7 @@
 body {
     background-color: #f8f9fa;
     font-family: 'Pretendard', sans-serif;
-}
-
-.main-content {
-    padding: 20px;
+    margin-top: 70px; /* navbar 높이만큼 여백 */
 }
 
 .content-section {
@@ -105,4 +102,46 @@ body {
 .btn-small {
     padding: 2px 8px;
     font-size: 0.8rem;
+}
+
+.main-content {
+    display: flex;
+    min-height: calc(100vh - 70px);
+    width: 100%;
+    margin-left: 0;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+    margin: 0;
+}
+
+.content-section {
+    margin-top: 20px;
+    padding: 20px;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .card-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .status-cards {
+        flex-direction: column;
+    }
+
+    .status-item {
+        width: 100%;
+    }
+
+    .custom-card {
+        margin-bottom: 15px;
+    }
+
+    .main-content {
+        padding: 10px;
+    }
 }

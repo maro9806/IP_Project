@@ -16,12 +16,11 @@
 <jsp:include page="../navbar.jsp"/>
 
 <div class="mypsidebar-container">
-    <jsp:include page="mypagebar.jsp"/>
+
     <div class="main-content container-fluid">
         <div class="row g-0">
             <div class="col-2">
-                <!-- Side Navigation -->
-                {% include 'mypagebar.html' %}
+               <jsp:include page="mypagebar.jsp"/>
             </div>
             <div class="col-10">
                 <div class="profile-container p-4">
@@ -321,5 +320,6 @@
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

@@ -145,6 +145,18 @@
   #logo {
     height: 20px;
   }
+  .navbar {
+    position: relative;
+    height: auto;
+  }
+
+  .main-content {
+    margin-top: 0;
+  }
+
+  .mypsidebar-container {
+    margin-top: 0;
+  }
 }
 
 /* 모바일 메뉴 토글 버튼 */

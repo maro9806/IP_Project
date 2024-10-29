@@ -22,7 +22,7 @@
         <!-- CorpSection -->
         <h2 class="section-title mt-5">기업 분석 카드 (10개)</h2>
         <div class="row row-cols-1 row-cols-md-5 g-4">
-            <a href="<c:url value='${pageContext.request.contextPath}/cor_board/corp'/>" class="text-decoration-none">
+            <a href="<c:url value='${pageContext.request.contextPath}/company/corp'/>" class="text-decoration-none">
                 <div class="col">
                     <div class="card h-100">
                         <img src="<c:url value='/resources/static/img/company_default.png'/>" class="card-img-top" alt="Company 1">

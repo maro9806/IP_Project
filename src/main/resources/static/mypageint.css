@@ -83,3 +83,16 @@
     margin-left: 0;
   }
 }
+.main-content {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+  margin-left: 0;  /* 사이드바가 있는 경우 여백 조정 */
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+.row {
+  width: 100%;
+  margin: 0;
+}
