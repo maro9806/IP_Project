@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import com.ip_project.entity.ReviewBoard;
 import com.ip_project.repository.ReviewBoardRepository;
 
@@ -28,5 +31,16 @@ public class ReviewBoardService {
 
     public void remove(Long idx) {
         repository.deleteById(idx);
+    }
+
+    public int getTotalCount() {
+        return (int) repository.count();  // long을 int로 캐스팅
+    }
+
+    public List<ReviewBoard> getListByPage(int page, int pageSize) {
+        // 최신글이 먼저 오도록 정렬 추가
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by("idx").descending());
+        Page<ReviewBoard> result = repository.findAll(pageRequest);
+        return result.getContent();
     }
 }
