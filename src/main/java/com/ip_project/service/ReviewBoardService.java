@@ -38,9 +38,18 @@ public class ReviewBoardService {
     }
 
     public List<ReviewBoard> getListByPage(int page, int pageSize) {
-        // 최신글이 먼저 오도록 정렬 추가
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by("idx").descending());
-        Page<ReviewBoard> result = repository.findAll(pageRequest);
-        return result.getContent();
+        // Oracle 페이징 처리를 위한 ROWNUM 사용
+        String sql = """
+            SELECT * FROM (
+                SELECT a.*, ROWNUM rnum FROM (
+                    SELECT * FROM review_board ORDER BY idx DESC
+                ) a WHERE ROWNUM <= ?
+            ) WHERE rnum > ?
+        """;
+
+        int endRow = page * pageSize;
+        int startRow = (page - 1) * pageSize;
+
+        return repository.findByPage(startRow, endRow);
     }
 }

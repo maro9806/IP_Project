@@ -72,17 +72,20 @@
 
         <!-- Pagination -->
         <div class="pagination">
-            <button class="active">1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>4</button>
-            <button>5</button>
-            <button>6</button>
-            <button>7</button>
-            <button>8</button>
-            <button>9</button>
-            <button>10</button>
-            <button>다음 ></button>
+            <c:if test="${groupStart > 1}">
+                <button onclick="location.href='?page=${groupStart-1}'">&lt;</button>
+            </c:if>
+
+            <c:forEach begin="${groupStart}" end="${groupEnd}" var="pageNum">
+                <button onclick="location.href='?page=${pageNum}'"
+                        class="${pageNum == currentPage ? 'active' : ''}">
+                        ${pageNum}
+                </button>
+            </c:forEach>
+
+            <c:if test="${groupEnd < totalPages}">
+                <button onclick="location.href='?page=${groupEnd+1}'">&gt;</button>
+            </c:if>
         </div>
         <!-- Write Button -->
         <button class="write-button" onclick="location.href='${pageContext.request.contextPath}/review_board/write'">
