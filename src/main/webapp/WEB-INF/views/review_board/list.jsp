@@ -26,21 +26,34 @@
     <div class="container">
         <!-- Search Section-->
         <div class="search-section">
-            <div class="search-dropdown">
-                <button class="dropdown-button">동록순 ▼</button>
-            </div>
-
-            <div class="search-dropdown">
-                <button class="dropdown-button">경력 전체 ▼</button>
-            </div>
-
-            <div class="search-dropdown">
-                <button class="dropdown-button">직무·직업 전체 ▼</button>
-            </div>
-            <input type="text" class="search-input" placeholder="기업명">
-            <button class="search-button">검색</button>
-            <button class="reset-button">⟲</button>
+    <form action="" method="get">
+        <div class="search-dropdown">
+            <select name="orderBy" class="dropdown-button">
+                <option value="newest" ${param.orderBy == 'newest' ? 'selected' : ''}>최신순</option>
+                <option value="oldest" ${param.orderBy == 'oldest' ? 'selected' : ''}>등록순</option>
+            </select>
         </div>
+
+        <div class="search-dropdown">
+            <select name="career" class="dropdown-button">
+                <option value="all" ${param.career == 'all' ? 'selected' : ''}>경력 전체</option>
+                <!-- 다른 경력 옵션들 -->
+            </select>
+        </div>
+
+        <div class="search-dropdown">
+            <select name="jobType" class="dropdown-button">
+                <option value="all" ${param.jobType == 'all' ? 'selected' : ''}>직무·직업 전체</option>
+                <!-- 다른 직무 옵션들 -->
+            </select>
+        </div>
+
+        <input type="text" name="keyword" class="search-input" placeholder="기업명"
+               value="${param.keyword}">
+        <button type="submit" class="search-button">검색</button>
+        <button type="button" class="reset-button" onclick="location.href='?'">⟲</button>
+    </form>
+</div>
         <!-- interview review Section Table style -->
         <!-- Table Section for Notice Board -->
         <h2 class="section-title">면접 후기</h2>
