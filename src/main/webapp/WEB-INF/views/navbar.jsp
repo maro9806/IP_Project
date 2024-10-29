@@ -16,7 +16,7 @@
     <div class="nav-left">
         <a href="${pageContext.request.contextPath}/"><img src="<c:url value='/resources/static/img/logo.svg'/>" id="logo" class="logo" alt="Logo"></a>
         <a class="nav-link" href="${pageContext.request.contextPath}/aiboard/ai_board">AI 면접 준비</a>
-        <a class="nav-link" href="${pageContext.request.contextPath}/cor_board/corp">기업 분석</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/cor_board/corpmain">기업 분석</a>
         <a class="nav-link" href="${pageContext.request.contextPath}/review_board/list">리뷰 게시판</a>
         <a class="nav-link" href="${pageContext.request.contextPath}/notice/noticeboard">면접의 고수<span class="badge">pro</span></a>
     </div>

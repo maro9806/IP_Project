@@ -38,8 +38,6 @@ public class Member {
     @Column(name = "INDATE", nullable = true)
     private LocalDateTime indate;
 
-    @Column(name = "JOIN_DATE", nullable = true, length = 255)
-    private String joinDate;
 
     @Builder
     public Member(String username, String password, String name, String email, String phone, LocalDateTime indate, String joinDate) {
@@ -49,6 +47,6 @@ public class Member {
         this.email = email;
         this.phone = phone;
         this.indate = indate;
-        this.joinDate = joinDate;
+
     }
 }

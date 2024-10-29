@@ -15,10 +15,10 @@ public class CorBoardController {
     @Autowired
     public CorBoardService service;
 
-    @RequestMapping("/list")
+    @RequestMapping("/corpmain")
     public String list(Model model) {
         service.list(model);
-        return "cor_board/list";
+        return "cor_board/corpmain";
     }
 
     @GetMapping("/corp")

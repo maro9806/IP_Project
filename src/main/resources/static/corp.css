@@ -1,16 +1,28 @@
+.main-content {
+  background: white;
+  padding-top: 50px;
+}
+
+/* Jumbotron styling */
+.jumbotron {
+  background-color: #626FC7;
+  color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.jumbotron h1 {
+  font-size: 2.5rem;
+}
+
+.jumbotron p {
+  font-size: 1.2rem;
+}
 .search-section {
   padding: 50px 0;
   text-align: center;
-}
-
-.placeholder {
-  background-color: transparent;
-  height: auto;
-  width: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
 }
 
 /* Table for 기업 최신 동향 */
@@ -27,24 +39,104 @@
   text-align: left;
 }
 
-.swot-container {
+.news-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.news-table th, .news-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;  /* 가운데 정렬 */
+}
+.news-table th {
+  background-color: #f2f2f2;
+}
+
+.news-table img {
+  width:150px;
+  height:100px;  
+}
+
+/*기업 정보 Section*/
+
+
+
+/**/
+
+
+
+/* SWOT CARD Styling */
+.swot-card {
+ 
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  min-height: 500px; /* 최소 높이 설정 */
+  text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  justify-content: flex-start;
+  height: auto; /* 고정 높이 제거 */
+  overflow: auto; /* 넘치는 내용을 숨김 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease; /* 부드러운 변환 효과 */
+}
+.swot-card:hover {
+  transform: scale(1.05); /* 마우스를 올리면 1.05배 확대 */
 }
 
 
-/* For larger screens */
-@media (min-width: 768px) {
-  .swot-container {
-      flex-direction: row;
-      gap: 20px;
-  }
-  .swot-card {
-      width: calc(25% - 20px); /* Ensure all cards take up 1/4th of the container width */
-      height: 180px; /* Slightly taller */
-  }
+.swot-letter {
+  font-size: 5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
+
+.swot-card h5 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.swot-card ul {
+  font-size: 1rem;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.swot-card ul li {
+  margin-bottom: 8px;
+}
+
+
+/* Text color for the letters (S, W, O, T) */
+.swot-letter-S {
+  color: #007bff; /* Strengths - Blue */
+}
+
+.swot-letter-W {
+  color: #fd7e14; /* Weaknesses - Orange */
+}
+
+.swot-letter-O {
+  color: #28a745; /* Opportunities - Green */
+}
+
+.swot-letter-T {
+  color: #dc3545; /* Threats - Red */
+}
+#S:hover{
+  background-image: url(/static/img/swotS.svg);
+}
+#W:hover{
+  background-image: url(/static/img/swotW.svg);
+}
+#O:hover{
+  background-image: url(/static/img/swotO.svg);
+}
+#T:hover{
+  background-image: url(/static/img/swotT.svg);
+}
+
 
 
 /*패널 부분*/
@@ -54,51 +146,34 @@
   overflow-y: auto;
   /* 세로 스크롤 적용 */
 }
+
 #strength {
-  background-image: url("/static/img/S.svg"); /* Strengths 탭의 배경 이미지 */
-  background-size: cover; /* 이미지가 패널 크기에 맞게 조정되도록 설정 */
+  background-color: #f0f0f0;
+  background-size: cover;
   background-position: center;
-  min-height: 400px; /* 최소 높이 설정 */
 }
 
 #weakness {
-  background-image: url("/static/img/W.svg"); /* Weaknesses 탭의 배경 이미지 */
+  background-color: #f0f0f0;
   background-size: cover;
   background-position: center;
-  min-height: 400px;
 }
-
 #opportunity {
-  background-image: url("/static/img/O.svg"); /* Opportunities 탭의 배경 이미지 */
+  background-color: #f0f0f0;
   background-size: cover;
   background-position: center;
-  min-height: 400px;
 }
 
 #threat {
-  background-image: url("/static/img/T.svg"); /* Threats 탭의 배경 이미지 */
+  background-color: #f0f0f0;
   background-size: cover;
   background-position: center;
-  min-height: 400px;
 }
 
-/* corp.css에 추가 */
-.news-table img {
-  max-width: 100px;
-  height: auto;
-  object-fit: cover;
-}
+/**/
 
-.news-table td {
-  vertical-align: middle;
-}
 
-.news-table p {
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
 
-.news-table span {
-  font-size: 0.9rem;
-  color: #666;
-}
+
+/**/
+
