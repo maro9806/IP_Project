@@ -18,7 +18,13 @@
   <div class="sidebar-title">My IP</div>
   <ul class="sidebar-menu">
     <li>
-      <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypageque'/>">
+      <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypage'/>">
+        <i class="fas fa-home"></i>
+        <span>마이홈</span>
+      </a>
+    </li>
+    <li>
+      <a href="<c:url value='${pageContext.request.contextPath}/mypage/myprofile'/>">
         <i class="fas fa-briefcase"></i>
         <span>회원정보이력</span>
       </a>

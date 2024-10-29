@@ -26,13 +26,13 @@ public class MyPageController {
         return "mypage/mypageint";  // 경로 수정
     }
 
-    @GetMapping("/mypageque")
-    public String myPageApplication(Model model) {
-        return "mypage/mypageque";  // 경로 수정
-    }
-
     @GetMapping("/mypagevid")
     public String myPageInterview(Model model) {
         return "mypage/mypagevid";  // 경로 수정
+    }
+
+    @GetMapping("/myprofile")
+    public String myPageMember(Model model) {
+        return "mypage/myprofile";
     }
 }
