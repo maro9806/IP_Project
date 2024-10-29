@@ -56,7 +56,7 @@
                         <div class="login-message">
                             <p>로그인하여 IP:PRO를 이용해보세요</p>
                             <a href="${pageContext.request.contextPath}/member/login">
-                                <button class="login-btn">IP:PRO 로그인</button>
+                                <button class="login-btn">IPRO 로그인</button>
                             </a>
                         </div>
                     </sec:authorize>

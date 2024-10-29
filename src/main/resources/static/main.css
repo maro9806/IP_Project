@@ -76,9 +76,6 @@ body {
   cursor: pointer;
 }
 
-.login-btn:hover {
-  background-color: #333;
-}
 
 /* Scrollable container with hidden scrollbar */
 .scroll-container {
