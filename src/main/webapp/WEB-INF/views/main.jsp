@@ -22,7 +22,7 @@
 <div class="main-content">
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <!-- Carousel -->
                 <div id="adCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
@@ -56,7 +56,7 @@
                         <div class="login-message">
                             <p>로그인하여 IP:PRO를 이용해보세요</p>
                             <a href="${pageContext.request.contextPath}/member/login">
-                                <button class="login-btn">IPRO 로그인</button>
+                                <button class="login-btn">IP:PRO 로그인</button>
                             </a>
                         </div>
                     </sec:authorize>
@@ -73,13 +73,14 @@
                 </div>
             </div>
         </div>
+    </div>
         <div class="container2">
-            <div class="row" style="margin-top: 110px;">
+            <div class="row" style="margin-top: 110px; margin-left: 10%; margin-right: 10%">
                 <div class="col-12">
                     <h4 style="font-weight: bold;">로그인 하고 AI 맟춤 면접 추천받기</h4>
                 </div>
-                <div class="scroll-container">
-                    <div class="scroll-content">
+                <div class="corp-card-container">
+                    <div class="corp-card-content">
                         <div class="card corp-card">
                             <img src="<c:url value='/resources/static/img/Nexonmain.svg'/>" class="card-img-top"
                                  alt="Card 1 Image">
@@ -128,38 +129,13 @@
                                 <p class="card-date">2024-11-11(월)23:59</p>
                             </div>
                         </div>
-                        <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
-                                 alt="Card 1 Image">
-                            <div class="card-body">
-                                <p class="card-title">Card 6</p>
-                                <h5 class="card-text">corp name</h5>
-                                <p class="card-date">2024-11-11(월)23:59</p>
-                            </div>
-                        </div>
-                        <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
-                                 alt="Card 1 Image">
-                            <div class="card-body">
-                                <p class="card-title">Card 7</p>
-                                <h5 class="card-text">corp name</h5>
-                                <p class="card-date">2024-11-11(월)23:59</p>
-                            </div>
-                        </div>
-                        <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
-                                 alt="Card 1 Image">
-                            <div class="card-body">
-                                <p class="card-title">Card 8</p>
-                                <h5 class="card-text">corp name</h5>
-                                <p class="card-date">2024-11-11(월)23:59</p>
-                            </div>
-                        </div>
                     </div>
+                    <a href="${pageContext.request.contextPath}/corp">
+                    <button class="view-more-btn">더 많은 공고 보기</button>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
     <div class="sub-content">
         <div class="container3">
             <div class="col-12">
@@ -201,27 +177,21 @@
                     <p>기업 완벽분석을 통해 만든 데이터</p>
                 </div>
             </div>
-
-            <!-- Gray Box Placeholders -->
-            <div class="placeholder-grid">
-                <div class="placeholder-box"></div>
-                <div class="placeholder-box"></div>
-                <div class="placeholder-box"></div>
+            <div class="main-img-box-grid">
+                <div class="main-img-box">
+                    <img src="<c:url value='/resources/static/img/mainintroimg4.svg' />"
+                         alt="Feature illustration 1" class="main-box-img">
+                </div>
+                <div class="main-img-box">
+                    <img src="<c:url value='/resources/static/img/mainintroimg5.svg' />"
+                         alt="Feature illustration 2" class="main-box-img">
+                </div>
+                <div class="main-img-box">
+                    <img src="<c:url value='/resources/static/img/mainintroimg6.svg' />"
+                         alt="Feature illustration 3" class="main-box-img">
+                </div>
             </div>
-        </div>
-
     </div>
-
-
-    <script>
-        const scrollContainer = document.querySelector('.scroll-container');
-        scrollContainer.addEventListener('wheel', (evt) => {
-            evt.preventDefault();
-            // Adjust the scrolling speed by increasing the scrollLeft increment
-            const scrollSpeed = 40; // Increase this value for faster scrolling
-            scrollContainer.scrollLeft += evt.deltaY * scrollSpeed;
-        });
-    </script>
 
     <jsp:include page="footer.jsp"/>
 </body>

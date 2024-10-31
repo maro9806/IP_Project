@@ -54,7 +54,7 @@
         <button type="button" class="reset-button" onclick="location.href='?'">⟲</button>
     </form>
 </div>
-        <!-- interview review Section Table style -->
+        <!-- AIInterview review Section Table style -->
         <!-- Table Section for Notice Board -->
         <h2 class="section-title">면접 후기</h2>
         <table class="table table-striped notice-board">
@@ -233,9 +233,9 @@
 </div>
 
 <script>
-    document.querySelectorAll('.interview-header').forEach(header => {
+    document.querySelectorAll('.AIInterview-header').forEach(header => {
         header.addEventListener('click', () => {
-            const card = header.closest('.interview-card');
+            const card = header.closest('.AIInterview-card');
             card.classList.toggle('active');
         });
     });

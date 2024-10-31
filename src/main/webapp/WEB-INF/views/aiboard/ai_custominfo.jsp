@@ -27,7 +27,7 @@
     <h5>자기소개서 작성 > 기업 및 직무 선택</h5>
     <hr style="width:100%;">
 
-    <div id="questions-container" style="width:95%; padding-left:5%;">
+    <div id="AIQuestions-container" style="width:95%; padding-left:5%;">
         <div class="question-block">
             <table style="width:100%;">
                 <colgroup>
@@ -104,7 +104,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('questions-container');
+        const container = document.getElementById('AIQuestions-container');
         const addButton = document.getElementById('add-question-button');
         let questionCounter = 1;
 

@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <!-- Card section with video and interview settings (Horizontal layout) -->
+        <!-- Card section with video and AIInterview settings (Horizontal layout) -->
         <div class="row justify-content-center position-relative">
             <div class="card col-lg-8 d-flex flex-row">
                 <!-- Left section: Video -->
@@ -107,7 +107,7 @@
     async function startInterview() {
         try {
             // 면접 시작 API 호출
-            const response = await fetch('/aiboard/api/interview', {
+            const response = await fetch('/aiboard/api/AIInterview', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -174,7 +174,7 @@
                         formData.append('interviewId', currentInterviewId);
 
                         try {
-                            const response = await fetch(`/aiboard/api/interview/${currentInterviewId}/video`, {
+                            const response = await fetch(`/aiboard/api/AIInterview/${currentInterviewId}/video`, {
                                 method: 'POST',
                                 body: formData  // formData에는 이미 video와 interviewId가 포함되어 있음
                             });
@@ -226,6 +226,39 @@
     function changeBackgroundColor() {
         document.body.style.backgroundColor = "#8292FF";
     }
+
+    // 페이지 로드 시 카메라 초기화
+    document.addEventListener('DOMContentLoaded', initializeCamera);
+
+    async function initializeCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
+                audio: false
+            });
+
+            const videoElement = document.getElementById('previewVideo');
+            videoElement.srcObject = stream;
+            document.getElementById('videoError').style.display = 'none';
+
+        } catch (error) {
+            console.error('Camera access error:', error);
+            document.getElementById('videoError').style.display = 'block';
+        }
+    }
+
+    // Welcome message fade-in effect
+    document.addEventListener('DOMContentLoaded', () => {
+        const welcomeMessage = document.querySelector('.welcome-message');
+        if (welcomeMessage) {
+            setTimeout(() => {
+                welcomeMessage.classList.add('fade-in');
+            }, 100);
+        }
+    });
 </script>
 
 </body>

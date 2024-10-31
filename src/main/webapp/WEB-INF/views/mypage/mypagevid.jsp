@@ -33,7 +33,7 @@
                     </div>
                     <!-- Questions Section -->
                     <div class="col-md-6">
-                        <div class="video-questions">
+                        <div class="video-AIQuestions">
                             <h4>영상 면접 질문</h4>
                             <div class="question-item">
                                 <button class="btn btn-light">
