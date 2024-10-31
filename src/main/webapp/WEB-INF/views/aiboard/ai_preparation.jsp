@@ -30,7 +30,14 @@
             <div class="card col-lg-8 d-flex flex-row">
                 <!-- Left section: Video -->
                 <div class="video-section">
-                    <span>video check</span>
+                    <video id="videoPreview" autoplay playsinline muted></video>
+                    <div id="videoError" class="video-error" style="display: none;">
+                        카메라에 접근할 수 없습니다. 카메라 권한을 확인해주세요.
+                    </div>
+                    <div class="recording-indicator" id="recordingIndicator" style="display: none;">
+                        <span class="recording-dot"></span>
+                        녹화중
+                    </div>
                 </div>
                 <!-- Right section: Interview settings -->
                 <div class="form-section fade-target">
@@ -107,15 +114,27 @@
     async function startInterview() {
         try {
             // 면접 시작 API 호출
-            const response = await fetch('/aiboard/api/AIInterview', {
+            const response = await fetch('/aiboard/api/interview', {  // URL 수정
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    applicantName: '신현준',
                     position: document.getElementById('positionSelect').value,
-                    interviewDate: new Date().toISOString()
+                    questions: [
+                        {
+                            content: "회사를 선택한 이유는 무엇인가요?",
+                            orderNumber: 1
+                        },
+                        {
+                            content: "직무와 관련된 경험을 설명해주세요.",
+                            orderNumber: 2
+                        },
+                        {
+                            content: "향후 커리어 계획은 무엇인가요?",
+                            orderNumber: 3
+                        }
+                    ]
                 })
             });
 
@@ -129,7 +148,7 @@
             // 비디오 녹화 시작
             await startVideoRecording();
 
-            // UI 전환 (기존 기능 유지)
+            // UI 전환
             document.getElementById('setupSection').classList.add('hidden');
             document.getElementById('questionSection').classList.remove('hidden');
         } catch (error) {
@@ -171,12 +190,11 @@
                         const blob = new Blob(recordedChunks, { type: 'video/webm' });
                         const formData = new FormData();
                         formData.append('video', blob);
-                        formData.append('interviewId', currentInterviewId);
 
                         try {
-                            const response = await fetch(`/aiboard/api/AIInterview/${currentInterviewId}/video`, {
+                            const response = await fetch(`/aiboard/api/interview/${currentInterviewId}/video`, {
                                 method: 'POST',
-                                body: formData  // formData에는 이미 video와 interviewId가 포함되어 있음
+                                body: formData
                             });
 
                             if (!response.ok) {
@@ -191,7 +209,6 @@
                 });
             }
 
-            // 기존 UI 전환 유지
             document.getElementById('questionSection').classList.add('hidden');
             document.getElementById('endingSection').classList.remove('hidden');
             document.body.style.overflow = "hidden";

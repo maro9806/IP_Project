@@ -17,24 +17,25 @@ public class AIInterview {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AI_INTERVIEW_SEQ")
     @SequenceGenerator(name = "AI_INTERVIEW_SEQ", sequenceName = "AI_INTERVIEW_SEQ", allocationSize = 1)
+    @Column(name = "AI_IDX")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_username", referencedColumnName = "username")
+    @JoinColumn(name = "IPRO_IDX", referencedColumnName = "IDX")
     private Member member;
 
-    @Column(name = "position")
+    @Column(name = "AI_POSITION", length = 50)
     private String position;
 
-    @Column(name = "interview_date")
+    @Column(name = "AI_DATE")
     private LocalDateTime interviewDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private AIInterviewStatus status;
-
-    @Column(name = "video_url")
+    @Column(name = "AI_URL", length = 300)
     private String videoUrl;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
+    private AIInterviewStatus status;
 
     @OneToMany(mappedBy = "interview", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AIQuestion> questions = new ArrayList<>();

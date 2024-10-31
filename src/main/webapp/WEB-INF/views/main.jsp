@@ -130,7 +130,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="${pageContext.request.contextPath}/corp">
+                    <a href="${pageContext.request.contextPath}/company/corpmain">
                     <button class="view-more-btn">더 많은 공고 보기</button>
                     </a>
                 </div>
@@ -144,8 +144,9 @@
             </div>
         </div>
         <div class="container4">
-            <img src="<c:url value='/resources/static/img/mainintroimg3.svg'/>" class="left-img"
-                 alt="AI Interview Image">
+            <div class="container4-wrapper">
+                <img src="/resources/static/img/mainintroimg3.svg" class="left-img" alt="AI Interview Image">
+            </div>
         </div>
 
         <!-- Container 5 -->
@@ -177,7 +178,7 @@
                     <p>기업 완벽분석을 통해 만든 데이터</p>
                 </div>
             </div>
-            <div class="main-img-box-grid">
+                <div class="main-img-box-grid">
                 <div class="main-img-box">
                     <img src="<c:url value='/resources/static/img/mainintroimg4.svg' />"
                          alt="Feature illustration 1" class="main-box-img">
@@ -191,8 +192,9 @@
                          alt="Feature illustration 3" class="main-box-img">
                 </div>
             </div>
+        </div>
     </div>
-
+</div>
     <jsp:include page="footer.jsp"/>
 </body>
 

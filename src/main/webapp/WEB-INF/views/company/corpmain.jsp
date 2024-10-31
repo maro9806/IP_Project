@@ -22,30 +22,20 @@
         <!-- CorpSection -->
         <h2 class="section-title mt-5">기업 분석 카드 (10개)</h2>
         <div class="row row-cols-1 row-cols-md-5 g-4">
-            <a href="<c:url value='${pageContext.request.contextPath}/company/corp'/>" class="text-decoration-none">
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="<c:url value='/resources/static/img/company_default.png'/>" class="card-img-top" alt="Company 1">
-                        <div class="card-body" id="corp-card-body">
-                            <h5 class="card-title">네이버</h5>
-                            <p class="card-text1">대기업</p>
-                            <p class="card-text2">포털 및 기타 인터넷 정보 매개...</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
             <!-- 나머지 카드들 반복 -->
-            <c:forEach var="i" begin="2" end="10">
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="<c:url value='/resources/static/img/company_default.png'/>" class="card-img-top" alt="Company ${i}">
-                        <div class="card-body" id="corp-card-body1">
-                            <h5 class="card-title">IT 기업 이름</h5>
-                            <p class="card-text1">기업 형태</p>
-                            <p class="card-text2">업종</p>
+            <c:forEach var="vo" items="${list}" varStatus="i">
+                <a href="<c:url value='${pageContext.request.contextPath}/company/corp?companyIdx=${vo.companyIdx}'/>" class="text-decoration-none">
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="<c:url value='/resources/static/img/company_default.png'/>" class="card-img-top" alt="Company ${i.index + 1}">
+                            <div class="card-body">
+                                <h5 class="card-title">${vo.companyName}</h5>
+                                <p class="card-text1">${vo.companyType}</p>
+                                <p class="card-text2">${vo.companyIndustry}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </c:forEach>
         </div>
         <hr>

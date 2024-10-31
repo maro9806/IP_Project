@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../header.jsp" %>
 
+
 <title>기업 분석</title>
 <link rel="stylesheet" href="<c:url value='/resources/static/navbar.css'/>">
 <link rel="stylesheet" href="<c:url value='/resources/static/corp.css'/>">
@@ -39,27 +40,35 @@
                                 <tbody>
                                     <tr>
                                         <th>기업명:</th>
-                                        <td>Example Company</td>
+                                        <td>${board.companyName}</td>
                                         <th>기업 형태:</th>
-                                        <td>주식회사</td>
+                                        <td>${board.companyType}</td>
                                     </tr>
                                     <tr>
                                         <th>설립일:</th>
-                                        <td>2000년 1월 1일</td>
+                                        <td>
+                                            ${fn:replace(board.companyHistory, "\\n", "<br>")}
+                                        </td>
+
+
                                         <th>대표자:</th>
-                                        <td>신현준</td>
+                                        <td>${board.companyCeo}</td>
                                     </tr>
                                     <tr>
                                         <th>주소:</th>
-                                        <td>광주 대성학원 2F</td>
+                                        <td>${board.companyAddress}</td>
                                         <th>사원 수:</th>
-                                        <td>500명</td>
+                                        <td>${board.companyEmployees}명</td>
                                     </tr>
                                     <tr>
                                         <th>브랜드 명:</th>
-                                        <td>Example Brand</td>
+                                        <td>
+                                            ${fn:replace(board.companyContent, "\\n", "<br>")}
+                                        </td>
                                         <th>업종:</th>
-                                        <td>IT</td>
+                                        <td>
+                                            ${fn:replace(board.companyHistory, "\\n", "<br>")}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

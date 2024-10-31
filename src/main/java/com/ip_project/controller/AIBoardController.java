@@ -1,18 +1,18 @@
 package com.ip_project.controller;
 
 import com.ip_project.dto.AIInterviewDTO;
-import com.ip_project.dto.AIQuestionDTO;
 import com.ip_project.entity.AIInterviewStatus;
 import com.ip_project.service.AIInterviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Map;
 
 @Controller
@@ -29,32 +29,19 @@ public class AIBoardController {
 
     @GetMapping("/ai_preparation")
     public String showInterviewPrep(Model model) {
-
-        model.addAttribute("member", Map.of("name", "신현준"));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        model.addAttribute("member", Map.of("name", username));
         return "aiboard/ai_preparation";
     }
 
-    @PostMapping("/api/interview")
+    @PostMapping("/api/interview")  // 이 경로를 클라이언트에서도 동일하게 사용해야 함
     @ResponseBody
     public ResponseEntity<AIInterviewDTO> startInterview(@RequestBody AIInterviewDTO requestDto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        requestDto.setUsername(auth.getName());
         requestDto.setStatus(AIInterviewStatus.CREATED);
         requestDto.setInterviewDate(LocalDateTime.now());
-
-        // 기본 질문 설정
-        requestDto.setQuestions(Arrays.asList(
-                AIQuestionDTO.builder()
-                        .content("회사를 선택한 이유는 무엇인가요?")
-                        .orderNumber(1)
-                        .build(),
-                AIQuestionDTO.builder()
-                        .content("직무와 관련된 경험을 설명해주세요.")
-                        .orderNumber(2)
-                        .build(),
-                AIQuestionDTO.builder()
-                        .content("향후 커리어 계획은 무엇인가요?")
-                        .orderNumber(3)
-                        .build()
-        ));
 
         AIInterviewDTO createdInterview = interviewService.createInterview(requestDto);
         return ResponseEntity.ok(createdInterview);
