@@ -1,45 +1,39 @@
 package com.ip_project.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
+@Data
 @Entity
-@Table(name = "USER_INFORMATION")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class UserInformation {
-    @Id
-    private Long idx;
 
-    @Column(length = 250, nullable = false)
+    @Id
+    @Column(name = "USERNAME", length = 255, nullable = false)
+    private String username;
+
+    @Column(name = "EDUCATION", length = 255, nullable = false)
     private String education;
 
-    @Column(name = "user_career", length = 250)
-    private String userCareer;
+    @Column(name = "CAREER", length = 255, nullable = false)
+    private String career;
 
-    @Column(name = "self_intro_num")
-    private Integer selfIntroNum;
+    @Column(name = "SKILL", length = 255, nullable = false)
+    private String skill;
 
-    @Column(name = "user_skill", length = 100)
-    private String userSkill;
+    @Column(name = "PHOTO", length = 500, nullable = false)
+    private String photo;
 
-    @Column(name = "user_photo", length = 250)
-    private String userPhoto;
+    @Column(name = "LOCATION", length = 255, nullable = false)
+    private String location;
 
-    @Column(name = "hope_location", length = 30, nullable = false)
-    private String hopeLocation;
+    @Column(name = "SALARY", length = 255, nullable = false)
+    private Long salary;
 
-    @Column(name = "hope_salary", length = 50, nullable = false)
-    private String hopeSalary;
-
-    @Column(name = "hope_job_type", length = 50, nullable = false)
-    private String hopeJobType;
+    @Column(name = "JOB_TYPE", length = 255, nullable = false)
+    private String jobType;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
-    @JoinColumn(name = "idx")
+    @JoinColumn(name = "USERNAME")
     private Member member;
 }

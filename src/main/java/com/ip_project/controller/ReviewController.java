@@ -5,17 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.ip_project.entity.ReviewBoard;
-import com.ip_project.service.ReviewBoardService;
+import com.ip_project.entity.Review;
+import com.ip_project.service.ReviewService;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/review_board")
-public class ReviewBoardController {
+public class ReviewController {
 
     @Autowired
-    private ReviewBoardService service;
+    private ReviewService service;
 
     @GetMapping("/list")
     public String list(Model model, @RequestParam(name = "page", defaultValue = "1") int pageNum) {
@@ -29,7 +29,7 @@ public class ReviewBoardController {
         int groupStart = (currentGroup - 1) * pageGroupSize + 1;
         int groupEnd = Math.min(currentGroup * pageGroupSize, totalPages);
 
-        List<ReviewBoard> list = service.getListByPage(pageNum, pageSize);
+        List<Review> list = service.getListByPage(pageNum, pageSize);
 
         model.addAttribute("list", list);
         model.addAttribute("currentPage", pageNum);
@@ -43,12 +43,12 @@ public class ReviewBoardController {
 
     @GetMapping("/get")
     @ResponseBody
-    public ReviewBoard get(@RequestParam Long idx) {
+    public Review get(@RequestParam Long idx) {
         return service.get(idx);
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute ReviewBoard vo) {
+    public String register(@ModelAttribute Review vo) {
         service.register(vo);
         return "redirect:list";
     }

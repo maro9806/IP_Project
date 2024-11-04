@@ -38,5 +38,18 @@ public class CompanyController {
         return "company/corp";
     }
 
+    @GetMapping("/form")
+    public String form(@RequestParam(value = "companyIdx", required = false) Long companyIdx, Model model) {
+        Company board;
+        if (companyIdx != null) {
+            // companyIdx가 제공된 경우 해당 회사 정보를 조회
+            board = companyService.get(companyIdx);
+        } else {
+            // companyIdx가 없는 경우 새로운 Company 객체 생성
+            board = new Company();
+        }
+        model.addAttribute("board", board);
+        return "company/form";
+    }
 
 }
