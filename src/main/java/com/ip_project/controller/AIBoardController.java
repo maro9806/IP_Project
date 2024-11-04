@@ -86,16 +86,18 @@ public class AIBoardController {
     }
 
     @GetMapping("/loadSelfIntroduction/{idx}")
-    @ResponseBody // 이 어노테이션은 AJAX 요청에 JSON 응답을 보내기 위해 필요합니다.
-    public SelfIntroductionDTO loadSelfIntroduction(@PathVariable Long idx) {
-        // 선택된 SelfBoard의 idx로 SelfIntroduction 가져오기
-        SelfBoard selfBoard = selfBoardService.findById(idx);
-
-        if (selfBoard != null) {
-            return selfIntroductionService.getSelfIntroductions(selfBoard); // DTO를 직접 반환
-        } else {
-            // selfBoard가 없을 경우에 대한 처리
-            throw new IllegalArgumentException("SelfBoard not found");
+    @ResponseBody
+    public SelfIntroductionDTO loadSelfIntroduction(@PathVariable("idx") Long idx) {
+        try {
+            SelfBoard selfBoard = selfBoardService.findById(idx);
+            if (selfBoard != null) {
+                return selfIntroductionService.getSelfIntroductions(selfBoard);
+            } else {
+                throw new IllegalArgumentException("SelfBoard not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to load self introduction");
         }
     }
 
