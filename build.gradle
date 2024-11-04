@@ -62,10 +62,6 @@ bootRun {
     systemProperty 'logging.level.org.springframework.jmx', 'DEBUG'
 }
 
-compileJava {
-    options.parameters = true
-}
-
 tasks.withType(JavaCompile) {
     options.compilerArgs << '-parameters'
 }
