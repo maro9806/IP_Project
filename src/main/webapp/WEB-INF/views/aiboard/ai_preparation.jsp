@@ -429,31 +429,26 @@
     });
 
     function loadSelfIntroduction(selfIdx) {
-        if (!selfIdx) {
-            console.error('Invalid selfIdx:', selfIdx);
-            return;
-        }
+        fetch(`/aiboard/loadSelfIntroduction/${selfIdx}`)
+            .then(response => response.json())
+            .then(data => {
+                // 제목, 회사, 포지션 정보 표시
+                document.getElementById('title').textContent = data.title;
+                document.getElementById('company').textContent = data.company;
+                document.getElementById('position').textContent = data.position;
 
-        $.ajax({
-            url: `/aiboard/loadSelfIntroduction/${selfIdx}`,
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                console.log('Received data:', data);
-                if (!data) {
-                    alert('자기소개서 데이터를 불러올 수 없습니다.');
-                    return;
-                }
+                // 질문/답변 목록을 select나 다른 형태로 표시
+                const selectContainer = document.getElementById('introductions');
+                selectContainer.innerHTML = '';
 
-                updateSelfIntroductionDisplay(data);
-            },
-            error: function(xhr, status, error) {
-                console.error('자기소개서 불러오기 오류:', error);
-                console.error('Status:', status);
-                console.error('Response:', xhr.responseText);
-                alert('자기소개서를 불러오는데 실패했습니다.');
-            }
-        });
+                data.introductions.forEach((intro, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `Q${index + 1}: ${intro.question}`;
+                    selectContainer.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
     }
 
     function updateSelfIntroductionDisplay(data) {

@@ -10,6 +10,8 @@ import com.ip_project.service.SelfIntroductionService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -154,25 +158,26 @@ public class AIBoardController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/loadSelfIntroduction")
-    public ResponseEntity<SelfIntroductionDTO> loadSelfIntroduction(
-            @RequestParam(name = "selfIdx", required = true) Long selfIdx) {
-        log.debug("Loading self introduction for selfIdx: {}", selfIdx);
-
-        if (selfIdx == null) {
-            log.error("selfIdx is null");
-            return ResponseEntity.badRequest().build();
-        }
-
+    @GetMapping("/loadSelfIntroduction/{selfIdx}")
+    @ResponseBody
+    public ResponseEntity<?> loadSelfIntroduction(@PathVariable Long selfIdx) {
         try {
-            SelfIntroductionDTO dto = selfIntroductionService.getSelfIntroductions(selfIdx);
-            return ResponseEntity.ok(dto);
-        } catch (EntityNotFoundException e) {
-            log.error("자기소개서를 찾을 수 없습니다. ID: {}", selfIdx, e);
-            return ResponseEntity.notFound().build();
+            // 자기소개서 정보를 담을 DTO
+            Map<String, Object> response = new HashMap<>();
+
+            // self_board 테이블에서 정보 조회
+            SelfBoard selfBoard = selfBoardService.findBySelfIdx(selfIdx);
+            response.put("title", selfBoard.getSelfTitle());
+            response.put("company", selfBoard.getSelfCompany());
+            response.put("position", selfBoard.getSelfPosition());
+
+            // self_introduction 테이블에서 해당 self_idx의 모든 질문/답변 조회
+            List<Map<String, String>> introductions = selfIntroductionService.findAllBySelfIdx(selfIdx);
+            response.put("introductions", introductions);
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            log.error("자기소개서 로딩 중 오류 발생. ID: {}", selfIdx, e);
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 }

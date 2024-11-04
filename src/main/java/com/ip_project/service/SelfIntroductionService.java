@@ -7,17 +7,21 @@ import com.ip_project.repository.SelfIntroductionRepository;
 import com.ip_project.repository.SelfBoardRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor  // 생성자 주입을 위한 어노테이션
 @Transactional(readOnly = true)  // 기본적으로 읽기 전용 트랜잭션 설정
 public class SelfIntroductionService {
 
+    private final JdbcTemplate jdbcTemplate;
     private final SelfIntroductionRepository selfIntroductionRepository;
     private final SelfBoardRepository selfBoardRepository;
 
@@ -30,6 +34,16 @@ public class SelfIntroductionService {
 
         // DTO 변환 및 반환
         return convertToDTO(selfBoard, introductions);
+    }
+
+    public List<Map<String, String>> findAllBySelfIdx(Long selfIdx) {
+        String sql = "SELECT intro_question, intro_answer FROM self_introduction WHERE self_idx = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Map<String, String> intro = new HashMap<>();
+            intro.put("question", rs.getString("intro_question"));
+            intro.put("answer", rs.getString("intro_answer"));
+            return intro;
+        }, selfIdx);
     }
 
     private SelfIntroductionDTO convertToDTO(SelfBoard selfBoard, List<SelfIntroduction> introductions) {
