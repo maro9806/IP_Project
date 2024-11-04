@@ -3,6 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,25 +14,31 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/ai_preparation.css">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>
 <!-- Interview Setup Section -->
 <div id="setupSection" class="main-content">
-    <div class="container">
-        <!-- Centered greeting message -->
-        <div class="row">
-            <div class="col center-text fade-target">
-                <p><strong>신현준님</strong>, 안녕하세요</p>
-                <p>지금부터 영상 면접을 시작할게요.</p>
-            </div>
-        </div>
 
-        <!-- Card section with video and AIInterview settings (Horizontal layout) -->
+    <!-- Centered greeting message -->
+    <%--        <div class="card">--%>
+    <%--            <div class="card-body">--%>
+    <%--            <div class="col center-text fade-target">--%>
+    <%--                <p><strong>신현준님</strong>, 안녕하세요</p>--%>
+    <%--                <p>지금부터 영상 면접을 시작할게요.</p>--%>
+    <%--            </div>--%>
+    <%--            </div>--%>
+    <%--        </div>--%>
+
+    <!-- Card section with video and AIInterview settings (Horizontal layout) -->
+    <div class="camera-container">
         <div class="row justify-content-center position-relative">
-            <div class="card col-lg-8 d-flex flex-row">
+            <div class="card camera-card col-lg-8 d-flex flex-row">
                 <!-- Left section: Video -->
-                <div class="video-section">
+                <div class="video-section d-flex flex-column">
+                    <h5><strong>면접 환경 설정</strong></h5>
+                    <p><sec:authentication property="principal.member.name"/>님 영상 면접을 진행할 자기소개서와 질문을 선택해주세요.</p>
                     <video id="videoPreview" autoplay playsinline muted></video>
                     <div id="videoError" class="video-error" style="display: none;">
                         카메라에 접근할 수 없습니다. 카메라 권한을 확인해주세요.
@@ -42,59 +49,67 @@
                     </div>
                 </div>
                 <!-- Right section: Interview settings -->
-                <!-- Right section: Interview settings -->
                 <div class="form-section fade-target">
-                    <h4>면접 환경 설정</h4>
                     <div class="mb-3">
                         <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <!-- 불러온 자기소개서 정보를 표시할 위치 -->
+                                    <div id="selectedSelfIntroduction" class="mt-3">
+                                        <label for="coverLetter"><strong>자기소개서</strong></label>
+                                        <input id="coverLetter" readonly class="form-control" value="-"/>
+                                        <label for="questions"><strong>예상질문</strong></label>
+                                        <input id="questions" readonly class="form-control" value="-"/>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="2">
                                     <button id="loadModalBtn" class="btn btn-dark w-100 mt-3">자기소개서 불러오기</button>
                                 </td>
                             </tr>
                         </table>
-                        <div id="QnAs">
-                            <!-- 자기소개서 내용이 여기에 로드됨 -->
-                        </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">질문 종류</label><br>
-                        <input type="checkbox" id="company" name="company">
-                        <label for="company">기업</label>
-                        <input type="checkbox" id="job" name="job">
-                        <label for="job">직무</label>
-                        <input type="checkbox" id="experience" name="experience">
-                        <label for="experience">경험</label>
+                        <label class="form-label"><strong>답변 시간</strong></label><br>
+                        <select class="form-control">
+                            <option>30초</option>
+                            <option>60초</option>
+                            <option>1분 30초</option>
+                        </select>
                     </div>
                     <button class="btn btn-primary w-100" onclick="startInterview()">면접 시작하기</button>
                 </div>
+            </div>
 
-                <!-- 불러오기 모달 창 -->
-                <div id="loadModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <h5><strong>자기소개서 불러오기</strong></h5>
-                        <p>면접 질문을 추출할 자기소개서를 선택하세요</p>
-                        <div id="noSelfBoardMessage" style="display: ${empty selfBoards ? 'block' : 'none'};">
-                            <div class="card">
-                                <div class="card-body d-flex justify-content-center align-items-center" style="height: 100px;">
-                                    <p>저장한 자기소개서 내역이 없습니다.</p>
-                                </div>
+            <!-- 불러오기 모달 창 -->
+            <div id="loadModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h5><strong>자기소개서 불러오기</strong></h5>
+                    <p>영상 면접을 진행할 자기소개서를 선택하세요</p>
+                    <div id="noSelfBoardMessage" style="display: ${empty selfBoards ? 'block' : 'none'};">
+                        <div class="card">
+                            <div class="card-body d-flex justify-content-center align-items-center"
+                                 style="height: 100px;border: 1px solid #616161;border-radius: 8px;">
+                                <p class="mb-0">저장한 자기소개서 내역이 없습니다.</p>
                             </div>
                         </div>
-                        <ul style="list-style: none; padding: 0;">
-                            <c:forEach items="${selfBoards}" var="selfBoard">
-                                <li onclick="loadSelfIntroduction(${selfBoard.selfIdx})" class="btn btn-outline-dark mb-2 text-start" style="width: 100%;">
-                                    <div>
-                                        <small>${fn:substring(selfBoard.selfDate, 0, 10)} ${fn:substring(selfBoard.selfDate, 11, 16)}</small>
-                                        <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/><br>
-                                        <strong><c:out value="${selfBoard.selfCompany}"/></strong> <strong>${selfBoard.selfPosition}</strong><br>
-                                        <span>${selfBoard.selfTitle}</span>
-                                    </div>
-                                </li>
-                            </c:forEach>
-                        </ul>
                     </div>
+                    <ul style="list-style: none; padding: 0;">
+                        <c:forEach items="${selfBoards}" var="selfBoard">
+                            <li onclick="loadSelfIntroduction(${selfBoard.selfIdx})"
+                                class="btn btn-outline-dark mb-2 text-start" style="width: 100%;">
+                                <div>
+                                    <small>${fn:substring(selfBoard.selfDate, 0, 10)} ${fn:substring(selfBoard.selfDate, 11, 16)}</small>
+                                    <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/><br>
+                                    <strong><c:out value="${selfBoard.selfCompany}"/></strong>
+                                    <strong>${selfBoard.selfPosition}</strong><br>
+                                    <span>${selfBoard.selfTitle}</span>
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -152,17 +167,39 @@
 
     async function startInterview() {
         try {
-            // fetch 요청 전에 현재 경로를 확인
-            console.log('Current path:', window.location.pathname);
+            // 자기소개서 선택 여부 확인
+            const coverLetter = document.getElementById('coverLetter');
+            if (!coverLetter || coverLetter.value === '-') {
+                alert('자기소개서를 선택해주세요.');
+                return;
+            }
+
+            // 질문 종류 체크
+            const companyChecked = document.getElementById('company').checked;
+            const jobChecked = document.getElementById('job').checked;
+            const experienceChecked = document.getElementById('experience').checked;
+
+            if (!companyChecked && !jobChecked && !experienceChecked) {
+                alert('최소 하나 이상의 질문 종류를 선택해주세요.');
+                return;
+            }
+
+            // 답변 시간 가져오기
+            const answerTime = document.querySelector('select').value;
 
             const response = await fetch('/aiboard/api/interview', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                    // CSRF 토큰은 비활성화했으므로 제거
                 },
                 body: JSON.stringify({
-                    position: document.getElementById('positionSelect').value,
+                    coverLetter: coverLetter.value,
+                    questionTypes: {
+                        company: companyChecked,
+                        job: jobChecked,
+                        experience: experienceChecked
+                    },
+                    answerTime: answerTime,
                     questions: [
                         {
                             content: "회사를 선택한 이유는 무엇인가요?",
@@ -180,22 +217,18 @@
                 })
             });
 
-            console.log('Response status:', response.status); // 응답 상태 확인
-
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error('Server response:', errorText);
                 throw new Error(`면접 시작에 실패했습니다. Status: ${response.status}`);
             }
 
             const data = await response.json();
-            console.log('Received data:', data); // 받은 데이터 확인
-
             currentInterviewId = data.id;
             await startVideoRecording();
 
+            // UI 전환
             document.getElementById('setupSection').classList.add('hidden');
             document.getElementById('questionSection').classList.remove('hidden');
+
         } catch (error) {
             console.error('Interview start error:', error);
             alert('Error: ' + error.message);
@@ -205,7 +238,10 @@
     async function startVideoRecording() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
+                video: {
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
                 audio: true
             });
 
@@ -213,8 +249,9 @@
             videoElement.srcObject = stream;
             videoElement.autoplay = true;
             videoElement.playsInline = true;
+            videoElement.className = 'interview-video'; // 스타일링을 위한 클래스 추가
 
-            const videoSection = document.querySelector('.video-section');
+            const videoSection = document.querySelector('#questionSection .video-section');
             videoSection.innerHTML = '';
             videoSection.appendChild(videoElement);
 
@@ -222,7 +259,7 @@
                 mimeType: 'video/webm;codecs=vp8,opus'
             });
 
-            recordedChunks = []; // 새 녹화 시작 전 초기화
+            recordedChunks = [];
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
                     recordedChunks.push(event.data);
@@ -248,7 +285,7 @@
                         try {
                             const token = document.querySelector("meta[name='_csrf']").content;
                             const header = document.querySelector("meta[name='_csrf_header']").content;
-                            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                            const blob = new Blob(recordedChunks, {type: 'video/webm'});
                             const formData = new FormData();
                             formData.append('video', blob);
 
@@ -323,8 +360,8 @@
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 }
+                    width: {ideal: 1280},
+                    height: {ideal: 720}
                 },
                 audio: false
             });
@@ -354,70 +391,89 @@
         }
     })
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // 모달 창 관련 요소
-        var loadModal = document.getElementById("loadModal");
-        var loadModalBtn = document.getElementById("loadModalBtn");
-        var loadCloseBtn = loadModal.querySelector(".close");
+        const loadModal = document.getElementById("loadModal");
+        const loadModalBtn = document.getElementById("loadModalBtn");
+        const loadCloseBtn = loadModal.querySelector(".close");
 
         // 모달 열기
-        loadModalBtn.onclick = function() {
+        loadModalBtn.onclick = function () {
             loadModal.style.display = "block";
         };
 
         // 모달 닫기
-        loadCloseBtn.onclick = function() {
+        loadCloseBtn.onclick = function () {
             loadModal.style.display = "none";
         };
 
         // 모달 외부 클릭시 닫기
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == loadModal) {
                 loadModal.style.display = "none";
             }
         };
     });
 
-    // 자기소개서 로드 함수
+
+    // 자기소개서 목록의 각 항목에 이벤트 리스너 추가
+    $(document).ready(function() {
+        // 모달 관련 요소
+        const loadModal = document.getElementById("loadModal");
+        const loadModalBtn = document.getElementById("loadModalBtn");
+        const loadCloseBtn = loadModal.querySelector(".close");
+
+        // 자기소개서 목록 클릭 이벤트 처리
+        $('li[onclick^="loadSelfIntroduction"]').each(function() {
+            $(this).click(function(e) {
+                e.preventDefault();
+                const selfIdx = $(this).data('self-idx');
+                loadSelfIntroduction(selfIdx);
+            });
+        });
+    });
+
     function loadSelfIntroduction(selfIdx) {
         $.ajax({
-            url: `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/`+selfIdx,
+            url: '/aiboard/loadSelfIntroduction/' + selfIdx,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                document.getElementById("select_company").value = data.company;
-                document.getElementById("select_position").value = data.position;
+                console.log('Received data:', data); // 데이터 확인용 로그
 
-                const questionsAndAnswers = document.getElementById('QnAs');
-                questionsAndAnswers.innerHTML = '';
-
-                const questionsLength = data.questions.length;
-                const answersLength = data.answers.length;
-
-                for (let i = 0; i < Math.min(questionsLength, answersLength); i++) {
-                    const question = data.questions[i];
-                    const answer = data.answers[i];
-
-                    const questionRow = document.createElement('div');
-                    questionRow.className = 'mt-3';
-                    questionRow.innerHTML = `
-                    <label><strong>자기소개서 문항 ${i + 1}</strong></label>
-                    <input readonly type="text" class="form-control" value="${question}"
-                           style="background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;" />
-                    <textarea readonly class="form-control mt-2" rows="5"
-                              style="background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;">${answer}</textarea>
-                `;
-                    questionsAndAnswers.appendChild(questionRow);
+                if (!data) {
+                    alert('자기소개서 데이터를 불러올 수 없습니다.');
+                    return;
                 }
 
+                // 선택된 자기소개서 정보 업데이트
+                const resultDiv = document.getElementById('selectedSelfIntroduction');
+                resultDiv.innerHTML = `
+                <label for="coverLetter"><strong>자기소개서</strong></label>
+                <div class="form-control mb-3">
+                    <strong>${data.selfCompany || ''}</strong>
+                    <span> / ${data.selfPosition || ''}</span>
+                </div>
+                <label for="questions"><strong>예상질문</strong></label>
+                <select class="form-control" id="questions">
+                    <option>1. 자기소개를 해주세요.</option>
+                    <option>2. 지원동기를 말씀해주세요.</option>
+                    <option>3. 직무와 관련된 경험을 설명해주세요.</option>
+                </select>
+            `;
+
+                // 모달 닫기
+                const loadModal = document.getElementById('loadModal');
                 loadModal.style.display = "none";
             },
             error: function(xhr, status, error) {
-                console.error('Error fetching self-introduction:', error);
+                console.error('자기소개서 불러오기 오류:', error);
+                console.error('Status:', status);
+                console.error('Response:', xhr.responseText);
                 alert('자기소개서를 불러오는데 실패했습니다.');
             }
         });
-    };
+    }
 </script>
 
 </body>

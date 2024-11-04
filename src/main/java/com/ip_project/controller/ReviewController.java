@@ -17,7 +17,7 @@ public class ReviewController {
     @Autowired
     private ReviewService service;
 
-    @GetMapping("/list")
+    @GetMapping("/revewi_list")
     public String list(Model model, @RequestParam(name = "page", defaultValue = "1") int pageNum) {
         int pageSize = 15; // 한 페이지당 게시글 수
         int totalCount = service.getTotalCount(); // 전체 게시글 수
@@ -38,7 +38,7 @@ public class ReviewController {
         model.addAttribute("groupEnd", groupEnd);
         model.addAttribute("pageGroupSize", pageGroupSize);
 
-        return "review_board/list";
+        return "review_board/review_list";
     }
 
     @GetMapping("/get")
@@ -58,4 +58,6 @@ public class ReviewController {
         service.remove(idx);
         return "redirect:list";
     }
+
+
 }

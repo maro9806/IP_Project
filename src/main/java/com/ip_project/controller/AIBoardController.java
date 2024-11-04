@@ -2,15 +2,14 @@ package com.ip_project.controller;
 
 import com.ip_project.dto.AIInterviewDTO;
 import com.ip_project.dto.SelfIntroductionDTO;
-import com.ip_project.entity.AIInterviewStatus;
-import com.ip_project.entity.Member;
-import com.ip_project.entity.SelfBoard;
-import com.ip_project.entity.SelfIntroduction;
+import com.ip_project.entity.*;
 import com.ip_project.repository.MemberRepository;
 import com.ip_project.service.AIInterviewService;
 import com.ip_project.service.SelfBoardService;
 import com.ip_project.service.SelfIntroductionService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+
+@Slf4j
 @Controller
 @RequestMapping("/aiboard")
 @RequiredArgsConstructor
@@ -30,7 +31,6 @@ public class AIBoardController {
     private final AIInterviewService interviewService;
     private final SelfIntroductionService selfIntroductionService;
     private final SelfBoardService selfBoardService;
-    private final MemberRepository memberRepository;
 
     @GetMapping("/ai_board")
     public String aiBoard() {
@@ -48,59 +48,62 @@ public class AIBoardController {
 
     @PostMapping("/saveIntroduction")
     public String saveIntroduction(@ModelAttribute SelfIntroductionDTO selfIntroDto) {
-        // 현재 사용자 인증 객체에서 username 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName(); // 현재 사용자의 username
-
-        // 디버깅 로그 추가
-        System.out.println("Current authenticated username: " + username);
-
-        // username을 통해 Member 엔티티 불러오기
-        Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Member not found")); // 에러 핸들링 추가/
-
-        // SelfBoard 저장 (제목, 회사, 직무, 작성일은 자동 생성으로 가정)
-        SelfBoard selfBoard = SelfBoard.builder()
-                .selfIdx(null) // 시퀀스로 자동 생성되도록 null로 설정
-                .selfCompany(selfIntroDto.getCompany())
-                .selfTitle(selfIntroDto.getTitle())
-                .selfPosition(selfIntroDto.getPosition())
-                .selfDate(LocalDateTime.now()) // 현재 날짜로 설정
-                .member(member) // Member 추가
-                .build();
-        // SelfBoard 저장
-        selfBoardService.save(selfBoard);
-
-        // SelfIntroduction 객체 저장 (질문 및 답변)
-        for (int i = 0; i < selfIntroDto.getQuestions().size(); i++) {
-            SelfIntroduction selfIntroduction = SelfIntroduction.builder()
-                    .introIdx(null)
-                    .introQuestion(selfIntroDto.getQuestions().get(i))
-                    .introAnswer(selfIntroDto.getAnswers().get(i))
-                    .selfBoard(selfBoard)
-                    .build();
-            selfIntroductionService.saveSelfIntroduction(selfIntroduction);
-        }
-        System.out.println("저장이 완료되었습니다.");
-        return "redirect:/aiboard/ai_custominfo"; // 저장 후 리다이렉트 페이지 설정
-    }
-
-    @GetMapping("/loadSelfIntroduction/{idx}")
-    @ResponseBody
-    public SelfIntroductionDTO loadSelfIntroduction(@PathVariable("idx") Long idx) {
         try {
-            SelfBoard selfBoard = selfBoardService.findById(idx);
-            if (selfBoard != null) {
-                return selfIntroductionService.getSelfIntroductions(selfBoard);
-            } else {
-                throw new IllegalArgumentException("SelfBoard not found");
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth == null) {
+                log.error("Authentication is null");
+                throw new RuntimeException("Authentication not found");
             }
+
+            CustomUser customUser = (CustomUser) auth.getPrincipal();
+            Member member = customUser.getMember();
+
+            if (member == null) {
+                log.error("Member is null in CustomUser");
+                throw new RuntimeException("Member not found in CustomUser");
+            }
+
+            log.info("Found member: {}", member.toString());
+
+            // SelfBoard 생성 - member 대신 username 사용
+            SelfBoard selfBoard = SelfBoard.builder()
+                    .selfCompany(selfIntroDto.getCompany())
+                    .selfTitle(selfIntroDto.getTitle())
+                    .selfPosition(selfIntroDto.getPosition())
+                    .selfDate(LocalDateTime.now())
+                    .username(member.getUsername())  // member 대신 username 사용
+                    .build();
+
+            // SelfBoard 저장
+            log.info("Attempting to save SelfBoard with title: {}", selfBoard.getSelfTitle());
+            selfBoard = selfBoardService.save(selfBoard);
+            log.info("Successfully saved SelfBoard with ID: {}", selfBoard.getSelfIdx());
+
+            // SelfIntroduction 저장
+            for (int i = 0; i < selfIntroDto.getQuestions().size(); i++) {
+                String question = selfIntroDto.getQuestions().get(i);
+                String answer = selfIntroDto.getAnswers().get(i);
+
+                log.info("Saving question {}: {}", i + 1, question);
+
+                SelfIntroduction selfIntroduction = SelfIntroduction.builder()
+                        .introQuestion(question)
+                        .introAnswer(answer)
+                        .selfIdx(selfBoard.getSelfIdx())  // selfIdx 설정 추가
+                        .selfBoard(selfBoard)  // 연관관계를 위해 추가
+                        .build();
+
+                selfIntroductionService.saveSelfIntroduction(selfIntroduction);
+                log.info("Saved answer for question {}", i + 1);
+            }
+
+            return "redirect:/aiboard/ai_custominfo";
+
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to load self introduction");
+            log.error("Error in saveIntroduction:", e);
+            throw e;
         }
     }
-
 
     @GetMapping("/ai_makequestion")
     public String aiMakeQuestion() {
@@ -147,5 +150,21 @@ public class AIBoardController {
             @RequestParam("video") MultipartFile file) {
         interviewService.submitVideoResponse(id, file);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/loadSelfIntroduction/{selfIdx}")
+    public ResponseEntity<SelfIntroductionDTO> loadSelfIntroduction(
+            @PathVariable("selfIdx") Long selfIdx) {  // 이름을 명시적으로 지정
+        try {
+            log.debug("Loading self introduction for selfIdx: {}", selfIdx);
+            SelfIntroductionDTO dto = selfIntroductionService.getSelfIntroductions(selfIdx);
+            return ResponseEntity.ok(dto);
+        } catch (EntityNotFoundException e) {
+            log.error("자기소개서를 찾을 수 없습니다. ID: {}", selfIdx, e);
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error("자기소개서 로딩 중 오류 발생. ID: {}", selfIdx, e);
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

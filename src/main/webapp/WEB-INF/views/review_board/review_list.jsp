@@ -60,11 +60,10 @@
         <table class="table table-striped notice-board">
             <thead>
             <tr>
-                <th scope="col">idx</th>
+                <th scope="col">번호</th>
                 <th scope="col">기업명</th>
                 <th scope="col">글 제목</th>
                 <th scope="col">Date</th>
-                <th scope="col">Username</th>
                 <th scope="col">Count</th>
             </tr>
             </thead>
@@ -75,7 +74,6 @@
                     <td>${board.companyName}</td>
                     <td>${board.title}</td>
                     <td><fmt:formatDate value="${board.createDate}" pattern="yyyy-MM-dd"/></td>
-                    <td>${board.writer}</td>
                     <td>${board.viewCount}</td>
                 </tr>
             </c:forEach>

@@ -2,38 +2,32 @@ package com.ip_project.service;
 
 import com.ip_project.entity.SelfBoard;
 import com.ip_project.repository.SelfBoardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SelfBoardService {
-    @Autowired
-    private SelfBoardRepository selfBoardRepository;
+    private final SelfBoardRepository selfBoardRepository;
 
     public void listByUsername(Model model, String username) {
-        List<SelfBoard> selfBoards = selfBoardRepository.findByMemberUsername(username);
-        // 내림차순으로 정렬
-        selfBoards.sort((o1, o2) -> o2.getSelfDate().compareTo(o1.getSelfDate()));
+        List<SelfBoard> selfBoards = selfBoardRepository.findByUsername(username);
         model.addAttribute("selfBoards", selfBoards);
     }
 
-    public void list(Model model) {
-        List<SelfBoard> selfBoards = selfBoardRepository.findAll();
-        model.addAttribute("selfBoards", selfBoards);
+    @Transactional
+    public SelfBoard save(SelfBoard selfBoard) {
+        if (selfBoard.getSelfDate() == null) {
+            selfBoard.setSelfDate(LocalDateTime.now());
+        }
+        return selfBoardRepository.save(selfBoard);
     }
-
-    public SelfBoard findById(Long idx) {
-        Optional<SelfBoard> selfBoard = selfBoardRepository.findById(idx);
-        return selfBoard.orElse(null); // SelfBoard가 존재하지 않을 경우 null 반환
-    }
-
-    public void save(SelfBoard selfBoard) {
-        selfBoardRepository.save(selfBoard);
-    }
-
-
 }

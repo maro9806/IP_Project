@@ -1,12 +1,14 @@
 body {
   background-color: white; /* Initial background color */
   transition: background-color 1s ease; /* Smooth transition effect */
+  font-family: 'Noto Sans KR', sans-serif;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+  overflow-y: auto; /* 세로 스크롤은 필요할 때만 표시 */
 }
 
 /* Main content padding */
 .main-content {
-  padding-top: 100px;
-  padding-bottom: 100%;
+  padding-top: 150px;
 }
 
 .hidden {
@@ -14,14 +16,13 @@ body {
 }
 
 /* Center the card horizontally and vertically */
-.card {
+.camera-card {
   width: 900px; /* Set a fixed width */
-  height: 500px; /* Set a fixed height */
-  padding: 20px;
+  height: 600px; /* Set a fixed height */
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
@@ -29,11 +30,11 @@ body {
 .video-section {
   width: 100%;
   max-width: 640px;
-  height: 480px;
+  height: 100%;
   position: relative;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -60,11 +61,12 @@ body {
 
 /* Form section */
 .form-section {
-  padding: 20px;
+  padding: 50px 20px 0px;
   width: 50%;
+  height:100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 /* Center text */
@@ -108,3 +110,81 @@ body {
 .hidden {
   display: none; /* Hidden by default */
 }
+
+/* 모달 창 스타일 */
+/* 모달 배경 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* 반투명 배경 */
+}
+#noSelfBoardMessage .card{
+  width:auto;
+  height:auto;
+  box-shadow: none;
+}
+/* 모달 내용 */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0 20px 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 800px; /* 모달 최대 너비 */
+  border-radius: 8px; /* 둥근 테두리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+/* 닫기 버튼 */
+.close {
+  color: #090909;
+  margin-left:97%;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* 닫기 버튼 hover 효과 */
+.close:hover,
+.close:focus {
+  color: darkred;
+  text-decoration: none;
+}
+
+/* 모달 내부 내용 스타일 */
+.modal-content h5 {
+  font-weight: bold;
+}
+
+.modal-content p {
+  font-size: 16px;
+  color: #333;
+}
+
+.modal-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.modal-content li {
+  border: 1px solid #000000;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* 모달 리스트 hover 효과 */
+.modal-content li:hover {
+  background-color: #0c0c0c;
+}
+
+

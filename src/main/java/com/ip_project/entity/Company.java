@@ -43,6 +43,9 @@ public class Company {
     @Column(name = "COMPANY_CONTENT", length = 4000)
     private String companyContent;
 
+    @Column(name = "IMG", nullable = true, length = 4000)
+    private String img;
+
     @Column(name = "COMPANY_DATE", columnDefinition = "TIMESTAMP DEFAULT SYSTIMESTAMP")
     private LocalDateTime companyDate;
 

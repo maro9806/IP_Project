@@ -129,7 +129,7 @@
 
         </div>
         <div>
-            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_custominfo'" type="button" class="btn btn-secondary">
+            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_board'" type="button" class="btn btn-secondary">
                 처음으로 돌아가기
             </button>
             <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_preparation'"
