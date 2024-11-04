@@ -82,7 +82,7 @@
             <div id="noSelfBoardMessage" style="display: ${empty selfBoards ? 'block' : 'none'};">
                 <div class="card">
                     <div class="card-body d-flex justify-content-center align-items-center" style="height: 100px;">
-                        <p>저장한 자기소개서 내역이 없습니다.</p>
+                        <p class="mb-0">저장한 자기소개서 내역이 없습니다.</p>
                     </div>
                 </div>
             </div>
@@ -94,7 +94,6 @@
                             <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/><br> <!-- 작성일 표시 -->
                             <strong><c:out value="${selfBoard.selfCompany}"/></strong> <strong>${selfBoard.selfPosition}</strong> <br>
                             <span>${selfBoard.selfTitle}</span>
-
                         </div>
                     </li>
                 </c:forEach>
@@ -339,9 +338,11 @@
     };
 
     function loadSelfIntroduction(selfIdx) {
+        <%--const url = `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/` + selfIdx;--%>
+        <%--console.log("AJAX 요청 URL:", url);  // 요청 URL 로그--%>
         // AJAX 요청으로 데이터를 가져오기
         $.ajax({
-            url: `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/`+selfIdx,
+            url: 'http://localhost:8081/aiboard/loadSelfIntroduction/'+selfIdx,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -356,7 +357,7 @@
                 // 질문과 답변 배열 길이
                 const questionsLength = data.questions.length;
                 const answersLength = data.answers.length;
-// 질문과 답변을 테이블에 추가
+                // 질문과 답변을 테이블에 추가
                 for (let i = 0; i < Math.min(questionsLength, answersLength); i++) {
                     const question = data.questions[i];
                     const answer = data.answers[i];

@@ -17,17 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor  // 생성자 주입을 위한 어노테이션
-@Transactional(readOnly = true)  // 기본적으로 읽기 전용 트랜잭션 설정
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SelfIntroductionService {
-
-    private final JdbcTemplate jdbcTemplate;
     private final SelfIntroductionRepository selfIntroductionRepository;
     private final SelfBoardRepository selfBoardRepository;
 
     public SelfIntroductionDTO getSelfIntroductions(Long selfIdx) {
         // 자기소개서 정보 조회
-        SelfBoard selfBoard = selfBoardRepository.findBySelfIdx(selfIdx)
+        SelfBoard selfBoard = (SelfBoard) selfBoardRepository.findBySelfIdx(selfIdx)
                 .orElseThrow(() -> new EntityNotFoundException("자기소개서를 찾을 수 없습니다. ID: " + selfIdx));
 
         List<SelfIntroduction> introductions = selfIntroductionRepository.findAllBySelfIdx(selfIdx);
@@ -36,14 +34,26 @@ public class SelfIntroductionService {
         return convertToDTO(selfBoard, introductions);
     }
 
-    public List<Map<String, String>> findAllBySelfIdx(Long selfIdx) {
-        String sql = "SELECT intro_question, intro_answer FROM self_introduction WHERE self_idx = ?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Map<String, String> intro = new HashMap<>();
-            intro.put("question", rs.getString("intro_question"));
-            intro.put("answer", rs.getString("intro_answer"));
-            return intro;
-        }, selfIdx);
+    public List<Map<String, Object>> findAllBySelfIdx(Long selfIdx) {
+        List<SelfIntroduction> introductions = selfIntroductionRepository.findAllBySelfIdx(selfIdx);
+        SelfBoard selfBoard = (SelfBoard) selfBoardRepository.findBySelfIdx(selfIdx)
+                .orElseThrow(() -> new EntityNotFoundException("자기소개서를 찾을 수 없습니다. ID: " + selfIdx));
+
+        List<Map<String, Object>> result = new ArrayList<>();
+        Map<String, Object> boardInfo = new HashMap<>();
+        boardInfo.put("title", selfBoard.getSelfTitle());
+        boardInfo.put("company", selfBoard.getSelfCompany());
+        boardInfo.put("position", selfBoard.getSelfPosition());
+        result.add(boardInfo);
+
+        for (SelfIntroduction intro : introductions) {
+            Map<String, Object> introMap = new HashMap<>();
+            introMap.put("question", intro.getIntroQuestion());
+            introMap.put("answer", intro.getIntroAnswer());
+            result.add(introMap);
+        }
+
+        return result;
     }
 
     private SelfIntroductionDTO convertToDTO(SelfBoard selfBoard, List<SelfIntroduction> introductions) {
@@ -69,12 +79,12 @@ public class SelfIntroductionService {
         return dto;
     }
 
-    @Transactional  // 쓰기 작업을 위한 트랜잭션 설정
+    @Transactional
     public void saveSelfIntroduction(SelfIntroduction selfIntroduction) {
         selfIntroductionRepository.save(selfIntroduction);
     }
 
-    @Transactional  // 쓰기 작업을 위한 트랜잭션 설정
+    @Transactional
     public void deleteSelfIntroduction(SelfIntroduction selfIntroduction) {
         selfIntroductionRepository.delete(selfIntroduction);
     }

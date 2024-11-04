@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,22 +163,36 @@ public class AIBoardController {
     @ResponseBody
     public ResponseEntity<?> loadSelfIntroduction(@PathVariable Long selfIdx) {
         try {
-            // 자기소개서 정보를 담을 DTO
+            // SelfIntroductionDTO를 통해 데이터 조회
+            SelfIntroductionDTO dto = selfIntroductionService.getSelfIntroductions(selfIdx);
+
+            // 응답 데이터 구성
             Map<String, Object> response = new HashMap<>();
+            response.put("title", dto.getTitle());
+            response.put("company", dto.getCompany());
+            response.put("position", dto.getPosition());
 
-            // self_board 테이블에서 정보 조회
-            SelfBoard selfBoard = selfBoardService.findBySelfIdx(selfIdx);
-            response.put("title", selfBoard.getSelfTitle());
-            response.put("company", selfBoard.getSelfCompany());
-            response.put("position", selfBoard.getSelfPosition());
+            // 질문과 답변을 리스트로 구성
+            List<Map<String, String>> introductions = new ArrayList<>();
+            List<String> questions = dto.getQuestions();
+            List<String> answers = dto.getAnswers();
 
-            // self_introduction 테이블에서 해당 self_idx의 모든 질문/답변 조회
-            List<Map<String, String>> introductions = selfIntroductionService.findAllBySelfIdx(selfIdx);
+            for (int i = 0; i < questions.size(); i++) {
+                Map<String, String> qa = new HashMap<>();
+                qa.put("question", questions.get(i));
+                qa.put("answer", answers.get(i));
+                introductions.add(qa);
+            }
+
             response.put("introductions", introductions);
-
             return ResponseEntity.ok(response);
+
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("자기소개서를 찾을 수 없습니다: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
         }
     }
 }

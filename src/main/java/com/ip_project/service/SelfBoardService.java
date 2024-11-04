@@ -21,7 +21,10 @@ public class SelfBoardService {
     private final JdbcTemplate jdbcTemplate;
 
     public void listByUsername(Model model, String username) {
+        // findByMemberUsername를 findByUsername으로 변경
         List<SelfBoard> selfBoards = selfBoardRepository.findByUsername(username);
+        // 내림차순으로 정렬
+        selfBoards.sort((o1, o2) -> o2.getSelfDate().compareTo(o1.getSelfDate()));
         model.addAttribute("selfBoards", selfBoards);
     }
 
@@ -34,15 +37,8 @@ public class SelfBoardService {
     }
 
     public SelfBoard findBySelfIdx(Long selfIdx) {
-        String sql = "SELECT * FROM self_board WHERE self_idx = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                        SelfBoard.builder()
-                                .selfIdx(rs.getLong("self_idx"))
-                                .selfTitle(rs.getString("self_title"))
-                                .selfCompany(rs.getString("self_company"))
-                                .selfPosition(rs.getString("self_position"))
-                                .build()
-                , selfIdx);
+        // JdbcTemplate 대신 Repository 사용
+        return selfBoardRepository.findBySelfIdx(selfIdx)
+                .orElseThrow(() -> new EntityNotFoundException("해당 자기소개서를 찾을 수 없습니다. ID: " + selfIdx));
     }
-
 }
