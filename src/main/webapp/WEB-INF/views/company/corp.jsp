@@ -32,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <a id="infoimg">
-                                <img src="/static/img/naver.svg" alt="Company Logo" class="img-fluid">
+                                <img src="<c:url value='/resources/static/img/${board.img}'/>" class="img-fluid">
                             </a>
                         </div>
                         <div class="col-md-9">
@@ -168,18 +168,18 @@
                     <div class="tab-content" id="swotTabContent">
                         <div class="tab-pane fade show active placeholder" id="strength" role="tabpanel"
                             aria-labelledby="strength-tab">
-                            기업 SWOT 세부 내용 작성
+                            ${fn:replace(swot.strengthAdd, "\\n", "<br>")}
                         </div>
                         <div class="tab-pane fade placeholder" id="weakness" role="tabpanel"
                             aria-labelledby="weakness-tab">
-                            SWOT - W
+                            ${fn:replace(swot.weaknessAdd, "\\n", "<br>")}
                         </div>
                         <div class="tab-pane fade placeholder" id="opportunity" role="tabpanel"
                             aria-labelledby="opportunity-tab">
-                            SWOT - O
+                            ${fn:replace(swot.opportunityAdd, "\\n", "<br>")}
                         </div>
                         <div class="tab-pane fade placeholder" id="threat" role="tabpanel" aria-labelledby="threat-tab">
-                            SWOT - T
+                            ${fn:replace(swot.threatAdd, "\\n", "<br>")}
                         </div>
                     </div>
                 </div>

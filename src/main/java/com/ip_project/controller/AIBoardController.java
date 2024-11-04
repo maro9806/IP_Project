@@ -116,7 +116,9 @@ public class AIBoardController {
     }
 
     @GetMapping("/ai_check")
-    public String aiCheck() { return "aiboard/ai_check";}
+    public String aiCheck() {
+        return "aiboard/ai_check";
+    }
 
 
     @GetMapping("/ai_preparation")
@@ -154,9 +156,15 @@ public class AIBoardController {
 
     @GetMapping("/loadSelfIntroduction/{selfIdx}")
     public ResponseEntity<SelfIntroductionDTO> loadSelfIntroduction(
-            @PathVariable("selfIdx") Long selfIdx) {  // 이름을 명시적으로 지정
+            @PathVariable(name = "selfIdx", required = true) Long selfIdx) {
+        log.debug("Loading self introduction for selfIdx: {}", selfIdx);
+
+        if (selfIdx == null) {
+            log.error("selfIdx is null");
+            return ResponseEntity.badRequest().build();
+        }
+
         try {
-            log.debug("Loading self introduction for selfIdx: {}", selfIdx);
             SelfIntroductionDTO dto = selfIntroductionService.getSelfIntroductions(selfIdx);
             return ResponseEntity.ok(dto);
         } catch (EntityNotFoundException e) {

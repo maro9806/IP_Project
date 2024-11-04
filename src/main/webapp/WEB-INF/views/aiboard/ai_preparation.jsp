@@ -98,8 +98,10 @@
                     </div>
                     <ul style="list-style: none; padding: 0;">
                         <c:forEach items="${selfBoards}" var="selfBoard">
-                            <li onclick="loadSelfIntroduction(${selfBoard.selfIdx})"
-                                class="btn btn-outline-dark mb-2 text-start" style="width: 100%;">
+                            <!-- onclick 속성을 button으로 변경하고 data 속성 추가 -->
+                            <button type="button"
+                                    class="btn btn-outline-dark mb-2 text-start w-100"
+                                    data-self-idx="${selfBoard.selfIdx}">
                                 <div>
                                     <small>${fn:substring(selfBoard.selfDate, 0, 10)} ${fn:substring(selfBoard.selfDate, 11, 16)}</small>
                                     <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/><br>
@@ -107,7 +109,7 @@
                                     <strong>${selfBoard.selfPosition}</strong><br>
                                     <span>${selfBoard.selfTitle}</span>
                                 </div>
-                            </li>
+                            </button>
                         </c:forEach>
                     </ul>
                 </div>
@@ -239,8 +241,8 @@
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 }
+                    width: {ideal: 1280},
+                    height: {ideal: 720}
                 },
                 audio: true
             });
@@ -391,80 +393,59 @@
         }
     })
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // 모달 창 관련 요소
-        const loadModal = document.getElementById("loadModal");
-        const loadModalBtn = document.getElementById("loadModalBtn");
-        const loadCloseBtn = loadModal.querySelector(".close");
-
-        // 모달 열기
-        loadModalBtn.onclick = function () {
-            loadModal.style.display = "block";
-        };
-
-        // 모달 닫기
-        loadCloseBtn.onclick = function () {
-            loadModal.style.display = "none";
-        };
-
-        // 모달 외부 클릭시 닫기
-        window.onclick = function (event) {
-            if (event.target == loadModal) {
-                loadModal.style.display = "none";
-            }
-        };
-    });
-
-
-    // 자기소개서 목록의 각 항목에 이벤트 리스너 추가
-    $(document).ready(function() {
+    document.addEventListener('DOMContentLoaded', function() {
         // 모달 관련 요소
         const loadModal = document.getElementById("loadModal");
         const loadModalBtn = document.getElementById("loadModalBtn");
         const loadCloseBtn = loadModal.querySelector(".close");
 
-        // 자기소개서 목록 클릭 이벤트 처리
-        $('li[onclick^="loadSelfIntroduction"]').each(function() {
-            $(this).click(function(e) {
-                e.preventDefault();
-                const selfIdx = $(this).data('self-idx');
-                loadSelfIntroduction(selfIdx);
+        // 모달 열기
+        loadModalBtn.onclick = function() {
+            loadModal.style.display = "block";
+        };
+
+        // 모달 닫기
+        loadCloseBtn.onclick = function() {
+            loadModal.style.display = "none";
+        };
+
+        // 모달 외부 클릭시 닫기
+        window.onclick = function(event) {
+            if (event.target == loadModal) {
+                loadModal.style.display = "none";
+            }
+        };
+
+        // 자기소개서 항목 클릭 이벤트
+        const buttons = document.querySelectorAll('button[data-self-idx]');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const selfIdx = this.dataset.selfIdx;
+                if (selfIdx) {
+                    loadSelfIntroduction(selfIdx);
+                }
             });
         });
     });
 
     function loadSelfIntroduction(selfIdx) {
+        if (!selfIdx) {
+            console.error('Invalid selfIdx:', selfIdx);
+            return;
+        }
+
         $.ajax({
-            url: '/aiboard/loadSelfIntroduction/' + selfIdx,
+            url: `/aiboard/loadSelfIntroduction/${selfIdx}`,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                console.log('Received data:', data); // 데이터 확인용 로그
-
+                console.log('Received data:', data);
                 if (!data) {
                     alert('자기소개서 데이터를 불러올 수 없습니다.');
                     return;
                 }
 
-                // 선택된 자기소개서 정보 업데이트
-                const resultDiv = document.getElementById('selectedSelfIntroduction');
-                resultDiv.innerHTML = `
-                <label for="coverLetter"><strong>자기소개서</strong></label>
-                <div class="form-control mb-3">
-                    <strong>${data.selfCompany || ''}</strong>
-                    <span> / ${data.selfPosition || ''}</span>
-                </div>
-                <label for="questions"><strong>예상질문</strong></label>
-                <select class="form-control" id="questions">
-                    <option>1. 자기소개를 해주세요.</option>
-                    <option>2. 지원동기를 말씀해주세요.</option>
-                    <option>3. 직무와 관련된 경험을 설명해주세요.</option>
-                </select>
-            `;
-
-                // 모달 닫기
-                const loadModal = document.getElementById('loadModal');
-                loadModal.style.display = "none";
+                updateSelfIntroductionDisplay(data);
             },
             error: function(xhr, status, error) {
                 console.error('자기소개서 불러오기 오류:', error);
@@ -473,6 +454,55 @@
                 alert('자기소개서를 불러오는데 실패했습니다.');
             }
         });
+    }
+
+    function updateSelfIntroductionDisplay(data) {
+        const resultDiv = document.getElementById('selectedSelfIntroduction');
+        if (!resultDiv) {
+            console.error('Result div not found');
+            return;
+        }
+
+        // 질문 HTML 생성
+        let questionsHtml = '';
+        if (data.questions && Array.isArray(data.questions) && data.questions.length > 0) {
+            questionsHtml = data.questions
+                .filter(q => q) // null/undefined 필터링
+                .map((q, i) => `${i + 1}. ${q}`)
+                .join('<br>');
+        } else {
+            questionsHtml = '1.-----';
+        }
+
+        resultDiv.innerHTML = `
+        <label for="coverLetter"><strong>자기소개서</strong></label>
+        <div class="form-control mb-3">
+            <strong>${data.company || ''}</strong>
+            <span> / ${data.position || ''}</span>
+        </div>
+        <label for="questions"><strong>예상질문</strong></label>
+        <div class="form-control">
+            ${questionsHtml}
+        </div>
+    `;
+
+        // 입력 필드 업데이트
+        const coverLetterInput = document.getElementById('coverLetter');
+        const questionsInput = document.getElementById('questions');
+
+        if (coverLetterInput) {
+            coverLetterInput.value = `${data.company || ''} / ${data.position || ''}`;
+        }
+
+        if (questionsInput && data.questions && data.questions[0]) {
+            questionsInput.value = data.questions[0];
+        }
+
+        // 모달 닫기
+        const modal = document.getElementById('loadModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
     }
 </script>
 
