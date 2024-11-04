@@ -20,10 +20,11 @@ public class CompanyService {
         model.addAttribute("list", list);
     }
 
-    public Company get(Long companyIdx) {  // 변경 전: companyId
-        Optional<Company> company = repository.findById(companyIdx);  // 변경 전: companyId
+    public Company get(Long companyIdx) {
+        Optional<Company> company = repository.findById(companyIdx);
         return company.orElse(null);
     }
+
 
     public void register(Company company) {
         repository.save(repository.save(company));

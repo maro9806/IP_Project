@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString  // 디버깅을 위해 추가
 public class Member {
-
     @Id
+    @Column(name = "IDX")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ")
     @SequenceGenerator(name = "MEMBER_SEQ", sequenceName = "MEMBER_SEQ", allocationSize = 1)
-    @Column(name = "IDX", nullable = false, precision = 19)
     private Long idx;
 
-    @Column(name = "USERNAME", nullable = false, length = 30)
+    @Column(name = "USERNAME", unique = true)
     private String username;
 
     @Column(name = "PASSWORD", nullable = false, length = 100)
@@ -38,14 +38,4 @@ public class Member {
     @Column(name = "INDATE", nullable = false)
     private LocalDateTime indate;
 
-    @Builder
-    public Member(String username, String password, String name, String email, String phone, LocalDateTime indate) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.indate = indate;
-
-    }
 }

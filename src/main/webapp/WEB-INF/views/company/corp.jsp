@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../header.jsp" %>
 
+
 <title>기업 분석</title>
 <link rel="stylesheet" href="<c:url value='/resources/static/navbar.css'/>">
 <link rel="stylesheet" href="<c:url value='/resources/static/corp.css'/>">
@@ -31,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <a id="infoimg">
-                                <img src="/static/img/naver.svg" alt="Company Logo" class="img-fluid">
+                                <img src="<c:url value='/resources/static/img/${board.img}'/>" class="img-fluid">
                             </a>
                         </div>
                         <div class="col-md-9">
@@ -39,27 +40,35 @@
                                 <tbody>
                                     <tr>
                                         <th>기업명:</th>
-                                        <td>Example Company</td>
+                                        <td>${board.companyName}</td>
                                         <th>기업 형태:</th>
-                                        <td>주식회사</td>
+                                        <td>${board.companyType}</td>
                                     </tr>
                                     <tr>
                                         <th>설립일:</th>
-                                        <td>2000년 1월 1일</td>
+                                        <td>
+                                            ${fn:replace(board.companyHistory, "\\n", "<br>")}
+                                        </td>
+
+
                                         <th>대표자:</th>
-                                        <td>신현준</td>
+                                        <td>${board.companyCeo}</td>
                                     </tr>
                                     <tr>
                                         <th>주소:</th>
-                                        <td>광주 대성학원 2F</td>
+                                        <td>${board.companyAddress}</td>
                                         <th>사원 수:</th>
-                                        <td>500명</td>
+                                        <td>${board.companyEmployees}명</td>
                                     </tr>
                                     <tr>
                                         <th>브랜드 명:</th>
-                                        <td>Example Brand</td>
+                                        <td>
+                                            ${fn:replace(board.companyContent, "\\n", "<br>")}
+                                        </td>
                                         <th>업종:</th>
-                                        <td>IT</td>
+                                        <td>
+                                            ${fn:replace(board.companyHistory, "\\n", "<br>")}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -79,10 +88,7 @@
                             <h1 class="swot-letter swot-letter-S">S</h1>
                             <h5 class="card-title">Strengths</h5>
                             <ul class="card-text">
-                                <li>Things your company does well</li>
-                                <li>Qualities that separate you from your competitors</li>
-                                <li>Internal resources like skilled staff</li>
-                                <li>Tangible assets like intellectual property, capital, etc.</li>
+                                <li>${fn:replace(swot.strength, "\\n", "<br>")}</li>
                             </ul>
                         </div>
                     </div>
@@ -95,10 +101,7 @@
                             <h1 class="swot-letter swot-letter-W">W</h1>
                             <h5 class="card-title">Weaknesses</h5>
                             <ul class="card-text">
-                                <li>Things your company lacks</li>
-                                <li>Things competitors do better than you</li>
-                                <li>Resource limitations</li>
-                                <li>Unclear unique selling proposition</li>
+                                ${fn:replace(swot.weakness, "\\n", "<br>")}
                             </ul>
                         </div>
                     </div>
@@ -111,10 +114,7 @@
                             <h1 class="swot-letter swot-letter-O">O</h1>
                             <h5 class="card-title">Opportunities</h5>
                             <ul class="card-text">
-                                <li>Underserved markets for specific products</li>
-                                <li>Few competitors in your area</li>
-                                <li>Emerging need for your products/services</li>
-                                <li>Press/media coverage of your company</li>
+                                ${fn:replace(swot.opportunity, "\\n", "<br>")}
                             </ul>
                         </div>
                     </div>
@@ -127,10 +127,7 @@
                             <h1 class="swot-letter swot-letter-T">T</h1>
                             <h5 class="card-title">Threats</h5>
                             <ul class="card-text">
-                                <li>Emerging competitors</li>
-                                <li>Changing regulatory environment</li>
-                                <li>Negative press/media coverage</li>
-                                <li>Changing customer attitudes</li>
+                                ${fn:replace(swot.threat, "\\n", "<br>")}
                             </ul>
                         </div>
                     </div>
@@ -171,18 +168,18 @@
                     <div class="tab-content" id="swotTabContent">
                         <div class="tab-pane fade show active placeholder" id="strength" role="tabpanel"
                             aria-labelledby="strength-tab">
-                            기업 SWOT 세부 내용 작성
+                            ${fn:replace(swot.strengthAdd, "\\n", "<br>")}
                         </div>
                         <div class="tab-pane fade placeholder" id="weakness" role="tabpanel"
                             aria-labelledby="weakness-tab">
-                            SWOT - W
+                            ${fn:replace(swot.weaknessAdd, "\\n", "<br>")}
                         </div>
                         <div class="tab-pane fade placeholder" id="opportunity" role="tabpanel"
                             aria-labelledby="opportunity-tab">
-                            SWOT - O
+                            ${fn:replace(swot.opportunityAdd, "\\n", "<br>")}
                         </div>
                         <div class="tab-pane fade placeholder" id="threat" role="tabpanel" aria-labelledby="threat-tab">
-                            SWOT - T
+                            ${fn:replace(swot.threatAdd, "\\n", "<br>")}
                         </div>
                     </div>
                 </div>

@@ -1,31 +1,28 @@
 package com.ip_project.service;
 
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import com.ip_project.entity.ReviewBoard;
-import com.ip_project.repository.ReviewBoardRepository;
+import com.ip_project.entity.Review;
+import com.ip_project.repository.ReviewRepository;
 
 @Service
-public class ReviewBoardService {
+public class ReviewService {
 
     @Autowired
-    private ReviewBoardRepository repository;
+    private ReviewRepository repository;
 
-    public List<ReviewBoard> list() {
+    public List<Review> list() {
         return repository.findAll();
     }
 
-    public ReviewBoard get(Long idx) {
+    public Review get(Long idx) {
         return repository.findById(idx)
                 .orElseThrow(() -> new RuntimeException("Review not found with id: " + idx));
     }
 
-    public void register(ReviewBoard vo) {
+    public void register(Review vo) {
         repository.save(vo);
     }
 
@@ -37,7 +34,7 @@ public class ReviewBoardService {
         return (int) repository.count();  // long을 int로 캐스팅
     }
 
-    public List<ReviewBoard> getListByPage(int page, int pageSize) {
+    public List<Review> getListByPage(int page, int pageSize) {
         // Oracle 페이징 처리를 위한 ROWNUM 사용
         String sql = """
             SELECT * FROM (

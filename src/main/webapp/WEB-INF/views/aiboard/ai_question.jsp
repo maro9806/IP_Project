@@ -102,13 +102,13 @@
             </div>
 
             <div class="answer-box well text-left">
-                <button class="accordion">답변 피드백</button>
-                <div class="panel">
+                <button class="accordion" style="background-color: #242222; color: white;">답변 피드백</button>
+                <div class="panel" style="max-height: 500px; background-color: white; border: 1px solid #dedede;">
                     <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
                 </div>
 
-                <button class="accordion">피드백 적용 답변</button>
-                <div class="panel">
+                <button class="accordion" style="background-color: #242222; color: white;">피드백 적용 답변</button>
+                <div class="panel" style="max-height: 500px; background-color: white; border: 1px solid #dedede;">
                     <p>다른 내용을 여기에 표시할 수 있습니다. 여러 개의 아코디언을 만들 수 있습니다.</p>
                     <div class="buttons">
                         <button class="btn btn-warning" style="margin:10px;">AI 피드백 적용</button>

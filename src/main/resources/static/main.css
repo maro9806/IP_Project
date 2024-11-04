@@ -5,16 +5,20 @@ body {
 }
 .main-content {
   background: white;
+  margin-top: 20px;
 }
 .sub-content {
   background: whitesmoke;
 }
 
+
 .container {
-  width: 80%;
-  padding-right: 10%;
-  padding-left: 10%;
-  padding-top: 50px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
@@ -26,8 +30,11 @@ body {
 }
 
 .container2 {
-  padding-right: 15%;
-  padding-left: 15%;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
   padding-bottom: 150px;
 }
 
@@ -42,8 +49,9 @@ body {
   padding-bottom: 22px;
 }
 
-.carousel {
-  margin: 0px;
+
+#adCarousel {
+  height: 250px;
 }
 
 /* 로그인 */
@@ -76,33 +84,21 @@ body {
   cursor: pointer;
 }
 
+.login-btn:hover {
+  background-color: #333;
+}
 
-/* Scrollable container with hidden scrollbar */
-.scroll-container {
-  overflow-x: scroll;
-  white-space: nowrap;
+
+.corp-card-container {
   margin-top: 20px;
   width: 100%;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
 }
 
-/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
-.scroll-container::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge, Firefox */
-.scroll-container {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scroll-content {
+.corp-card-content {
   display: inline-flex;
   gap: 30px;
   width: max-content;
-  /* Make sure content has enough width to scroll */
 }
 
 .corp-card {
@@ -140,40 +136,66 @@ body {
   text-align: left;
   padding: 15px;
 }
-
+.view-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f1f1;
+  color: #333;
+  border: none;
+  margin-top: 10px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
 .container3 {
   background: white;
   font-weight: bold;
   font-size: 48px;
-  padding-top: 50px;
-  padding-bottom: 150px;
-  padding-right: 15%;
-  padding-left: 15%;
+  padding: 50px 10% 50px 10%;
 }
 
 /* container4 */
 .container4 {
   background: white;
-  display: block; /* Change from flex to block to disable flex centering */
-  padding: 0px;
-  width: 100%;
-  height: 400px;
-}
-
-.container4 img {
-  background: white;
   width: auto;
-  max-width: 1200%; /* Ensure image is responsive */
-  height: auto;
-  float: left; /* Align image to the left */
-  margin-right: 20px;
-
-}/* Container 5 Styles */
-.container5 {
-  padding: 80px 15% 150px;
-  background: white;
+  height: 400px;
+  padding: 0;
+  overflow: hidden;
+  display: block;
+  margin: 0 auto;
+  float: left;
 }
 
+.container4-wrapper {
+  float: left;
+  position: relative;
+}
+
+.container4-wrapper::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.container4 img.left-img {
+
+  width: 80%;
+  height: 400px;
+  max-width: 100%;
+  object-fit: contain;
+  float: left;
+}
+
+
+/* Container 5 Styles */
+.container5 {
+  padding: 0px 15% 150px;
+  background: white;
+  clear: both;
+}
 /* Title Section */
 .title-section {
   margin-top: 100px;
@@ -207,12 +229,6 @@ body {
   text-align: center;
 }
 
-.feature-icon {
-  width: 64px;
-  height: 64px;
-  margin-bottom: 16px;
-}
-
 .feature-item h3 {
   font-size: 18px;
   font-weight: bold;
@@ -225,18 +241,30 @@ body {
   line-height: 1.5;
 }
 
-/* Placeholder Grid */
-.placeholder-grid {
+/* main-img Grid */
+.main-img-box-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+  margin: 0 auto;
 }
 
-.placeholder-box {
-  background-color: #f0f0f0;
-  border-radius: 8px;
+.main-img-box {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  overflow: hidden;
   aspect-ratio: 16/9;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* Responsive Design */
@@ -245,7 +273,8 @@ body {
     padding: 60px 10%;
   }
 
-  .feature-grid {
+  .feature-grid,
+  .main-img-box-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -259,12 +288,9 @@ body {
     font-size: 24px;
   }
 
-  .feature-grid {
+  .feature-grid,
+  .main-img-box-grid {
     grid-template-columns: 1fr;
     gap: 32px;
-  }
-
-  .placeholder-grid {
-    grid-template-columns: 1fr;
   }
 }
