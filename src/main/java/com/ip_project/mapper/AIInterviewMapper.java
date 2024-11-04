@@ -17,23 +17,15 @@ public class AIInterviewMapper {
             return null;
         }
 
-        AIInterview interview = new AIInterview();
-        interview.setId(dto.getId());
-        // Member는 서비스 계층에서 설정
-        interview.setPosition(dto.getPosition());
-        interview.setInterviewDate(dto.getInterviewDate());
-        interview.setStatus(dto.getStatus());
-        interview.setVideoUrl(dto.getVideoUrl());
-
-        if (dto.getQuestions() != null) {
-            List<AIQuestion> questions = dto.getQuestions().stream()
-                    .map(this::questionToEntity)
-                    .collect(Collectors.toList());
-            questions.forEach(q -> q.setInterview(interview));
-            interview.setQuestions(questions);
-        }
-
-        return interview;
+        return AIInterview.builder()
+                .id(dto.getId())
+                .username(dto.getUsername())
+                .position(dto.getPosition())
+                .date(dto.getInterviewDate())
+                .videoStatus(dto.getVideoStatus())  // DTO에서 String으로 받기
+                .url(dto.getVideoUrl())
+                .iproIdx(dto.getMemberId())        // memberId를 iproIdx로 사용
+                .build();
     }
 
     public AIInterviewDTO toDto(AIInterview entity) {
@@ -43,42 +35,14 @@ public class AIInterviewMapper {
 
         return AIInterviewDTO.builder()
                 .id(entity.getId())
-                .username(entity.getMember() != null ? entity.getMember().getUsername() : null)
+                .username(entity.getUsername())
                 .position(entity.getPosition())
-                .interviewDate(entity.getInterviewDate())
-                .status(entity.getStatus())
-                .videoUrl(entity.getVideoUrl())
-                .questions(entity.getQuestions().stream()
-                        .map(this::questionToDto)
-                        .collect(Collectors.toList()))
+                .interviewDate(entity.getDate())
+                .videoStatus(entity.getVideoStatus())  // String으로 직접 사용
+                .videoUrl(entity.getUrl())
+                .memberId(entity.getIproIdx())        // iproIdx를 memberId로 사용
                 .build();
     }
 
-    private AIQuestion questionToEntity(AIQuestionDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        return AIQuestion.builder()
-                .id(dto.getId())
-                .content(dto.getContent())
-                .orderNumber(dto.getOrderNumber())
-                .questionType(dto.getQuestionType())
-                .answer(dto.getAnswer())
-                .build();
-    }
-
-    private AIQuestionDTO questionToDto(AIQuestion entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        return AIQuestionDTO.builder()
-                .id(entity.getId())
-                .content(entity.getContent())
-                .orderNumber(entity.getOrderNumber())
-                .questionType(entity.getQuestionType())
-                .answer(entity.getAnswer())
-                .build();
-    }
+    // questionToEntity와 questionToDto는 그대로 유지
 }

@@ -32,7 +32,7 @@ public class AIBoardController {
     private final SelfBoardService selfBoardService;
     private final MemberRepository memberRepository;
 
-    @GetMapping("/ai_board")  // 추가된 매핑
+    @GetMapping("/ai_board")
     public String aiBoard() {
         return "aiboard/ai_board";
     }
@@ -128,12 +128,12 @@ public class AIBoardController {
         return "aiboard/ai_preparation";
     }
 
-    @PostMapping("/api/interview")  // 이 경로를 클라이언트에서도 동일하게 사용해야 함
+    @PostMapping("/api/interview")
     @ResponseBody
     public ResponseEntity<AIInterviewDTO> startInterview(@RequestBody AIInterviewDTO requestDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         requestDto.setUsername(auth.getName());
-        requestDto.setStatus(AIInterviewStatus.CREATED);
+        requestDto.setVideoStatus("CREATED");  // Enum 대신 String 사용
         requestDto.setInterviewDate(LocalDateTime.now());
 
         AIInterviewDTO createdInterview = interviewService.createInterview(requestDto);

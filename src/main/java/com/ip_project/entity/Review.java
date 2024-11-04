@@ -24,10 +24,10 @@ public class Review {
     @Column(name = "REVIEW_DATE", nullable = false)
     private LocalDateTime reviewDate;
 
-    @Column(name = "RREVIEW_COMPANY", nullable = false, length = 255)
+    @Column(name = "REVIEW_COMPANY", nullable = false, length = 255)
     private String reviewCompany;
 
-    @Column(name = "REVIEW_DATE", nullable = false, length = 255)
+    @Column(name = "REVIEW_POSITION", nullable = false, length = 255)
     private String reviewPosition;
 
     @Column(name = "REVIEW_COUNT", nullable = false, length = 255)

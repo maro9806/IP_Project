@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,17 +21,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AIInterviewService {
     private final AIInterviewRepository interviewRepository;
-    private final MemberRepository memberRepository;
     private final AIInterviewMapper interviewMapper;
     private final AIVideoStorageService videoStorageService;
 
     @Transactional
     public AIInterviewDTO createInterview(AIInterviewDTO dto) {
-        Member member = memberRepository.findByUsername(dto.getUsername())
-                .orElseThrow(() -> new EntityNotFoundException("Member not found with username: " + dto.getUsername()));
-
         AIInterview interview = interviewMapper.toEntity(dto);
-        interview.setMember(member);
+        // status를 String으로 직접 설정
+        interview.setVideoStatus("CREATED");
+        interview.setDate(LocalDateTime.now());
 
         AIInterview savedInterview = interviewRepository.save(interview);
         return interviewMapper.toDto(savedInterview);
@@ -42,8 +41,11 @@ public class AIInterviewService {
                 .orElseThrow(() -> new EntityNotFoundException("Interview not found with id: " + interviewId));
 
         String videoUrl = videoStorageService.store(file);
-        interview.setVideoUrl(videoUrl);
-        interview.setStatus(AIInterviewStatus.SUBMITTED);
+        interview.setUrl(videoUrl);
+        interview.setVideoStatus("SUBMITTED");  // String으로 직접 설정
+        interview.setVideoSize(file.getSize());
+        interview.setVideoFormat(file.getContentType());
+        interview.setVideoDuration(0L);
     }
 
     @Transactional(readOnly = true)
@@ -55,10 +57,7 @@ public class AIInterviewService {
 
     @Transactional(readOnly = true)
     public List<AIInterviewDTO> getInterviewsByUsername(String username) {
-        Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found with username: " + username));
-
-        return interviewRepository.findByMember(member).stream()
+        return interviewRepository.findByUsername(username).stream()
                 .map(interviewMapper::toDto)
                 .collect(Collectors.toList());
     }

@@ -6,17 +6,17 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class AIInterviewDTO {
     private Long id;
-    private String username;  // applicantName 대신 username 사용
+    private String username;
     private String position;
     private LocalDateTime interviewDate;
-    private AIInterviewStatus status;
+    private String videoStatus;        // Enum 대신 String 사용
     private String videoUrl;
+    private Long memberId;             // iproIdx 대신 memberId 사용
     private List<AIQuestionDTO> questions;
 }
