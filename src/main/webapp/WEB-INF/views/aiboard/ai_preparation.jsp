@@ -48,16 +48,6 @@
                     <div class="mb-3">
                         <table style="width:100%;">
                             <tr>
-                                <td>
-                                    <b><label for="select_company">기업명</label></b>
-                                    <input id="select_company" class="form-control" name="company-name" readonly style="width:200px; background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"/>
-                                </td>
-                                <td>
-                                    <b><label for="select_position">지원 직무</label></b>
-                                    <input id="select_position" class="form-control" name="job-position" readonly style="width:200px; background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"/>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td colspan="2">
                                     <button id="loadModalBtn" class="btn btn-dark w-100 mt-3">자기소개서 불러오기</button>
                                 </td>
