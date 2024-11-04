@@ -11,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/ai_preparation.css">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>
@@ -40,11 +42,30 @@
                     </div>
                 </div>
                 <!-- Right section: Interview settings -->
+                <!-- Right section: Interview settings -->
                 <div class="form-section fade-target">
                     <h4>면접 환경 설정</h4>
                     <div class="mb-3">
-                        <label for="positionSelect" class="form-label">자소서 선택</label>
-                        <input type="text" class="form-control" id="positionSelect" placeholder="선택">
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <b><label for="select_company">기업명</label></b>
+                                    <input id="select_company" class="form-control" name="company-name" readonly style="width:200px; background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"/>
+                                </td>
+                                <td>
+                                    <b><label for="select_position">지원 직무</label></b>
+                                    <input id="select_position" class="form-control" name="job-position" readonly style="width:200px; background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button id="loadModalBtn" class="btn btn-dark w-100 mt-3">자기소개서 불러오기</button>
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="QnAs">
+                            <!-- 자기소개서 내용이 여기에 로드됨 -->
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">질문 종류</label><br>
@@ -56,6 +77,34 @@
                         <label for="experience">경험</label>
                     </div>
                     <button class="btn btn-primary w-100" onclick="startInterview()">면접 시작하기</button>
+                </div>
+
+                <!-- 불러오기 모달 창 -->
+                <div id="loadModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h5><strong>자기소개서 불러오기</strong></h5>
+                        <p>면접 질문을 추출할 자기소개서를 선택하세요</p>
+                        <div id="noSelfBoardMessage" style="display: ${empty selfBoards ? 'block' : 'none'};">
+                            <div class="card">
+                                <div class="card-body d-flex justify-content-center align-items-center" style="height: 100px;">
+                                    <p>저장한 자기소개서 내역이 없습니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <ul style="list-style: none; padding: 0;">
+                            <c:forEach items="${selfBoards}" var="selfBoard">
+                                <li onclick="loadSelfIntroduction(${selfBoard.selfIdx})" class="btn btn-outline-dark mb-2 text-start" style="width: 100%;">
+                                    <div>
+                                        <small>${fn:substring(selfBoard.selfDate, 0, 10)} ${fn:substring(selfBoard.selfDate, 11, 16)}</small>
+                                        <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/><br>
+                                        <strong><c:out value="${selfBoard.selfCompany}"/></strong> <strong>${selfBoard.selfPosition}</strong><br>
+                                        <span>${selfBoard.selfTitle}</span>
+                                    </div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -113,11 +162,14 @@
 
     async function startInterview() {
         try {
-            // 면접 시작 API 호출
-            const response = await fetch('/aiboard/api/interview', {  // URL 수정
+            // fetch 요청 전에 현재 경로를 확인
+            console.log('Current path:', window.location.pathname);
+
+            const response = await fetch('/aiboard/api/interview', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
+                    // CSRF 토큰은 비활성화했으므로 제거
                 },
                 body: JSON.stringify({
                     position: document.getElementById('positionSelect').value,
@@ -138,46 +190,62 @@
                 })
             });
 
+            console.log('Response status:', response.status); // 응답 상태 확인
+
             if (!response.ok) {
-                throw new Error('면접 시작에 실패했습니다.');
+                const errorText = await response.text();
+                console.error('Server response:', errorText);
+                throw new Error(`면접 시작에 실패했습니다. Status: ${response.status}`);
             }
 
             const data = await response.json();
-            currentInterviewId = data.id;
+            console.log('Received data:', data); // 받은 데이터 확인
 
-            // 비디오 녹화 시작
+            currentInterviewId = data.id;
             await startVideoRecording();
 
-            // UI 전환
             document.getElementById('setupSection').classList.add('hidden');
             document.getElementById('questionSection').classList.remove('hidden');
         } catch (error) {
+            console.error('Interview start error:', error);
             alert('Error: ' + error.message);
         }
     }
 
     async function startVideoRecording() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            });
+
             const videoElement = document.createElement('video');
             videoElement.srcObject = stream;
             videoElement.autoplay = true;
+            videoElement.playsInline = true;
 
-            // 기존 video check span 제거
             const videoSection = document.querySelector('.video-section');
-            videoSection.innerHTML = '';  // 기존 내용 제거
+            videoSection.innerHTML = '';
             videoSection.appendChild(videoElement);
 
-            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder = new MediaRecorder(stream, {
+                mimeType: 'video/webm;codecs=vp8,opus'
+            });
+
+            recordedChunks = []; // 새 녹화 시작 전 초기화
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
                     recordedChunks.push(event.data);
                 }
             };
+
             mediaRecorder.start();
+            document.getElementById('recordingIndicator').style.display = 'block';
+
         } catch (error) {
             console.error('카메라 접근 오류:', error);
-            alert('카메라 접근에 실패했습니다. 카메라 권한을 확인해주세요.');
+            document.getElementById('videoError').style.display = 'block';
+            throw new Error('카메라 접근에 실패했습니다. 카메라 권한을 확인해주세요.');
         }
     }
 
@@ -187,13 +255,18 @@
                 mediaRecorder.stop();
                 await new Promise(resolve => {
                     mediaRecorder.onstop = async () => {
-                        const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                        const formData = new FormData();
-                        formData.append('video', blob);
-
                         try {
+                            const token = document.querySelector("meta[name='_csrf']").content;
+                            const header = document.querySelector("meta[name='_csrf_header']").content;
+                            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                            const formData = new FormData();
+                            formData.append('video', blob);
+
                             const response = await fetch(`/aiboard/api/interview/${currentInterviewId}/video`, {
                                 method: 'POST',
+                                headers: {
+                                    [header]: token
+                                },
                                 body: formData
                             });
 
@@ -201,19 +274,28 @@
                                 throw new Error('비디오 제출에 실패했습니다.');
                             }
 
+                            document.getElementById('questionSection').classList.add('hidden');
+                            document.getElementById('endingSection').classList.remove('hidden');
+                            document.body.style.overflow = "hidden";
+
                             resolve();
                         } catch (error) {
+                            console.error('Video submission error:', error);
                             throw error;
                         }
                     };
                 });
+            } else {
+                throw new Error('녹화가 진행 중이지 않습니다.');
             }
-
-            document.getElementById('questionSection').classList.add('hidden');
-            document.getElementById('endingSection').classList.remove('hidden');
-            document.body.style.overflow = "hidden";
         } catch (error) {
             alert('Error: ' + error.message);
+        } finally {
+            // 녹화 관련 리소스 정리
+            if (mediaRecorder && mediaRecorder.stream) {
+                const tracks = mediaRecorder.stream.getTracks();
+                tracks.forEach(track => track.stop());
+            }
         }
     }
 
@@ -257,10 +339,15 @@
                 audio: false
             });
 
-            const videoElement = document.getElementById('previewVideo');
-            videoElement.srcObject = stream;
-            document.getElementById('videoError').style.display = 'none';
-
+            // 'previewVideo'를 'videoPreview'로 수정
+            const videoElement = document.getElementById('videoPreview');
+            if (videoElement) {
+                videoElement.srcObject = stream;
+                document.getElementById('videoError').style.display = 'none';
+            } else {
+                console.error('Video element not found');
+                document.getElementById('videoError').style.display = 'block';
+            }
         } catch (error) {
             console.error('Camera access error:', error);
             document.getElementById('videoError').style.display = 'block';
@@ -275,7 +362,72 @@
                 welcomeMessage.classList.add('fade-in');
             }, 100);
         }
+    })
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 모달 창 관련 요소
+        var loadModal = document.getElementById("loadModal");
+        var loadModalBtn = document.getElementById("loadModalBtn");
+        var loadCloseBtn = loadModal.querySelector(".close");
+
+        // 모달 열기
+        loadModalBtn.onclick = function() {
+            loadModal.style.display = "block";
+        };
+
+        // 모달 닫기
+        loadCloseBtn.onclick = function() {
+            loadModal.style.display = "none";
+        };
+
+        // 모달 외부 클릭시 닫기
+        window.onclick = function(event) {
+            if (event.target == loadModal) {
+                loadModal.style.display = "none";
+            }
+        };
     });
+
+    // 자기소개서 로드 함수
+    function loadSelfIntroduction(selfIdx) {
+        $.ajax({
+            url: `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/`+selfIdx,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                document.getElementById("select_company").value = data.company;
+                document.getElementById("select_position").value = data.position;
+
+                const questionsAndAnswers = document.getElementById('QnAs');
+                questionsAndAnswers.innerHTML = '';
+
+                const questionsLength = data.questions.length;
+                const answersLength = data.answers.length;
+
+                for (let i = 0; i < Math.min(questionsLength, answersLength); i++) {
+                    const question = data.questions[i];
+                    const answer = data.answers[i];
+
+                    const questionRow = document.createElement('div');
+                    questionRow.className = 'mt-3';
+                    questionRow.innerHTML = `
+                    <label><strong>자기소개서 문항 ${i + 1}</strong></label>
+                    <input readonly type="text" class="form-control" value="${question}"
+                           style="background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;" />
+                    <textarea readonly class="form-control mt-2" rows="5"
+                              style="background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;">${answer}</textarea>
+                `;
+                    questionsAndAnswers.appendChild(questionRow);
+                }
+
+                loadModal.style.display = "none";
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching self-introduction:', error);
+                alert('자기소개서를 불러오는데 실패했습니다.');
+            }
+        });
+    };
 </script>
 
 </body>

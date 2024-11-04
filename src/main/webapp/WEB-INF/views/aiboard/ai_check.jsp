@@ -12,9 +12,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/stage.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/2stage.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/3stage.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
+
 <jsp:include page="../navbar.jsp"/>
+
 <div class="content">
     <div class="banner mb-5">
         <h3 class="title">AI 면접 코칭</h3>
@@ -29,98 +33,119 @@
     <hr style="width:100%;">
 
     <!-- 질문 및 답변 테이블 -->
-    <div class="table-container d-flex flex-column align-items-center w-100 mb-5">
-        <table>
-            <thead>
-            <tr>
-                <th colspan="3">면접 질문 및 답변</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td rowspan="2">기업</td>
-                <td>질문1</td>
-                <td>
-                    <button class="accordion">답변 피드백</button>
-                    <div class="panel">
-                        <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>질문2</td>
-                <td>
-                    <button class="accordion">답변 피드백</button>
-                    <div class="panel">
-                        <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                    </div>
-                </td>
-            </tr>
+    <div class="container d-flex flex-column align-items-center" style="gap:0">
+        <div class="table-container mb-5 ml-5">
+            <table class="text-center" style="width:1000px">
+                <thead>
+                <tr>
+                    <th colspan="3">면접 질문 및 답변</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td rowspan="2"><strong>기업</strong></td>
+                    <td>질문1</td>
+                    <td>
+                        <button class="accordion">질문 1번 내용입니다.</button>
+                        <div class="panel">
+                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
+                            <div class="d-flex justify-content-end" style="gap:10px;">
+                                <button class="btn btn-danger">삭제</button>
+                                <button class="btn btn-warning">수정</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>질문2</td>
+                    <td>
+                        <button class="accordion">질문 2번 내용입니다.</button>
+                        <div class="panel">
+                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
+                            <div class="d-flex justify-content-end" style="gap:10px;">
+                                <button class="btn btn-danger">삭제</button>
+                                <button class="btn btn-warning">수정</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
 
-            <tr>
-                <td rowspan="2">직무</td>
-                <td>질문3</td>
-                <td>
-                    <button class="accordion">답변 피드백</button>
-                    <div class="panel">
-                        <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>질문4</td>
-                <td>
-                    <button class="accordion">답변 피드백</button>
-                    <div class="panel">
-                        <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td rowspan="2">경험</td>
-                <td>질문5</td>
-                <td>
-                    <button class="accordion">답변 피드백</button>
-                    <div class="panel">
-                        <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>질문6</td>
-                <td>
-                    <button class="accordion">답변 피드백</button>
-                    <div class="panel">
-                        <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <!-- 다음 단계로 이동하는 버튼 -->
-        <button onclick="location.href='${pageContext.request.contextPath}/aiboard/ai_video'" class="btn btn-dark">영상면접
-            응시하기
-        </button>
+                <tr>
+                    <td rowspan="2"><strong>직무</strong></td>
+                    <td>질문3</td>
+                    <td>
+                        <button class="accordion">질문 3번 내용입니다.</button>
+                        <div class="panel">
+                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
+                            <div class="d-flex justify-content-end" style="gap:10px;">
+                                <button class="btn btn-danger">삭제</button>
+                                <button class="btn btn-warning">수정</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>질문4</td>
+                    <td>
+                        <button class="accordion">질문 4번 내용입니다.</button>
+                        <div class="panel">
+                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
+                            <div class="d-flex justify-content-end" style="gap:10px;">
+                                <button class="btn btn-danger">삭제</button>
+                                <button class="btn btn-warning">수정</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2"><strong>경험</strong></td>
+                    <td>질문5</td>
+                    <td>
+                        <button class="accordion">질문 5번 내용입니다.</button>
+                        <div class="panel">
+                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
+                            <div class="d-flex justify-content-end" style="gap:10px;">
+                                <button class="btn btn-danger">삭제</button>
+                                <button class="btn btn-warning">수정</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>질문6</td>
+                    <td>
+                        <button class="accordion">질문 6번 내용입니다.</button>
+                        <div class="panel">
+                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
+                            <div class="d-flex justify-content-end" style="gap:10px;">
+                                <button class="btn btn-danger">삭제</button>
+                                <button class="btn btn-warning">수정</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div>
+            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_custominfo'" type="button" class="btn btn-secondary">
+                처음으로 돌아가기
+            </button>
+            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_preparation'"
+                    type="submit" id="next"
+                    class="btn btn-primary">
+                영상면접 보러가기
+            </button>
+
+        </div>
 
     </div>
 
 </div>
+<jsp:include page="../footer.jsp"/>
 
-<!-- HTML -->
-<footer class="footer">
-    <div class="container">
-        <div class="footer-left">
-            <p>© 2024 Your Company Name</p>
-        </div>
-        <div class="footer-right">
-            <ul>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
+
 
 <script>
     // 모든 아코디언 버튼을 선택
@@ -142,6 +167,6 @@
     }
 </script>
 
-<jsp:include page="../footer.jsp"/>
+
 </body>
 </html>
