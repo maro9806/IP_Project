@@ -87,6 +87,12 @@ body {
     gap:10px;
 }
 
+.bottom-buttons{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .answer-box{
     margin:30px 0;
 }

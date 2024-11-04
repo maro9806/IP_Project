@@ -99,7 +99,7 @@
             </c:if>
         </div>
         <!-- Write Button -->
-        <button class="write-button" onclick="location.href='${pageContext.request.contextPath}/review_board/write'">
+        <button class="write-button" onclick="location.href='${pageContext.request.contextPath}/review_board/review_write'">
             <span class="write-icon">✎</span>
             후기 등록하기
         </button>

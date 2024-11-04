@@ -38,7 +38,7 @@
                 <!-- Left section: Video -->
                 <div class="video-section d-flex flex-column">
                     <h5><strong>면접 환경 설정</strong></h5>
-                    <p><sec:authentication property="principal.member.name"/>님 영상 면접을 진행할 자기소개서와 질문을 선택해주세요.</p>
+                    <p>${member.name}님 영상 면접을 진행할 자기소개서와 질문을 선택해주세요.</p>
                     <video id="videoPreview" autoplay playsinline muted></video>
                     <div id="videoError" class="video-error" style="display: none;">
                         카메라에 접근할 수 없습니다. 카메라 권한을 확인해주세요.

@@ -169,9 +169,12 @@
     </section>
 
     <div class="d-flex flex-column align-items-end" style="width:100%;">
-        <button onclick="location.href='${pageContext.request.contextPath}/aiboard/ai_check'" type="submit" id="next"
-                class="btn btn-primary"> 다음 질문
-        </button>
+        <div class="bottom-buttons">
+            <button type="submit" id="previous" class="btn btn-primary"> 이전 질문</button>
+            <button onclick="location.href='${pageContext.request.contextPath}/aiboard/ai_check'" type="submit" id="next"
+                    class="btn btn-primary"> 다음 질문
+            </button>
+        </div>
         <br>
         <div class="progress w-100 mb-5">
             <div class="progress-bar bar" style="width:16.6%; margin-right:5px;">

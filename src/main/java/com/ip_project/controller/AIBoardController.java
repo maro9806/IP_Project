@@ -154,9 +154,9 @@ public class AIBoardController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/loadSelfIntroduction/{selfIdx}")
+    @GetMapping("/loadSelfIntroduction")
     public ResponseEntity<SelfIntroductionDTO> loadSelfIntroduction(
-            @PathVariable(name = "selfIdx", required = true) Long selfIdx) {
+            @RequestParam(name = "selfIdx", required = true) Long selfIdx) {
         log.debug("Loading self introduction for selfIdx: {}", selfIdx);
 
         if (selfIdx == null) {

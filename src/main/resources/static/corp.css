@@ -139,6 +139,8 @@
 
 
 
+
+
 /*패널 부분*/
 .tab-pane {
   height: 600px;
@@ -175,5 +177,49 @@
 
 
 
-/**/
+/* Table for 기업 최신 동향 */
+.news-table {
+  width: 100%;
+  background-color: #f8f9fa;
+  border-collapse: collapse;
+}
+
+.news-table th,
+.news-table td {
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  text-align: left;
+}
+
+.news-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.news-table th, .news-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;  /* 가운데 정렬 */
+}
+.news-table th {
+  background-color: #f2f2f2;
+}
+
+.news-table img {
+  width:150px;
+  height:150px;
+}
+
+#newsTableBody tr td a{
+  text-decoration:none;
+}
+
+#newsTableBody tr td a p{
+  color: black;
+  font-weight: bold;
+}
+
+#newsTableBody tr td a p:hover{
+  color: #3b3ec5;
+  font-weight: bold;
+}
 

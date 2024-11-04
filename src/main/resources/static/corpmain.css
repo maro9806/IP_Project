@@ -35,6 +35,10 @@ body {
     margin-bottom: 20px;
 }
 
+.col{
+    height:300px !important;
+}
+
 /* Card grid */
 .card {
     background-color: #fff;
@@ -222,7 +226,6 @@ body {
         transform: scale(1.01); /* Slightly less zoom on smaller screens */
     }
 }
-
 
 
 
