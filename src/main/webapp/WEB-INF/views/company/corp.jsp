@@ -36,7 +36,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <a id="infoimg">
-                                <img src="" alt="Company Logo" class="img-fluid">
+                                <img src="<c:url value='/resources/static/img/${board.img}'/>" class="img-fluid">
                             </a>
                         </div>
                         <div class="col-md-9">
