@@ -377,9 +377,9 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         // 모달 창 관련 요소
-        var loadModal = document.getElementById("loadModal");
-        var loadModalBtn = document.getElementById("loadModalBtn");
-        var loadCloseBtn = loadModal.querySelector(".close");
+        const loadModal = document.getElementById("loadModal");
+        const loadModalBtn = document.getElementById("loadModalBtn");
+        const loadCloseBtn = loadModal.querySelector(".close");
 
         // 모달 열기
         loadModalBtn.onclick = function() {
