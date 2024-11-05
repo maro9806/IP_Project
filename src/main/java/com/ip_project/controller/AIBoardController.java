@@ -2,16 +2,16 @@ package com.ip_project.controller;
 
 import com.ip_project.dto.AIInterviewDTO;
 import com.ip_project.dto.SelfIntroductionDTO;
-import com.ip_project.entity.*;
+import com.ip_project.entity.AIInterviewStatus;
+import com.ip_project.entity.Member;
+import com.ip_project.entity.SelfBoard;
+import com.ip_project.entity.SelfIntroduction;
 import com.ip_project.repository.MemberRepository;
 import com.ip_project.service.AIInterviewService;
 import com.ip_project.service.SelfBoardService;
 import com.ip_project.service.SelfIntroductionService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,13 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-
-@Slf4j
 @Controller
 @RequestMapping("/aiboard")
 @RequiredArgsConstructor
@@ -36,8 +31,9 @@ public class AIBoardController {
     private final AIInterviewService interviewService;
     private final SelfIntroductionService selfIntroductionService;
     private final SelfBoardService selfBoardService;
+    private final MemberRepository memberRepository;
 
-    @GetMapping("/ai_board")
+    @GetMapping("/ai_board")  // 추가된 매핑
     public String aiBoard() {
         return "aiboard/ai_board";
     }
@@ -53,60 +49,55 @@ public class AIBoardController {
 
     @PostMapping("/saveIntroduction")
     public String saveIntroduction(@ModelAttribute SelfIntroductionDTO selfIntroDto) {
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth == null) {
-                log.error("Authentication is null");
-                throw new RuntimeException("Authentication not found");
-            }
+        // 현재 사용자 인증 객체에서 username 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName(); // 현재 사용자의 username
 
-            CustomUser customUser = (CustomUser) auth.getPrincipal();
-            Member member = customUser.getMember();
+        // 디버깅 로그 추가
+        System.out.println("Current authenticated username: " + username);
 
-            if (member == null) {
-                log.error("Member is null in CustomUser");
-                throw new RuntimeException("Member not found in CustomUser");
-            }
+        // username을 통해 Member 엔티티 불러오기
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Member not found")); // 에러 핸들링 추가/
 
-            log.info("Found member: {}", member.toString());
+        // SelfBoard 저장 (제목, 회사, 직무, 작성일은 자동 생성으로 가정)
+        SelfBoard selfBoard = SelfBoard.builder()
+                .selfIdx(null) // 시퀀스로 자동 생성되도록 null로 설정
+                .selfCompany(selfIntroDto.getCompany())
+                .selfTitle(selfIntroDto.getTitle())
+                .selfPosition(selfIntroDto.getPosition())
+                .selfDate(LocalDateTime.now()) // 현재 날짜로 설정
+                .member(member) // Member 추가
+                .build();
+        // SelfBoard 저장
+        selfBoardService.save(selfBoard);
 
-            // SelfBoard 생성 - member 대신 username 사용
-            SelfBoard selfBoard = SelfBoard.builder()
-                    .selfCompany(selfIntroDto.getCompany())
-                    .selfTitle(selfIntroDto.getTitle())
-                    .selfPosition(selfIntroDto.getPosition())
-                    .selfDate(LocalDateTime.now())
-                    .username(member.getUsername())  // member 대신 username 사용
+        // SelfIntroduction 객체 저장 (질문 및 답변)
+        for (int i = 0; i < selfIntroDto.getQuestions().size(); i++) {
+            SelfIntroduction selfIntroduction = SelfIntroduction.builder()
+                    .introIdx(null)
+                    .introQuestion(selfIntroDto.getQuestions().get(i))
+                    .introAnswer(selfIntroDto.getAnswers().get(i))
+                    .selfBoard(selfBoard)
                     .build();
+            selfIntroductionService.saveSelfIntroduction(selfIntroduction);
+        }
+        System.out.println("저장이 완료되었습니다.");
+        return "redirect:/aiboard/ai_custominfo"; // 저장 후 리다이렉트 페이지 설정
+    }
 
-            // SelfBoard 저장
-            log.info("Attempting to save SelfBoard with title: {}", selfBoard.getSelfTitle());
-            selfBoard = selfBoardService.save(selfBoard);
-            log.info("Successfully saved SelfBoard with ID: {}", selfBoard.getSelfIdx());
+    @GetMapping("/loadSelfIntroduction/{idx}")
+    @ResponseBody // 이 어노테이션은 AJAX 요청에 JSON 응답을 보내기 위해 필요합니다.
+    public ResponseEntity<SelfIntroductionDTO> loadSelfIntroduction(@PathVariable Long idx) {
+        // 선택된 SelfBoard의 idx로 SelfIntroduction 가져오기
+        SelfBoard selfBoard = selfBoardService.findById(idx);
 
-            // SelfIntroduction 저장
-            for (int i = 0; i < selfIntroDto.getQuestions().size(); i++) {
-                String question = selfIntroDto.getQuestions().get(i);
-                String answer = selfIntroDto.getAnswers().get(i);
-
-                log.info("Saving question {}: {}", i + 1, question);
-
-                SelfIntroduction selfIntroduction = SelfIntroduction.builder()
-                        .introQuestion(question)
-                        .introAnswer(answer)
-                        .selfIdx(selfBoard.getSelfIdx())  // selfIdx 설정 추가
-                        .selfBoard(selfBoard)  // 연관관계를 위해 추가
-                        .build();
-
-                selfIntroductionService.saveSelfIntroduction(selfIntroduction);
-                log.info("Saved answer for question {}", i + 1);
-            }
-
-            return "redirect:/aiboard/ai_custominfo";
-
-        } catch (Exception e) {
-            log.error("Error in saveIntroduction:", e);
-            throw e;
+        if (selfBoard != null) {
+            SelfIntroductionDTO dto = selfIntroductionService.getSelfIntroductions(selfBoard);
+            return ResponseEntity.ok(dto); // 200 OK와 함께 DTO 반환
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND) // 404 Not Found
+                    .body(null); // 바디는 null 또는 적절한 에러 메시지
         }
     }
 
@@ -121,9 +112,7 @@ public class AIBoardController {
     }
 
     @GetMapping("/ai_check")
-    public String aiCheck() {
-        return "aiboard/ai_check";
-    }
+    public String aiCheck() { return "aiboard/ai_check";}
 
 
     @GetMapping("/ai_preparation")
@@ -138,12 +127,12 @@ public class AIBoardController {
         return "aiboard/ai_preparation";
     }
 
-    @PostMapping("/api/interview")
+    @PostMapping("/api/interview")  // 이 경로를 클라이언트에서도 동일하게 사용해야 함
     @ResponseBody
     public ResponseEntity<AIInterviewDTO> startInterview(@RequestBody AIInterviewDTO requestDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         requestDto.setUsername(auth.getName());
-        requestDto.setVideoStatus("CREATED");  // Enum 대신 String 사용
+        requestDto.setStatus(AIInterviewStatus.CREATED);
         requestDto.setInterviewDate(LocalDateTime.now());
 
         AIInterviewDTO createdInterview = interviewService.createInterview(requestDto);
@@ -157,42 +146,5 @@ public class AIBoardController {
             @RequestParam("video") MultipartFile file) {
         interviewService.submitVideoResponse(id, file);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/loadSelfIntroduction/{selfIdx}")
-    @ResponseBody
-    public ResponseEntity<?> loadSelfIntroduction(@PathVariable Long selfIdx) {
-        try {
-            // SelfIntroductionDTO를 통해 데이터 조회
-            SelfIntroductionDTO dto = selfIntroductionService.getSelfIntroductions(selfIdx);
-
-            // 응답 데이터 구성
-            Map<String, Object> response = new HashMap<>();
-            response.put("title", dto.getTitle());
-            response.put("company", dto.getCompany());
-            response.put("position", dto.getPosition());
-
-            // 질문과 답변을 리스트로 구성
-            List<Map<String, String>> introductions = new ArrayList<>();
-            List<String> questions = dto.getQuestions();
-            List<String> answers = dto.getAnswers();
-
-            for (int i = 0; i < questions.size(); i++) {
-                Map<String, String> qa = new HashMap<>();
-                qa.put("question", questions.get(i));
-                qa.put("answer", answers.get(i));
-                introductions.add(qa);
-            }
-
-            response.put("introductions", introductions);
-            return ResponseEntity.ok(response);
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("자기소개서를 찾을 수 없습니다: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error: " + e.getMessage());
-        }
     }
 }

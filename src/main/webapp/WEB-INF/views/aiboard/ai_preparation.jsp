@@ -21,17 +21,17 @@
 <!-- Interview Setup Section -->
 <div id="setupSection" class="main-content">
 
-    <!-- Centered greeting message -->
-    <%--        <div class="card">--%>
-    <%--            <div class="card-body">--%>
-    <%--            <div class="col center-text fade-target">--%>
-    <%--                <p><strong>신현준님</strong>, 안녕하세요</p>--%>
-    <%--                <p>지금부터 영상 면접을 시작할게요.</p>--%>
-    <%--            </div>--%>
-    <%--            </div>--%>
-    <%--        </div>--%>
+        <!-- Centered greeting message -->
+<%--        <div class="card">--%>
+<%--            <div class="card-body">--%>
+<%--            <div class="col center-text fade-target">--%>
+<%--                <p><strong>신현준님</strong>, 안녕하세요</p>--%>
+<%--                <p>지금부터 영상 면접을 시작할게요.</p>--%>
+<%--            </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
-    <!-- Card section with video and AIInterview settings (Horizontal layout) -->
+        <!-- Card section with video and AIInterview settings (Horizontal layout) -->
     <div class="camera-container">
         <div class="row justify-content-center position-relative">
             <div class="card camera-card col-lg-8 d-flex flex-row">
@@ -54,13 +54,13 @@
                         <table style="width:100%;">
                             <tr>
                                 <td>
-                                    <!-- 불러온 자기소개서 정보를 표시할 위치 -->
-                                    <div id="selectedSelfIntroduction" class="mt-3">
-                                        <label for="coverLetter"><strong>자기소개서</strong></label>
-                                        <input id="coverLetter" readonly class="form-control" value="-"/>
-                                        <label for="questions"><strong>예상질문</strong></label>
-                                        <input id="questions" readonly class="form-control" value="-"/>
-                                    </div>
+                                <!-- 불러온 자기소개서 정보를 표시할 위치 -->
+                                <div id="selectedSelfIntroduction" class="mt-3">
+                                    <label for="coverLetter"><strong>자기소개서</strong></label>
+                                    <input id="coverLetter" readonly class="form-control" value="-"/>
+                                    <label for="questions"><strong>예상질문</strong></label>
+                                    <input id="questions" readonly class="form-control" value="-"/>
+                                </div>
                                 </td>
                             </tr>
                             <tr>
@@ -91,36 +91,36 @@
                 </div>
             </div>
 
-            <!-- 불러오기 모달 창 -->
-            <div id="loadModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h5><strong>자기소개서 불러오기</strong></h5>
-                    <p>영상 면접을 진행할 자기소개서를 선택하세요</p>
-                    <div id="noSelfBoardMessage" style="display: ${empty selfBoards ? 'block' : 'none'};">
-                        <div class="card">
-                            <div class="card-body d-flex justify-content-center align-items-center" style="height: 100px;border: 1px solid #616161;border-radius: 8px;">
-                                <p class="mb-0">저장한 자기소개서 내역이 없습니다.</p>
+                <!-- 불러오기 모달 창 -->
+                <div id="loadModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h5><strong>자기소개서 불러오기</strong></h5>
+                        <p>영상 면접을 진행할 자기소개서를 선택하세요</p>
+                        <div id="noSelfBoardMessage" style="display: ${empty selfBoards ? 'block' : 'none'};">
+                            <div class="card">
+                                <div class="card-body d-flex justify-content-center align-items-center" style="height: 100px;border: 1px solid #616161;border-radius: 8px;">
+                                    <p class="mb-0">저장한 자기소개서 내역이 없습니다.</p>
+                                </div>
                             </div>
                         </div>
+                        <ul style="list-style: none; padding: 0;">
+                            <c:forEach items="${selfBoards}" var="selfBoard">
+                                <li onclick="loadSelfIntroduction(${selfBoard.selfIdx})" class="btn btn-outline-dark mb-2 text-start" style="width: 100%;">
+                                    <div>
+                                        <small>${fn:substring(selfBoard.selfDate, 0, 10)} ${fn:substring(selfBoard.selfDate, 11, 16)}</small>
+                                        <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/><br>
+                                        <strong><c:out value="${selfBoard.selfCompany}"/></strong> <strong>${selfBoard.selfPosition}</strong><br>
+                                        <span>${selfBoard.selfTitle}</span>
+                                    </div>
+                                </li>
+                            </c:forEach>
+                        </ul>
                     </div>
-                    <ul style="list-style: none; padding: 0;">
-                        <c:forEach items="${selfBoards}" var="selfBoard">
-                            <li onclick="loadSelfIntroduction(${selfBoard.selfIdx})" class="btn btn-outline-dark mb-2 text-start" style="width: 100%;">
-                                <div>
-                                    <small>${fn:substring(selfBoard.selfDate, 0, 10)} ${fn:substring(selfBoard.selfDate, 11, 16)}</small>
-                                    <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/><br>
-                                    <strong><c:out value="${selfBoard.selfCompany}"/></strong> <strong>${selfBoard.selfPosition}</strong><br>
-                                    <span>${selfBoard.selfTitle}</span>
-                                </div>
-                            </li>
-                        </c:forEach>
-                    </ul>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 <!-- Question Section -->
 <div id="questionSection" class="main-content hidden">
@@ -424,7 +424,7 @@
                 resultDiv.style.display = 'block';
                 loadModal.style.display = "none";
 
-            },         error: function(xhr, status, error) {
+        },         error: function(xhr, status, error) {
                 console.error('자기소개서 불러오기 오류:', error);
                 alert('자기소개서를 불러오는데 실패했습니다.');
             }

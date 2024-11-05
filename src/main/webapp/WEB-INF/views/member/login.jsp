@@ -30,8 +30,15 @@
                 <label class="form-check-label" for="remember">아이디 기억하기</label>
             </div>
             <p></p>
-            <button type="submit" class="btn btn-dark login-btn">Login</button>
+            <button type="submit" class="btn btn-dark login-btn-m">Login</button>
         </form>
+
+        <div class="footer-links">
+            <a href="${pageContext.request.contextPath}/member/findid">아이디 찾기 |</a>
+            <a href="${pageContext.request.contextPath}/idpw">비밀번호 찾기 |</a>
+            <a href="${pageContext.request.contextPath}/member/join">회원가입</a>
+        </div>
+
         <div class="social-login">
             <a href="${pageContext.request.contextPath}/oauth2/authorization/naver" class="btn btn-naver">
                 <i class="fab fa-naver"></i> Login with Naver
@@ -42,12 +49,6 @@
             <a href="${pageContext.request.contextPath}/oauth2/authorization/kakao" class="btn btn-kakao btn-block">
                 <i class="fab fa-kickstarter-k"></i> Login with Kakao
             </a>
-        </div>
-
-        <div class="footer-links">
-            <a href="${pageContext.request.contextPath}/member/findid">아이디 찾기 |</a>
-            <a href="${pageContext.request.contextPath}/idpw">비밀번호 찾기 |</a>
-            <a href="${pageContext.request.contextPath}/member/join">회원가입</a>
         </div>
     </div>
 </div>

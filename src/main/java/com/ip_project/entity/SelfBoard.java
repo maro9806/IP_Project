@@ -4,43 +4,35 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "SELF_BOARD")
-@Getter @Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class SelfBoard {
 
     @Id
-    @Column(name = "SELF_IDX")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SELF_BOARD_SEQ")
+    @SequenceGenerator(name = "SELF_BOARD_SEQ", sequenceName = "SELF_BOARD_SEQ", allocationSize = 1)
+    @Column(name = "SELF_IDX", nullable = false, length = 255)
     private Long selfIdx;
 
-    @Column(name = "SELF_TITLE", length = 250, nullable = false)
+    @Column(name = "SELF_TITLE", nullable = false, length = 255)
     private String selfTitle;
 
-    @Column(name = "SELF_COMPANY", length = 200, nullable = false)
+    @Column(name = "SELF_COMPANY", nullable = false, length = 255)
     private String selfCompany;
 
-    @Column(name = "SELF_POSITION", length = 250, nullable = false)
+    @Column(name = "SELF_POSITION", nullable = false, length = 255)
     private String selfPosition;
 
-    @Column(name = "SELF_DATE", nullable = false)
+    @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT SYSTIMESTAMP")
     private LocalDateTime selfDate;
 
-    @Column(name = "USERNAME", length = 30, nullable = false)
-    private String username;  // Member 엔티티 대신 username 문자열 사용
+    @ManyToOne
+    @JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME")
+    private Member member;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "selfBoard", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SelfIntroduction> introductions = new ArrayList<>();
-
-    public void addIntroduction(SelfIntroduction introduction) {
-        introductions.add(introduction);
-        introduction.setSelfBoard(this);
-    }
 }
