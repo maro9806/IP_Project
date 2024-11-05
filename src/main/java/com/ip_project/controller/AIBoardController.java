@@ -10,6 +10,7 @@ import com.ip_project.repository.MemberRepository;
 import com.ip_project.service.AIInterviewService;
 import com.ip_project.service.SelfBoardService;
 import com.ip_project.service.SelfIntroductionService;
+import com.ip_project.service.VirtualService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -32,6 +35,7 @@ public class AIBoardController {
     private final SelfIntroductionService selfIntroductionService;
     private final SelfBoardService selfBoardService;
     private final MemberRepository memberRepository;
+    private final VirtualService virtualService;
 
     @GetMapping("/ai_board")  // 추가된 매핑
     public String aiBoard() {
@@ -149,5 +153,55 @@ public class AIBoardController {
             @RequestParam("video") MultipartFile file) {
         interviewService.submitVideoResponse(id, file);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/loadVirtualInterview/{idx}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> loadVirtualInterview(@PathVariable("idx") Long idx) {
+        try {
+            // SelfBoard 조회
+            SelfBoard selfBoard = selfBoardService.findById(idx);
+            if (selfBoard == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Map<String, Object> response = new HashMap<>();
+
+            // 기본 정보 설정
+            response.put("company", selfBoard.getSelfCompany());
+            response.put("position", selfBoard.getSelfPosition());
+            response.put("title", selfBoard.getSelfTitle());
+
+            // 예상 질문 목록 추가
+            List<Map<String, Object>> questions = virtualService.getInterviewQuestions();
+            response.put("questions", questions);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/api/virtual/interview")
+    @ResponseBody
+    public ResponseEntity<AIInterviewDTO> startVirtualInterview(@RequestBody AIInterviewDTO requestDto) {
+        try {
+            // 질문 개수 검증 (1-6개)
+            if (requestDto.getQuestions() == null ||
+                    requestDto.getQuestions().size() < 1 ||
+                    requestDto.getQuestions().size() > 6) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            requestDto.setUsername(auth.getName());
+            requestDto.setStatus(AIInterviewStatus.CREATED);
+            requestDto.setInterviewDate(LocalDateTime.now());
+
+            AIInterviewDTO createdInterview = interviewService.createInterview(requestDto);
+            return ResponseEntity.ok(createdInterview);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

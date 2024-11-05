@@ -95,10 +95,7 @@
                             <h1 class="swot-letter swot-letter-S">S</h1>
                             <h5 class="card-title">Strengths</h5>
                             <ul class="card-text">
-                                <li>Things your company does well</li>
-                                <li>Qualities that separate you from your competitors</li>
-                                <li>Internal resources like skilled staff</li>
-                                <li>Tangible assets like intellectual property, capital, etc.</li>
+                                <li>${fn:replace(swot.strength, "\\n", "<br>")}</li>
                             </ul>
                         </div>
                     </div>
@@ -111,10 +108,7 @@
                             <h1 class="swot-letter swot-letter-W">W</h1>
                             <h5 class="card-title">Weaknesses</h5>
                             <ul class="card-text">
-                                <li>Things your company lacks</li>
-                                <li>Things competitors do better than you</li>
-                                <li>Resource limitations</li>
-                                <li>Unclear unique selling proposition</li>
+                                ${fn:replace(swot.weakness, "\\n", "<br>")}
                             </ul>
                         </div>
                     </div>
@@ -127,10 +121,7 @@
                             <h1 class="swot-letter swot-letter-O">O</h1>
                             <h5 class="card-title">Opportunities</h5>
                             <ul class="card-text">
-                                <li>Underserved markets for specific products</li>
-                                <li>Few competitors in your area</li>
-                                <li>Emerging need for your products/services</li>
-                                <li>Press/media coverage of your company</li>
+                                ${fn:replace(swot.opportunity, "\\n", "<br>")}
                             </ul>
                         </div>
                     </div>
@@ -143,10 +134,7 @@
                             <h1 class="swot-letter swot-letter-T">T</h1>
                             <h5 class="card-title">Threats</h5>
                             <ul class="card-text">
-                                <li>Emerging competitors</li>
-                                <li>Changing regulatory environment</li>
-                                <li>Negative press/media coverage</li>
-                                <li>Changing customer attitudes</li>
+                                ${fn:replace(swot.threat, "\\n", "<br>")}
                             </ul>
                         </div>
                     </div>
