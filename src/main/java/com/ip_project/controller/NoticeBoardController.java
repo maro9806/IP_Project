@@ -12,4 +12,24 @@ public class NoticeBoardController {
     public String noticeboard() {
         return "notice/noticeboard";
     }
+
+    @GetMapping("/acceptancewrite")
+    public String acceptancewrite() {
+        return "notice/acceptancewrite";
+    }
+
+    @GetMapping("/acceptanceboard")
+    public String acceptanceboard() {
+        return "notice/acceptanceboard";
+    }
+
+    @GetMapping("/resourcewrite")
+    public String resourcewrite() {
+        return "notice/resourcewrite";
+    }
+
+    @GetMapping("/resourceboard")
+    public String resourceboard() {
+        return "notice/resourceboard";
+    }
 }

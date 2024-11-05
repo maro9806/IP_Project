@@ -11,110 +11,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value='/resources/static/login.css'/>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <jsp:include page="../navbar.jsp" />
-<!-- Login Form -->
 <div class="login-container">
     <div class="login-box">
-        <img src="<c:url value='/resources/static/img/logo.svg'/>" alt="Logo" class="logo" width="50">
-        <span class="login-title">AI 면접의 첫 걸음</span>
+        <div class="brand-section">
+            <img src="<c:url value='/resources/static/img/logo.svg'/>" alt="lgLogo" class="lglogo">
+            <h1 class="login-title">AI 면접의 첫 걸음</h1>
+        </div>
 
-        <form action="${pageContext.request.contextPath}/member/login-process" method="POST">
-            <input type="text" class="form-control" name="username" placeholder="ID" required>
-            <input type="password" class="form-control" name="password" placeholder="PW" required>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="remember">
-                <label class="form-check-label" for="remember">아이디 기억하기</label>
+        <form action="${pageContext.request.contextPath}/member/login-process" method="POST" class="login-form">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="username" placeholder="아이디를 입력하세요" required>
             </div>
-            <p></p>
-            <button type="submit" class="btn btn-dark login-btn-m">Login</button>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" placeholder="비밀번호를 입력하세요" required>
+            </div>
+
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <span class="checkmark"></span>
+                    아이디 기억하기
+                </label>
+            </div>
+
+            <button type="submit" class="lglogin-btn">
+                로그인
+            </button>
         </form>
 
-        <div class="footer-links">
-            <a href="${pageContext.request.contextPath}/member/findid">아이디 찾기 |</a>
-            <a href="${pageContext.request.contextPath}/idpw">비밀번호 찾기 |</a>
-            <a href="${pageContext.request.contextPath}/member/join">회원가입</a>
+        <div class="divider">
+            <span>또는 소셜 계정으로 로그인</span>
         </div>
 
         <div class="social-login">
-            <a href="${pageContext.request.contextPath}/oauth2/authorization/naver" class="btn btn-naver">
-                <i class="fab fa-naver"></i> Login with Naver
+            <a href="${pageContext.request.contextPath}/oauth2/authorization/naver" class="social-btn naver">
+                <i class="fas fa-n"></i>
             </a>
-            <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="btn btn-google btn-block">
-                <i class="fab fa-google"></i> Login with Google
+            <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="social-btn google">
+                <i class="fab fa-google"></i>
             </a>
-            <a href="${pageContext.request.contextPath}/oauth2/authorization/kakao" class="btn btn-kakao btn-block">
-                <i class="fab fa-kickstarter-k"></i> Login with Kakao
+            <a href="${pageContext.request.contextPath}/oauth2/authorization/kakao" class="social-btn kakao">
+                <i class="fas fa-comment"></i>
             </a>
+        </div>
+
+        <div class="footer-links">
+            <a href="${pageContext.request.contextPath}/member/findid">아이디 찾기</a>
+            <span class="separator">|</span>
+            <a href="${pageContext.request.contextPath}/idpw">비밀번호 찾기</a>
+            <span class="separator">|</span>
+            <a href="${pageContext.request.contextPath}/member/join">회원가입</a>
         </div>
     </div>
 </div>
 
-<!-- idpw container -->
+<!-- Recovery Forms -->
 <div id="idpw-container" class="idpw-container hidden">
     <div id="id-section" class="idpw-section hidden">
-        <span class="login-title">아이디 찾기</span>
+        <h2 class="recovery-title">아이디 찾기</h2>
         <form action="${pageContext.request.contextPath}/member/id_recovery" method="POST">
-            <input type="text" class="form-control" name="email" placeholder="이메일을 입력하세요" required>
-            <button type="submit" class="btn btn-dark login-btn">아이디 찾기</button>
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="email" placeholder="이메일을 입력하세요" required>
+            </div>
+            <button type="submit" class="recovery-btn">아이디 찾기</button>
         </form>
     </div>
 
     <div id="pw-section" class="idpw-section hidden">
-        <span class="login-title">비밀번호 찾기</span>
+        <h2 class="recovery-title">비밀번호 찾기</h2>
         <form action="${pageContext.request.contextPath}/member/pw_recovery" method="POST">
-            <input type="text" class="form-control" name="username" placeholder="아이디를 입력하세요" required>
-            <input type="email" class="form-control" name="email" placeholder="이메일을 입력하세요" required>
-            <button type="submit" class="btn btn-dark login-btn">비밀번호 찾기</button>
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="username" placeholder="아이디를 입력하세요" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="email" placeholder="이메일을 입력하세요" required>
+            </div>
+            <button type="submit" class="recovery-btn">비밀번호 찾기</button>
         </form>
     </div>
 
-    <button id="close-btn" class="btn close-btn">닫기</button>
+    <button id="close-btn" class="close-btn">
+        <i class="fas fa-times"></i>
+    </button>
 </div>
 
 <script>
-    // Get the elements
-    const loginContainer = document.querySelector('.login-container'); // Login container
-    const idpwContainer = document.getElementById('idpw-container'); // ID/PW container
-    const closeButton = document.getElementById('close-btn'); // Close button
-
-    const idSection = document.getElementById('id-section'); // ID recovery section
-    const pwSection = document.getElementById('pw-section'); // PW recovery section
+    const loginContainer = document.querySelector('.login-container');
+    const idpwContainer = document.getElementById('idpw-container');
+    const closeButton = document.getElementById('close-btn');
+    const idSection = document.getElementById('id-section');
+    const pwSection = document.getElementById('pw-section');
     const idLink = document.querySelector('.footer-links a:first-child');
     const pwLink = document.querySelector('.footer-links a:nth-child(2)');
 
-    idLink.addEventListener('click', function (event) {
-        event.preventDefault();
+    const toggleRecoveryForm = (showId) => {
         idpwContainer.classList.remove('hidden');
-        idSection.classList.remove('hidden');
-        pwSection.classList.add('hidden');
         loginContainer.classList.add('hidden');
+        idSection.classList.toggle('hidden', !showId);
+        pwSection.classList.toggle('hidden', showId);
+    };
+
+    idLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleRecoveryForm(true);
     });
 
-    pwLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        idpwContainer.classList.remove('hidden');
-        pwSection.classList.remove('hidden');
-        idSection.classList.add('hidden');
-        loginContainer.classList.add('hidden');
+    pwLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleRecoveryForm(false);
     });
 
-
-    closeButton.addEventListener('click', function () {
+    closeButton.addEventListener('click', () => {
         idpwContainer.classList.add('hidden');
         loginContainer.classList.remove('hidden');
         idSection.classList.add('hidden');
         pwSection.classList.add('hidden');
     });
-
-    fetch('navbar.jsp')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('navbar-placeholder').innerHTML = data;
-        });
 </script>
 
 </body>

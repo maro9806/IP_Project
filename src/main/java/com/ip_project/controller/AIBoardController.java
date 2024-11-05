@@ -134,23 +134,31 @@ public class AIBoardController {
         return "aiboard/ai_preparation";
     }
 
-    @PostMapping("/api/interview")  // 이 경로를 클라이언트에서도 동일하게 사용해야 함
+    @PostMapping("/api/interview")
     @ResponseBody
     public ResponseEntity<AIInterviewDTO> startInterview(@RequestBody AIInterviewDTO requestDto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        requestDto.setUsername(auth.getName());
-        requestDto.setStatus(AIInterviewStatus.CREATED);
-        requestDto.setInterviewDate(LocalDateTime.now());
+        try {
+            // 로그 추가
+            System.out.println("Received request: " + requestDto);
 
-        AIInterviewDTO createdInterview = interviewService.createInterview(requestDto);
-        return ResponseEntity.ok(createdInterview);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            requestDto.setUsername(auth.getName());
+            requestDto.setStatus(AIInterviewStatus.CREATED);
+            requestDto.setInterviewDate(LocalDateTime.now());
+
+            AIInterviewDTO createdInterview = interviewService.createInterview(requestDto);
+            return ResponseEntity.ok(createdInterview);
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 로그 추가
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/api/interview/{id}/video")
     @ResponseBody
     public ResponseEntity<Void> submitVideo(
             @PathVariable Long id,
-            @RequestParam("video") MultipartFile file) {
+            @RequestParam("video") MultipartFile    file) {
         interviewService.submitVideoResponse(id, file);
         return ResponseEntity.ok().build();
     }

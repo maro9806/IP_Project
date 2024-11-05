@@ -68,7 +68,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="board" items="${list}">
+            <%--<c:forEach var="board" items="${list}">
                 <tr>
                     <td>${board.idx}</td>
                     <td>${board.companyName}</td>
@@ -76,7 +76,7 @@
                     <td><fmt:formatDate value="${board.createDate}" pattern="yyyy-MM-dd"/></td>
                     <td>${board.viewCount}</td>
                 </tr>
-            </c:forEach>
+            </c:forEach>--%>
             </tbody>
         </table>
 

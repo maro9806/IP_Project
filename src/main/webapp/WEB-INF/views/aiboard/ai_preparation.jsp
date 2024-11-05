@@ -21,29 +21,19 @@
 <!-- Interview Setup Section -->
 <div id="setupSection" class="main-content">
 
-        <!-- Centered greeting message -->
-<%--        <div class="card">--%>
-<%--            <div class="card-body">--%>
-<%--            <div class="col center-text fade-target">--%>
-<%--                <p><strong>신현준님</strong>, 안녕하세요</p>--%>
-<%--                <p>지금부터 영상 면접을 시작할게요.</p>--%>
-<%--            </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-        <!-- Card section with video and AIInterview settings (Horizontal layout) -->
+    <!-- Card section with video and AIInterview settings (Horizontal layout) -->
     <div class="camera-container">
         <div class="row justify-content-center position-relative">
-            <div class="card camera-card col-lg-8 d-flex flex-row">
+            <div class="card col-lg-8 d-flex flex-row">
                 <!-- Left section: Video -->
-                <div class="video-section d-flex flex-column">
-                    <h5><strong>면접 환경 설정</strong></h5>
-                    <p><sec:authentication property="principal.member.name"/>님 영상 면접을 진행할 자기소개서와 질문을 선택해주세요.</p>
-                    <video id="videoPreview" autoplay playsinline muted></video>
-                    <div id="videoError" class="video-error" style="display: none;">
+                <div class="video-section">
+                    <div class="video-container">
+                        <!-- 여기에 비디오가 동적으로 추가됨 -->
+                    </div>
+                    <div id="questionVideoError" class="video-error" style="display: none;">
                         카메라에 접근할 수 없습니다. 카메라 권한을 확인해주세요.
                     </div>
-                    <div class="recording-indicator" id="recordingIndicator" style="display: none;">
+                    <div id="questionRecordingIndicator" class="recording-indicator" style="display: none;">
                         <span class="recording-dot"></span>
                         녹화중
                     </div>
@@ -54,13 +44,12 @@
                         <table style="width:100%;">
                             <tr>
                                 <td>
-                                <!-- 불러온 자기소개서 정보를 표시할 위치 -->
-                                <div id="selectedSelfIntroduction" class="mt-3">
-                                    <label for="coverLetter"><strong>자기소개서</strong></label>
-                                    <input id="coverLetter" readonly class="form-control" value="-"/>
-                                    <label for="questions"><strong>예상질문</strong></label>
-                                    <input id="questions" readonly class="form-control" value="-"/>
-                                </div>
+                                    <!-- 불러온 자기소개서 정보를 표시할 위치 -->
+                                    <div id="selectedSelfIntroduction" class="mt-3">
+                                        <label for="coverLetter"><strong>자기소개서</strong></label>
+                                        <input id="coverLetter" readonly class="form-control" value="-"/>
+                                    </div>
+
                                 </td>
                             </tr>
                             <tr>
@@ -70,57 +59,44 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label"><strong>질문 종류</strong></label><br>
-                        <input type="checkbox" id="company" name="company">
-                        <label for="company">기업</label>
-                        <input type="checkbox" id="job" name="job">
-                        <label for="job">직무</label>
-                        <input type="checkbox" id="experience" name="experience">
-                        <label for="experience">경험</label>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label"><strong>답변 시간</strong></label><br>
-                        <select class="form-control">
-                            <option>30초</option>
-                            <option>60초</option>
-                            <option>1분 30초</option>
-                        </select>
-                    </div>
+
                     <button class="btn btn-primary w-100" onclick="startInterview()">면접 시작하기</button>
                 </div>
             </div>
 
-                <!-- 불러오기 모달 창 -->
-                <div id="loadModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <h5><strong>자기소개서 불러오기</strong></h5>
-                        <p>영상 면접을 진행할 자기소개서를 선택하세요</p>
-                        <div id="noSelfBoardMessage" style="display: ${empty selfBoards ? 'block' : 'none'};">
-                            <div class="card">
-                                <div class="card-body d-flex justify-content-center align-items-center" style="height: 100px;border: 1px solid #616161;border-radius: 8px;">
-                                    <p class="mb-0">저장한 자기소개서 내역이 없습니다.</p>
-                                </div>
+            <!-- 불러오기 모달 창 -->
+            <div id="loadModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h5><strong>자기소개서 불러오기</strong></h5>
+                    <p>영상 면접을 진행할 자기소개서를 선택하세요</p>
+                    <div id="noSelfBoardMessage" style="display: ${empty selfBoards ? 'block' : 'none'};">
+                        <div class="card">
+                            <div class="card-body d-flex justify-content-center align-items-center"
+                                 style="height: 100px;border: 1px solid #616161;border-radius: 8px;">
+                                <p class="mb-0">저장한 자기소개서 내역이 없습니다.</p>
                             </div>
                         </div>
-                        <ul style="list-style: none; padding: 0;">
-                            <c:forEach items="${selfBoards}" var="selfBoard">
-                                <li onclick="loadSelfIntroduction(${selfBoard.selfIdx})" class="btn btn-outline-dark mb-2 text-start" style="width: 100%;">
-                                    <div>
-                                        <small>${fn:substring(selfBoard.selfDate, 0, 10)} ${fn:substring(selfBoard.selfDate, 11, 16)}</small>
-                                        <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/><br>
-                                        <strong><c:out value="${selfBoard.selfCompany}"/></strong> <strong>${selfBoard.selfPosition}</strong><br>
-                                        <span>${selfBoard.selfTitle}</span>
-                                    </div>
-                                </li>
-                            </c:forEach>
-                        </ul>
                     </div>
+                    <ul style="list-style: none; padding: 0;">
+                        <c:forEach items="${selfBoards}" var="selfBoard">
+                            <li onclick="loadSelfIntroduction(${selfBoard.selfIdx})"
+                                class="btn btn-outline-dark mb-2 text-start" style="width: 100%;">
+                                <div>
+                                    <small>${fn:substring(selfBoard.selfDate, 0, 10)} ${fn:substring(selfBoard.selfDate, 11, 16)}</small>
+                                    <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/><br>
+                                    <strong><c:out value="${selfBoard.selfCompany}"/></strong>
+                                    <strong>${selfBoard.selfPosition}</strong><br>
+                                    <span>${selfBoard.selfTitle}</span>
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 <!-- Question Section -->
 <div id="questionSection" class="main-content hidden">
@@ -133,20 +109,19 @@
         </div>
         <div class="row justify-content-center position-relative">
             <div class="card col-lg-8 d-flex flex-row">
-                <!-- Left section: Video -->
                 <div class="video-section">
-                    <span>video check</span>
-                </div>
-                <!-- Right section: Answer section -->
-                <div class="form-section fade-target">
-                    <h4>답변 확인</h4>
-                    <div class="mb-3">
-                            <textarea class="form-control" placeholder="사용자 답변 출력 페이지"
-                                      style="height: 300px;"></textarea>
+                    <h5><strong>면접 환경 설정</strong></h5>
+                    <p><sec:authentication property="principal.member.name"/>님 영상 면접을 진행할 자기소개서와 질문을 선택해주세요.</p>
+                    <div class="video-container">
+                        <!-- 여기에 비디오가 동적으로 추가됨 -->
                     </div>
-                    <button class="btn btn-primary w-100" onclick="finishInterview()">답변 완료</button>
-                    <!-- Back button -->
-                    <button class="btn btn-outline-primary w-100 mt-3" onclick="goBack()">처음으로 돌아가기</button>
+                    <div id="setupVideoError" class="video-error" style="display: none;">
+                        카메라에 접근할 수 없습니다. 카메라 권한을 확인해주세요.
+                    </div>
+                    <div id="setupRecordingIndicator" class="recording-indicator" style="display: none;">
+                        <span class="recording-dot"></span>
+                        녹화중
+                    </div>
                 </div>
             </div>
         </div>
@@ -173,35 +148,60 @@
 
     async function startInterview() {
         try {
-            // fetch 요청 전에 현재 경로를 확인
-            console.log('Current path:', window.location.pathname);
+            // 자기소개서가 선택되었는지 확인
+            const selfIntroDiv = document.getElementById('selectedSelfIntroduction');
+            const formControl = selfIntroDiv.querySelector('.form-control');
+
+            if (!formControl || formControl.textContent.trim() === '-') {
+                alert('자기소개서를 선택해주세요.');
+                return;
+            }
+
+            // position 가져오기
+            const positionSpan = formControl.querySelector('span:last-child');
+            if (!positionSpan) {
+                alert('직무 정보를 찾을 수 없습니다.');
+                return;
+            }
+            const position = positionSpan.textContent.trim().replace('/', '').trim();
+
+            // 선택된 질문들 가져오기
+            const selectedQuestions = Array.from(document.querySelectorAll('input[name="selectedQuestions"]:checked'))
+                .map((checkbox, index) => ({
+                    content: checkbox.value,
+                    orderNumber: index + 1
+                }));
+
+            // 질문 선택 검증
+            if (selectedQuestions.length === 0) {
+                alert('최소 1개의 질문을 선택해주세요.');
+                return;
+            }
+            if (selectedQuestions.length > 6) {
+                alert('최대 6개의 질문만 선택할 수 있습니다.');
+                return;
+            }
+
+            // 요청 데이터 구성
+            const requestData = {
+                username: null, // 서버에서 설정됨
+                position: position,
+                questions: selectedQuestions,
+                interviewDate: new Date().toISOString(),
+                videoStatus: null, // 서버에서 설정됨
+                videoUrl: null,
+                memberId: null // 서버에서 설정됨
+            };
+
+            console.log('Request data:', requestData); // 요청 데이터 로그
 
             const response = await fetch('/aiboard/api/interview', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                    // CSRF 토큰은 비활성화했으므로 제거
                 },
-                body: JSON.stringify({
-                    position: document.getElementById('positionSelect').value,
-                    questions: [
-                        {
-                            content: "회사를 선택한 이유는 무엇인가요?",
-                            orderNumber: 1
-                        },
-                        {
-                            content: "직무와 관련된 경험을 설명해주세요.",
-                            orderNumber: 2
-                        },
-                        {
-                            content: "향후 커리어 계획은 무엇인가요?",
-                            orderNumber: 3
-                        }
-                    ]
-                })
+                body: JSON.stringify(requestData)
             });
-
-            console.log('Response status:', response.status); // 응답 상태 확인
 
             if (!response.ok) {
                 const errorText = await response.text();
@@ -210,16 +210,50 @@
             }
 
             const data = await response.json();
-            console.log('Received data:', data); // 받은 데이터 확인
+            console.log('Received data:', data);
 
             currentInterviewId = data.id;
+
+            // 화면 전환 전에 비디오 녹화 시작
             await startVideoRecording();
 
-            document.getElementById('setupSection').classList.add('hidden');
-            document.getElementById('questionSection').classList.remove('hidden');
+            // 화면 요소 존재 여부 확인
+            const setupSection = document.getElementById('setupSection');
+            const questionSection = document.getElementById('questionSection');
+
+            if (!setupSection || !questionSection) {
+                throw new Error('필요한 화면 요소를 찾을 수 없습니다.');
+            }
+
+            // 화면 전환
+            setupSection.classList.add('hidden');
+            questionSection.classList.remove('hidden');
+
+            // 질문 표시 요소 확인
+            const questionTitle = questionSection.querySelector('.center-text p:first-child');
+            const questionContent = questionSection.querySelector('.center-text p:last-child');
+
+            if (!questionTitle || !questionContent) {
+                throw new Error('질문 표시 요소를 찾을 수 없습니다.');
+            }
+
+            const selectedQuestion = selectedQuestions[0];
+            if (!selectedQuestion) {
+                throw new Error('선택된 질문이 없습니다.');
+            }
+
+            questionTitle.textContent = `Question ${selectedQuestion.orderNumber}`;
+            questionContent.textContent = selectedQuestion.content;
+
+            // 비디오 섹션 확인
+            const videoSection = document.querySelector('#questionSection .video-section');
+            if (!videoSection) {
+                throw new Error('비디오 섹션을 찾을 수 없습니다.');
+            }
+
         } catch (error) {
             console.error('Interview start error:', error);
-            alert('Error: ' + error.message);
+            alert(error.message);
         }
     }
 
@@ -230,20 +264,26 @@
                 audio: true
             });
 
+            const questionVideoContainer = document.querySelector('#questionSection .video-container');
+            if (!questionVideoContainer) {
+                throw new Error('면접 비디오 컨테이너를 찾을 수 없습니다.');
+            }
+
             const videoElement = document.createElement('video');
             videoElement.srcObject = stream;
             videoElement.autoplay = true;
             videoElement.playsInline = true;
+            videoElement.style.width = '100%';
+            videoElement.style.height = 'auto';
 
-            const videoSection = document.querySelector('.video-section');
-            videoSection.innerHTML = '';
-            videoSection.appendChild(videoElement);
+            questionVideoContainer.innerHTML = '';
+            questionVideoContainer.appendChild(videoElement);
 
             mediaRecorder = new MediaRecorder(stream, {
                 mimeType: 'video/webm;codecs=vp8,opus'
             });
 
-            recordedChunks = []; // 새 녹화 시작 전 초기화
+            recordedChunks = [];
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
                     recordedChunks.push(event.data);
@@ -251,81 +291,84 @@
             };
 
             mediaRecorder.start();
-            document.getElementById('recordingIndicator').style.display = 'block';
+
+            const recordingIndicator = document.getElementById('questionRecordingIndicator');
+            if (recordingIndicator) {
+                recordingIndicator.style.display = 'block';
+            }
 
         } catch (error) {
-            console.error('카메라 접근 오류:', error);
-            document.getElementById('videoError').style.display = 'block';
-            throw new Error('카메라 접근에 실패했습니다. 카메라 권한을 확인해주세요.');
+            handleCameraError(error, 'question');
+            throw error; // 상위 함수에서 처리할 수 있도록 에러를 다시 던짐
         }
     }
 
     async function finishInterview() {
         try {
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                mediaRecorder.stop();
-                await new Promise(resolve => {
-                    mediaRecorder.onstop = async () => {
-                        try {
-                            const token = document.querySelector("meta[name='_csrf']").content;
-                            const header = document.querySelector("meta[name='_csrf_header']").content;
-                            const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                            const formData = new FormData();
-                            formData.append('video', blob);
-
-                            const response = await fetch(`/aiboard/api/interview/${currentInterviewId}/video`, {
-                                method: 'POST',
-                                headers: {
-                                    [header]: token
-                                },
-                                body: formData
-                            });
-
-                            if (!response.ok) {
-                                throw new Error('비디오 제출에 실패했습니다.');
-                            }
-
-                            document.getElementById('questionSection').classList.add('hidden');
-                            document.getElementById('endingSection').classList.remove('hidden');
-                            document.body.style.overflow = "hidden";
-
-                            resolve();
-                        } catch (error) {
-                            console.error('Video submission error:', error);
-                            throw error;
-                        }
-                    };
-                });
-            } else {
+            if (!mediaRecorder || mediaRecorder.state !== 'recording') {
                 throw new Error('녹화가 진행 중이지 않습니다.');
             }
+
+            await new Promise((resolve, reject) => {
+                mediaRecorder.onstop = async () => {
+                    try {
+                        const token = document.querySelector("meta[name='_csrf']").content;
+                        const header = document.querySelector("meta[name='_csrf_header']").content;
+
+                        const blob = new Blob(recordedChunks, {type: 'video/webm'});
+                        const formData = new FormData();
+                        formData.append('video', blob);
+
+                        const response = await fetch(`/aiboard/api/interview/${currentInterviewId}/video`, {
+                            method: 'POST',
+                            headers: {
+                                [header]: token
+                            },
+                            body: formData
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('비디오 제출에 실패했습니다.');
+                        }
+
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                mediaRecorder.stop();
+            });
+
+            // 화면 전환
+            document.getElementById('questionSection').classList.add('hidden');
+            document.getElementById('endingSection').classList.remove('hidden');
+            document.body.style.overflow = "hidden";
+
         } catch (error) {
+            console.error('Interview finish error:', error);
             alert('Error: ' + error.message);
         } finally {
-            // 녹화 관련 리소스 정리
-            if (mediaRecorder && mediaRecorder.stream) {
-                const tracks = mediaRecorder.stream.getTracks();
-                tracks.forEach(track => track.stop());
-            }
+            cleanupVideoResources();
         }
     }
 
     function goBack() {
-        // 녹화 중지 및 리소스 정리
-        if (mediaRecorder && mediaRecorder.state === 'recording') {
-            mediaRecorder.stop();
-            const tracks = mediaRecorder.stream.getTracks();
-            tracks.forEach(track => track.stop());
+        cleanupVideoResources();
+
+        // UI 초기화
+        const videoContainer = document.querySelector('.video-container');
+        if (videoContainer) {
+            videoContainer.innerHTML = ''; // 비디오 요소 제거
         }
 
-        // 비디오 요소 제거 및 초기 상태로 복원
-        const videoSection = document.querySelector('.video-section');
-        videoSection.innerHTML = '<span>video check</span>';  // 원래 내용 복원
         recordedChunks = [];
 
-        // 기존 UI 전환 유지
+        // 화면 전환
         document.getElementById('questionSection').classList.add('hidden');
         document.getElementById('setupSection').classList.remove('hidden');
+
+        // 카메라 다시 초기화
+        initializeCamera();
     }
 
     // 기존 유틸리티 함수 유지
@@ -342,26 +385,56 @@
 
     async function initializeCamera() {
         try {
+            // 먼저 카메라 권한 상태 확인
+            const permissions = await navigator.permissions.query({name: 'camera'});
+            if (permissions.state === 'denied') {
+                throw new Error('카메라 권한이 거부되었습니다. 브라우저 설정에서 카메라 권한을 허용해주세요.');
+            }
+
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 }
+                    width: {ideal: 1280},
+                    height: {ideal: 720}
                 },
                 audio: false
             });
 
-            // 'previewVideo'를 'videoPreview'로 수정
-            const videoElement = document.getElementById('videoPreview');
-            if (videoElement) {
-                videoElement.srcObject = stream;
-                document.getElementById('videoError').style.display = 'none';
-            } else {
-                console.error('Video element not found');
-                document.getElementById('videoError').style.display = 'block';
+            const videoContainer = document.querySelector('.video-container');
+            if (!videoContainer) {
+                throw new Error('비디오 컨테이너를 찾을 수 없습니다.');
             }
+
+            const videoElement = document.createElement('video');
+            videoElement.srcObject = stream;
+            videoElement.autoplay = true;
+            videoElement.playsInline = true;
+            videoElement.muted = true;
+            videoElement.style.width = '100%';
+            videoElement.style.height = 'auto';
+
+            videoContainer.innerHTML = ''; // 기존 내용 제거
+            videoContainer.appendChild(videoElement);
+            document.getElementById('setupVideoError').style.display = 'none';
+
         } catch (error) {
-            console.error('Camera access error:', error);
-            document.getElementById('videoError').style.display = 'block';
+            handleCameraError(error, 'setup');
+        }
+    }
+
+    function handleCameraError(error, section = 'setup') {
+        console.error('Camera error:', error);
+        const errorId = section === 'setup' ? 'setupVideoError' : 'questionVideoError';
+        const videoError = document.getElementById(errorId);
+
+        if (videoError) {
+            if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+                videoError.textContent = '카메라 권한이 거부되었습니다. 브라우저 설정에서 카메라 권한을 허용해주세요.';
+            } else if (error.name === 'NotFoundError') {
+                videoError.textContent = '카메라를 찾을 수 없습니다. 카메라가 연결되어 있는지 확인해주세요.';
+            } else {
+                videoError.textContent = '카메라 접근에 실패했습니다: ' + error.message;
+            }
+            videoError.style.display = 'block';
         }
     }
 
@@ -375,24 +448,24 @@
         }
     })
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // 모달 창 관련 요소
         const loadModal = document.getElementById("loadModal");
         const loadModalBtn = document.getElementById("loadModalBtn");
         const loadCloseBtn = loadModal.querySelector(".close");
 
         // 모달 열기
-        loadModalBtn.onclick = function() {
+        loadModalBtn.onclick = function () {
             loadModal.style.display = "block";
         };
 
         // 모달 닫기
-        loadCloseBtn.onclick = function() {
+        loadCloseBtn.onclick = function () {
             loadModal.style.display = "none";
         };
 
         // 모달 외부 클릭시 닫기
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == loadModal) {
                 loadModal.style.display = "none";
             }
@@ -401,35 +474,93 @@
 
 
     // 자기소개서 로드 함수
+    // 자기소개서 로드 함수
     function loadSelfIntroduction(selfIdx) {
         $.ajax({
-            url: `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/`+selfIdx,
+            url: `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/` + selfIdx,
             method: 'GET',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 const company = data.company;
                 const position = data.position;
                 const title = data.title;
+                const questions = data.questions;
+                const answers = data.answers;
 
                 const resultDiv = document.getElementById('selectedSelfIntroduction');
-                resultDiv.innerHTML =
-                    '<strong>자기소개서<strong>'+
-                    '<div class="form-control mb-3"><span>' +  company + '</span>'+
+                resultDiv.innerHTML = '<strong>자기소개서</strong>' +
+                    '<div class="form-control mb-3"><span>' + company + '</span>' +
                     '<span> / ' + position + '</span></div>' +
-                    // '<p class="mb-0"> ' + title + '</p></div>' +
-                    '<strong>예상질문</strong>' +
-                    '<select class="form-control">+' +
-                    '<option>1.-----</option></select>';
+                    '<strong>예상질문</strong><div class="question-list">';
 
+                // 문항 수만큼 체크박스로 예상 질문 표시
+                const defaultQuestions = [
+                    "회사를 선택한 이유는 무엇인가요?",
+                    "직무와 관련된 경험을 설명해주세요.",
+                    "향후 커리어 계획은 무엇인가요?"
+                ];
+
+                // 문항 수만큼 예상 질문 표시
+                for (let i = 0; i < questions.length; i++) {
+                    resultDiv.innerHTML += `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="${defaultQuestions[i]}"
+                               id="question${i}" name="selectedQuestions">
+                        <label class="form-check-label" for="question${i}">
+                            ${i + 1}. ${defaultQuestions[i]}
+                        </label>
+                    </div>`;
+                }
+
+                resultDiv.innerHTML += '</div>';
                 resultDiv.style.display = 'block';
                 loadModal.style.display = "none";
 
-        },         error: function(xhr, status, error) {
+                // 체크박스 이벤트 리스너 추가
+                const checkboxes = document.querySelectorAll('input[name="selectedQuestions"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function () {
+                        const checked = document.querySelectorAll('input[name="selectedQuestions"]:checked');
+                        if (checked.length > 6) {
+                            this.checked = false;
+                            alert('최대 6개의 질문만 선택할 수 있습니다.');
+                        }
+                    });
+                });
+            },
+            error: function (xhr, status, error) {
                 console.error('자기소개서 불러오기 오류:', error);
                 alert('자기소개서를 불러오는데 실패했습니다.');
             }
         });
-    };
+    }
+
+    function cleanupVideoResources() {
+        // 모든 비디오 스트림 정지
+        const videoElements = document.querySelectorAll('video');
+        videoElements.forEach(video => {
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+        });
+
+        // MediaRecorder 정리
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+        }
+
+        // 녹화 표시기 숨기기
+        const setupIndicator = document.getElementById('setupRecordingIndicator');
+        const questionIndicator = document.getElementById('questionRecordingIndicator');
+
+        if (setupIndicator) {
+            setupIndicator.style.display = 'none';
+        }
+        if (questionIndicator) {
+            questionIndicator.style.display = 'none';
+        }
+    }
 </script>
 
 </body>

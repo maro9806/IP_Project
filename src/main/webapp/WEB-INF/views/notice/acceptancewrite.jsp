@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/review_write.css">
-    <title>면접 후기 작성</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/acceptancewrite.css">
+    <title>합격 후기 작성</title>
     <%@ include file="../header.jsp" %>
 </head>
 <body>
@@ -17,11 +17,11 @@
 <div class="main-content">
     <div class="container">
         <header class="header">
-            <h1>면접 후기 작성</h1>
-            <p>여러분의 소중한 면접 경험을 공유해주세요</p>
+            <h1>합격 후기 작성</h1>
+            <p>여러분의 소중한 합격 경험을 공유해주세요</p>
         </header>
 
-        <form class="form-card" action="/review/write" method="post" id="reviewForm">
+        <form class="form-card" action="/acceptance/write" method="post" id="acceptanceForm">
             <sec:csrfInput />
 
             <div class="metadata-section">
@@ -77,49 +77,24 @@
 
                 <div id="free-format">
                     <div class="content-group">
-                        <label class="content-label">면접은 어디에서 보셨습니까?</label>
-                        <textarea class="content-textarea" name="process" placeholder="" required></textarea>
+                        <label class="content-label">합격 과정</label>
+                        <textarea class="content-textarea" name="process" placeholder="전체적인 합격 과정을 설명해주세요 (서류 전형부터 최종 합격까지)..." required></textarea>
                     </div>
 
                     <div class="content-group">
-                        <label class="content-label">면접관 및 지원자는 몇 명이었습니까?</label>
-                        <textarea class="content-textarea" name="spec" placeholder="" required></textarea>
+                        <label class="content-label">합격 스펙</label>
+                        <textarea class="content-textarea" name="spec" placeholder="합격에 도움이 된 스펙을 공유해주세요 (학력, 자격증, 경력 등)..." required></textarea>
                     </div>
 
                     <div class="content-group">
-                        <label class="content-label">면접유형은 어땠습니까?</label>
-                        <textarea class="content-textarea" name="tip" placeholder="" required></textarea>
-                    </div>
-
-                    <div class="content-group">
-                        <label class="content-label">면접 진행방식에 대해 적어주세요.</label>
-                        <textarea class="content-textarea" name="tip" placeholder="" required></textarea>
-                    </div>
-
-                    <div class="content-group">
-                        <label class="content-label">면접관 반응은 어떠했습니까?</label>
-                        <textarea class="content-textarea" name="tip" placeholder="" required></textarea>
-                    </div>
-
-                    <div class="content-group">
-                        <label class="content-label">면접 분위기는 어떠했습니까?</label>
-                        <textarea class="content-textarea" name="tip" placeholder="" required></textarea>
-                    </div>
-                    <div class="content-group">
-                        <label class="content-label">면접 후 아쉬웠던 점은 무엇입니까?</label>
-                        <textarea class="content-textarea" name="tip" placeholder="" required></textarea>
-                    </div>
-                    <div class="content-group">
-                        <label class="content-label">면접 준비생을 위한 조언 한 마디 부탁드립니다.</label>
-                        <textarea class="content-textarea" name="tip" placeholder="" required></textarea>
+                        <label class="content-label">합격 꿀팁</label>
+                        <textarea class="content-textarea" name="tip" placeholder="다른 지원자들에게 도움이 될 만한 팁을 공유해주세요..." required></textarea>
                     </div>
                 </div>
 
                 <div id="qa-format" style="display: none;">
                     <div id="questions-container">
                         <div class="question-section">
-                            <label class="content-label">면접 질문과 그에 대한 답변을 적어주세요.</label>
-                            <hr>
                             <label class="content-label">질문 1</label>
                             <input type="text" class="input-field" name="questions[0].question" placeholder="질문을 입력하세요">
                             <textarea class="content-textarea" name="questions[0].answer" placeholder="답변을 입력하세요..."></textarea>
@@ -199,7 +174,7 @@
         // Cancel button
         document.querySelector('.btn-cancel').addEventListener('click', function() {
             if (confirm('작성을 취소하시겠습니까? 작성중인 내용은 저장되지 않습니다.')) {
-                window.location.href = '/review_board/review_list';  // Redirect to list page
+                window.location.href = '/notice/noticeboard';  // Redirect to list page
             }
         });
 

@@ -7,35 +7,38 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <link rel="stylesheet" href="<c:url value='/resources/static/noticeboard.css'/>">
     <title>Title</title>
   <%@ include file="../header.jsp" %>
-  <link rel="stylesheet" href="<c:url value='/resources/static/noticeboard.css'/>">
 </head>
 <body>
-<jsp:include page="../navbar.jsp" />
-<!-- Main Content -->
-<div class="main-content">
-  <!-- Header Jumbotron -->
-  <div class="jumbotron p-5 text-white rounded">
-    <h1 class="display-4">면접의 고수</h1>
-    <p class="lead">합격자들의 자소서와 취업 관련 최신 정보들까지</p>
-    <hr class="my-4 opacity-25">
-    <p class="mb-0">보증된 합격자들의 합격 노하우!</p>
-  </div>
-  <!-- Notice Board Content -->
-  <div class="container mt-4">
-    <div class="row g-4">
-      <!-- User Posts Section -->
-      <div class="col-6">
-        <div class="card h-100">
-          <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-            <h5 class="mb-0">합격자 자소서</h5>
-            <button class="btn btn-primary btn-sm rounded-pill px-3">글쓰기</button>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-hover align-middle">
-                <thead class="table-light">
+  <jsp:include page="../navbar.jsp" />
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <main class="content-wrapper">
+      <header class="hero-section">
+        <div class="hero-content">
+          <h1>면접의 고수</h1>
+          <p class="hero-subtitle">합격자들의 자소서와 취업 관련 최신 정보들까지</p>
+          <div class="hero-divider"></div>
+          <p class="hero-description">보증된 합격자들의 합격 노하우!</p>
+        </div>
+      </header>
+
+      <section class="board-container">
+        <div class="board-grid">
+          <!-- User Posts Section -->
+          <div class="board-card">
+            <div class="board-header">
+              <h2><a href="/notice/acceptanceboard" style="text-decoration: none; color: inherit;">합격자 자소서</a></h2>
+              <button class="btn-write" onclick="location.href='acceptancewrite'">
+                <i class="fas fa-pen"></i> 글쓰기
+              </button>
+            </div>
+            <div class="board-content">
+              <table class="board-table">
+                <thead>
                 <tr>
                   <th style="width: 60%">제목</th>
                   <th style="width: 20%">작성자</th>
@@ -43,18 +46,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td class="text-primary">네이버 합격 자소서 공유합니다</td>
-                  <td>김** </td>
+                <tr class="post-item">
+                  <td class="post-title">네이버 합격 자소서 공유합니다</td>
+                  <td>김**</td>
                   <td>2024.10.25</td>
                 </tr>
-                <tr>
-                  <td class="text-primary">카카오 최종 합격 후기</td>
+                <tr class="post-item">
+                  <td class="post-title">카카오 최종 합격 후기</td>
                   <td>*하*</td>
                   <td>2024.10.24</td>
                 </tr>
-                <tr>
-                  <td class="text-primary">중근당 합격 자소서입니다</td>
+                <tr class="post-item">
+                  <td class="post-title">중근당 합격 자소서입니다</td>
                   <td>**은</td>
                   <td>2024.10.23</td>
                 </tr>
@@ -62,21 +65,18 @@
               </table>
             </div>
           </div>
-        </div>
-      </div>
-      <!-- Admin Notice Section -->
-      <div class="col-6">
-        <div class="card h-100">
-          <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-            <h5 class="mb-0">취업 관련 유용한 자료</h5>
-            <div class="d-flex gap-2">
-              <button class="btn btn-primary btn-sm rounded-pill px-3">공지작성</button>
+
+          <!-- Admin Notice Section -->
+          <div class="board-card">
+            <div class="board-header">
+              <h2><span class="category-label">취업 관련 유용한 자료</span></h2>
+              <button class="btn-write" onclick="location.href='resourcewrite'">
+                <i class="fas fa-thumbtack"></i> 공지작성
+              </button>
             </div>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-hover align-middle">
-                <thead class="table-light">
+            <div class="board-content">
+              <table class="board-table">
+                <thead>
                 <tr>
                   <th style="width: 15%">구분</th>
                   <th style="width: 45%">제목</th>
@@ -85,21 +85,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>공지</td>
-                  <td class="text-primary">10월 채용 공고 모음</td>
+                <tr class="post-item">
+                  <td class="post-category">공지</td>
+                  <td class="post-title">10월 채용 공고 모음</td>
                   <td>관리자</td>
                   <td>2024.10.25</td>
                 </tr>
-                <tr>
-                  <td>취업</td>
-                  <td class="text-primary">2024 하반기 공채 일정</td>
+                <tr class="post-item">
+                  <td class="post-category">취업</td>
+                  <td class="post-title">2024 하반기 공채 일정</td>
                   <td>관리자</td>
                   <td>2024.10.24</td>
                 </tr>
-                <tr>
-                  <td>면접</td>
-                  <td class="text-primary">IT 기업 면접 준비하기</td>
+                <tr class="post-item">
+                  <td class="post-category">면접</td>
+                  <td class="post-title">IT 기업 면접 준비하기</td>
                   <td>관리자</td>
                   <td>2024.10.23</td>
                 </tr>
@@ -108,10 +108,100 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
+      </section>
+    </main>
+    <script>
+      // Add smooth hover effects and interactions
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add hover effect to table rows
+        const postItems = document.querySelectorAll('.post-item');
+        postItems.forEach(item => {
+          item.addEventListener('mouseenter', function() {
+            this.style.transition = 'background-color 0.2s ease';
+          });
+        });
 
-</body>
+        // Add click event to post titles
+        const postTitles = document.querySelectorAll('.post-title');
+        postTitles.forEach(title => {
+          title.addEventListener('click', function(e) {
+            // Add ripple effect on click
+            const ripple = document.createElement('div');
+            ripple.classList.add('ripple');
+            this.appendChild(ripple);
+
+            // Get position of click relative to element
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+
+            // Remove ripple after animation
+            setTimeout(() => {
+              ripple.remove();
+            }, 600);
+          });
+        });
+
+        // Add smooth scroll behavior to buttons
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+          button.addEventListener('click', function() {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+              this.style.transform = 'scale(1)';
+            }, 100);
+          });
+        });
+
+        // Add intersection observer for fade-in animation
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('fade-in');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.1
+        });
+
+        // Observe board cards
+        document.querySelectorAll('.board-card').forEach(card => {
+          observer.observe(card);
+        });
+
+        // Add dynamic badge colors based on content
+        const badges = document.querySelectorAll('.badge');
+        badges.forEach(badge => {
+          const text = badge.textContent.toLowerCase();
+          if (text.includes('공지')) {
+            badge.style.backgroundColor = '#4F46E5';
+          } else if (text.includes('취업')) {
+            badge.style.backgroundColor = '#75c9e9';
+          } else if (text.includes('면접')) {
+            badge.style.backgroundColor = '#d6d6d6';
+          }
+        });
+      });
+
+      // Add responsive table handling
+      function handleResponsiveTables() {
+        const tables = document.querySelectorAll('.board-table');
+        const isMobile = window.innerWidth <= 768;
+
+        tables.forEach(table => {
+          const authorCells = table.querySelectorAll('td:nth-child(3), th:nth-child(3)');
+          authorCells.forEach(cell => {
+            cell.style.display = isMobile ? 'none' : 'table-cell';
+          });
+        });
+      }
+
+      window.addEventListener('resize', handleResponsiveTables);
+      handleResponsiveTables();
+    </script>
+    </body>
 </html>
