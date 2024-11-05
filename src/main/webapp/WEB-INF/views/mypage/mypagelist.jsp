@@ -41,53 +41,56 @@
 
                 <div class="card">
                     <div class="card-body">
+                        <div class="title-section">
+                            <p><input readonly id="title" type="text" value="${selfIntroduction.title}"/></p>
+                        </div>
                         <!-- Info Section -->
                         <div class="info-section">
                             <div class="info-item">
                                 <span class="info-label">직무</span>
-                                <span class="info-value">Back-End Developer</span>
+                                <input readonly class="info-value" value="${selfIntroduction.position}"/>
                             </div>
                             <div class="info-divider"></div>
                             <div class="info-item">
                                 <span class="info-label">기업</span>
-                                <span class="info-value">네이버</span>
+                                    <input readonly class="info-value" value="${selfIntroduction.company}"/>
                             </div>
                         </div>
 
+                        <c:forEach var="i" begin="0" end="${fn:length(selfIntroduction.questions)-1}">
                         <!-- Content -->
                         <div class="content-box" >
-                            자기소개서 저장본이 여기 작성 될 예정
-                            공백
-                            공백
-                            공백
-                            공백
-                            공백
-                            공백
-                            공백
-                            공백
-                            공백
-                            공백
+                                <span class="info-label">문항${i+1}</span>
+                                <input class="question-input" value="${selfIntroduction.questions[i]}"readonly/>
+                                <hr>
+                            <textarea class="answer-input" readonly cols="150" rows="3">${selfIntroduction.answers[i]}</textarea>
                         </div>
-
+                            <hr>
+                        </c:forEach>
                         <!-- Meta Information -->
                         <div class="meta-info">
-                            <span class="date">작성일: 2024.10.15</span>
+                            <span class="date">${fn:substring(selfIntroduction.date, 0, 10)} ${fn:substring(selfIntroduction.date, 11, 16)}
+                                <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Navigation Buttons -->
                 <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn">
+                    <button class="nav-btn prev-btn" onclick="location.href='${pageContext.request.contextPath}/mypage/mypageint'">
                         <i data-lucide="chevron-left" class="icon"></i>
                         이전
                     </button>
                     <div class="action-buttons">
-                        <button class="action-btn edit-btn">
+                        <button class="action-btn edit-btn" onclick="editIntroduction()">
                             <i data-lucide="edit-2" class="icon"></i>
                             수정하기
                         </button>
-                        <button class="action-btn save-btn">
+                        <button class="btn btn-outline-danger delete-btn action-btn" style="border: 1px solid #da3544;" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='${pageContext.request.contextPath}/mypage/remove/${selfIntroduction.idx}'">
+                            <i data-lucide="trash-2" class="icon"></i>
+                            삭제하기
+                        </button>
+                        <button class="action-btn save-btn" style="display:none;" onclick="updateIntroduction(${selfIntroduction.idx})">
                             <i data-lucide="save" class="icon"></i>
                             저장하기
                         </button>
@@ -105,6 +108,109 @@
 <script>
     // Initialize Lucide icons
     lucide.createIcons();
+
+    function editIntroduction() {
+            var titleInput = document.getElementById('title');
+            titleInput.removeAttribute('readonly');
+            titleInput.classList.add('form-control');
+
+            // 기존 CSS 스타일을 덮어쓰는 인라인 스타일 추가
+            titleInput.style.fontSize = '1.3rem';
+            titleInput.style.fontWeight = 'inherit';  // 기존 font-size 제거
+            titleInput.style.color = 'inherit'; // 기존 color 제거
+            titleInput.style.border = '1px solid #ced4da'; // border 스타일 추가 (form-control 스타일)
+            titleInput.style.padding = '10px';
+
+            // 모든 info-value 입력 필드 수정 가능하도록 설정
+            var infoInputs = document.querySelectorAll('.info-value');
+            infoInputs.forEach(function(input) {
+                input.removeAttribute('readonly');
+                input.classList.add('form-control'); // "form-control" 클래스 추가
+                input.style.border = '1px solid #ced4da'; // border 스타일 추가
+                input.style.fontWeight = 'inherit'; // border 스타일 추가
+                input.style.backgroundColor = 'white';
+            });
+
+            // 모든 question-input 및 answer-input 입력 필드 수정 가능하도록 설정
+            var questionInputs = document.querySelectorAll('.question-input');
+            questionInputs.forEach(function(input) {
+                input.removeAttribute('readonly');
+                input.classList.add('form-control'); // "form-control" 클래스 추가
+                input.style.border = '1px solid #ced4da'; // border 스타일 추가
+                input.style.backgroundColor = 'white';
+            });
+
+            var answerInputs = document.querySelectorAll('.answer-input');
+            answerInputs.forEach(function(input) {
+                input.removeAttribute('readonly');
+                input.classList.add('form-control'); // "form-control" 클래스 추가
+                input.style.border = '1px solid #ced4da'; // border 스타일 추가
+                input.style.padding = '10px'; // 패딩 추가
+                input.style.backgroundColor = 'white';
+
+                // 레이블 숨기기
+                var label = input.parentNode.querySelector('.info-label'); // 수정된 부분
+                if (label) {
+                    label.style.display = 'none'; // 레이블을 보이지 않게 설정
+                }
+            });
+
+
+            // 첫 번째 form-control 요소에 포커스 이동
+            if (questionInputs.length > 0) {
+                questionInputs[0].focus(); // 첫 번째 질문 입력 필드에 포커스
+            }
+
+            // 수정하기 버튼 숨기기
+            $('.edit-btn').hide();
+            // 삭제하기 버튼 숨기기
+            $('.delete-btn').hide();
+            // 저장하기 버튼 보이기
+            $('.save-btn').show();
+        }
+
+
+        function updateIntroduction() {
+        // 입력된 질문과 답변을 배열로 수집
+        const questions = [];
+        const answers = [];
+        $('.question-input').each(function() {
+            questions.push($(this).val());
+        });
+        $('.answer-input').each(function() {
+            answers.push($(this).val());
+        });
+
+        // 제목, 기업, 직무 입력값 추가
+            const title = $('#title').val();
+            const company = $('.info-item').eq(1).find('.info-value').val(); // 기업
+            const position = $('.info-item').eq(0).find('.info-value').val(); // 직무
+
+            // DTO 객체 생성
+            const selfIntroductionDTO = {
+                idx:${selfIntroduction.idx},
+                title: title,
+                company: company,
+                position: position,
+                questions: questions,
+                answers: answers
+            };
+
+        // AJAX 요청
+        $.ajax({
+            url: '${pageContext.request.contextPath}/mypage/updateIntroduction',
+            type: 'POST',
+            contentType: 'application/json', // JSON 형식으로 전송
+            data: JSON.stringify(selfIntroductionDTO), // DTO를 JSON으로 변환
+            success: function(response) {
+                alert('수정 완료!');
+                location.reload(); // 페이지 새로고침
+            },
+            error: function(xhr, status, error) {
+                alert('수정 실패: ' + error);
+            }
+        });
+    }
 </script>
 </body>
 </html>

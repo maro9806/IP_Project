@@ -1,21 +1,31 @@
 package com.ip_project.controller;
 
+import com.ip_project.dto.SelfIntroductionDTO;
+import com.ip_project.entity.SelfBoard;
+import com.ip_project.entity.SelfIntroduction;
 import com.ip_project.service.AIInterviewService;
-import com.ip_project.service.MemberService;
+import com.ip_project.service.SelfBoardService;
+import com.ip_project.service.SelfIntroductionService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequestMapping("/mypage")
 @RequiredArgsConstructor
 public class MyPageController {
     private final AIInterviewService interviewService;
-    private final MemberService memberService;
+    private final SelfBoardService selfBoardService;
+    private final SelfIntroductionService selfIntroductionService;
 
     @GetMapping("/mypage")
     public String myPage(Model model) {
@@ -25,11 +35,47 @@ public class MyPageController {
 
         // 해당 사용자의 면접 목록 가져오기
         model.addAttribute("interviews", interviewService.getInterviewsByUsername(username));
+        selfBoardService.listByUsername(model, username);
         return "mypage/mypage";
+    }
+
+    @PostMapping("/updateIntroduction")
+    public ResponseEntity<?> updateIntroduction(@RequestBody SelfIntroductionDTO selfIntroDto) {
+        SelfBoard selfBoard = selfBoardService.findById(selfIntroDto.getIdx());
+
+        // SelfBoard 필드 업데이트 (제목, 회사, 직무, 작성일)
+        selfBoard.setSelfCompany(selfIntroDto.getCompany());
+        selfBoard.setSelfTitle(selfIntroDto.getTitle());
+        selfBoard.setSelfPosition(selfIntroDto.getPosition());
+        selfBoard.setSelfDate(LocalDateTime.now()); // 현재 날짜로 설정
+        // SelfBoard 저장
+        selfBoardService.save(selfBoard);
+
+        // SelfIntroduction 객체 업데이트
+        List<SelfIntroduction> existingIntroductions = selfIntroductionService.findBySelfBoard(selfBoard);
+
+        for (int i = 0; i < selfIntroDto.getQuestions().size(); i++) {
+            // 기존 질문이 있는 경우 업데이트
+            if (i < existingIntroductions.size()) {
+                SelfIntroduction selfIntroduction = existingIntroductions.get(i);
+                selfIntroduction.setIntroQuestion(selfIntroDto.getQuestions().get(i));
+                selfIntroduction.setIntroAnswer(selfIntroDto.getAnswers().get(i));
+
+                selfIntroductionService.saveSelfIntroduction(selfIntroduction); // 업데이트 후 저장
+            } else {
+                // 추가를 허용하지 않으므로 이 부분은 삭제합니다.
+                // 새로 생성하는 로직은 필요 없음
+            }
+        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/mypageint")
     public String myPageIntroduction(Model model) {
+        // 현재 사용자 인증 객체에서 username 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName(); // 현재 사용자의 username
+        selfBoardService.listByUsername(model, username);
         return "mypage/mypageint";
     }
 
@@ -43,10 +89,35 @@ public class MyPageController {
         return "mypage/myprofile";
     }
 
-    @GetMapping("/mypagelist")
-    public String myPageList(Model model) {
-        return "mypage/mypagelist";
+    @GetMapping("/mypagelist/{idx}")
+    public ModelAndView myPageList(@PathVariable("idx") Long idx) {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            SelfBoard selfBoard = selfBoardService.findById(idx);
+            if (selfBoard == null) {
+                modelAndView.setViewName("error/404");
+                return modelAndView;
+            }
+            SelfIntroductionDTO dto = selfIntroductionService.getSelfIntroductions(selfBoard);
+            // 모델에 데이터 추가 후 페이지 설정
+            modelAndView.addObject("selfIntroduction", dto);
+            modelAndView.setViewName("mypage/mypagelist"); // 이동할 페이지 이름 설정
+            return modelAndView;
+        } catch (Exception e) {
+            modelAndView.setViewName("error/500");
+        }
+        return modelAndView;
     }
 
-
+    @GetMapping("/remove/{idx}")
+    public String remove(@PathVariable("idx") Long idx) {
+        SelfBoard selfBoard = selfBoardService.findById(idx);
+        if (selfBoard == null) {
+            // 해당 데이터가 없을 때의 처리
+            throw new EntityNotFoundException("SelfBoard with ID " + idx + " not found.");
+        }
+        selfIntroductionService.deleteSelfIntroduction(selfBoard);
+        selfBoardService.deleteById(idx);
+        return "redirect:/mypage/mypageint";
+    }
 }

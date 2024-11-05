@@ -44,4 +44,10 @@ public class SelfBoardService {
         }
         return selfBoardRepository.save(selfBoard);
     }
+
+    @Transactional
+    public void deleteById(Long idx) {
+        selfBoardRepository.deleteById(idx);
+        System.out.println("삭제하는 selfIdx:" + idx);
+    }
 }

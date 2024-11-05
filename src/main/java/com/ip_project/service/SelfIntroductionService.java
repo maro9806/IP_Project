@@ -6,6 +6,7 @@ import com.ip_project.entity.SelfIntroduction;
 import com.ip_project.repository.SelfIntroductionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,8 @@ public class SelfIntroductionService {
         List<SelfIntroduction> selfIntroductions = selfIntroductionRepository.findAllBySelfBoard(selfBoard);
 
         SelfIntroductionDTO dto = new SelfIntroductionDTO();
+        dto.setIdx(selfBoard.getSelfIdx());
+        dto.setDate(selfBoard.getSelfDate());
         dto.setTitle(selfBoard.getSelfTitle());
         dto.setCompany(selfBoard.getSelfCompany());
         dto.setPosition(selfBoard.getSelfPosition());
@@ -41,7 +44,12 @@ public class SelfIntroductionService {
             selfIntroductionRepository.save(selfIntroduction);
         }
 
-    public void deleteSelfIntroduction(SelfIntroduction selfIntroduction) {
-        selfIntroductionRepository.delete(selfIntroduction);
+    @Transactional
+    public void deleteSelfIntroduction(SelfBoard selfBoard) {
+        selfIntroductionRepository.deleteBySelfBoard(selfBoard);
     }
+
+    public List<SelfIntroduction> findBySelfBoard(SelfBoard selfBoard) {
+        return selfIntroductionRepository.findAllBySelfBoard(selfBoard);
     }
+}

@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface SelfIntroductionRepository extends JpaRepository<SelfIntroduction, Long> {
     List<SelfIntroduction> findAllBySelfBoard(SelfBoard selfBoard);
+    void deleteBySelfBoard(SelfBoard selfBoard);
 }
