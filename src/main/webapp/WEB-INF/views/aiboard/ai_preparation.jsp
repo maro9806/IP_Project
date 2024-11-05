@@ -101,26 +101,40 @@
 <!-- Question Section -->
 <div id="questionSection" class="main-content hidden">
     <div class="container">
-        <div class="row">
-            <div class="col center-text">
-                <p><strong>Question 1</strong></p>
-                <p>우리 회사의 개선점과 나아가야할 방향은 무엇이라고 생각하십니까?</p>
-            </div>
-        </div>
         <div class="row justify-content-center position-relative">
-            <div class="card col-lg-8 d-flex flex-row">
-                <div class="video-section">
-                    <h5><strong>면접 환경 설정</strong></h5>
-                    <p><sec:authentication property="principal.member.name"/>님 영상 면접을 진행할 자기소개서와 질문을 선택해주세요.</p>
-                    <div class="video-container">
-                        <!-- 여기에 비디오가 동적으로 추가됨 -->
+            <div class="card col-lg-10 d-flex flex-row interview-card">
+                <!-- Left section: Video -->
+                <div class="col-md-8">
+                    <div class="video-section">
+                        <div class="video-container">
+                            <!-- 비디오가 동적으로 추가됨 -->
+                        </div>
+                        <div id="setupVideoError" class="video-error" style="display: none;">
+                            카메라에 접근할 수 없습니다. 카메라 권한을 확인해주세요.
+                        </div>
+                        <div id="setupRecordingIndicator" class="recording-indicator" style="display: none;">
+                            <span class="recording-dot"></span>
+                            녹화중
+                        </div>
+                        <!-- 녹화 제어 버튼 -->
+                        <div class="button-group mt-3">
+                            <button id="startButton" onclick="startRecording()" class="btn btn-primary">녹화 시작</button>
+                            <button id="stopButton" onclick="stopRecording()" class="btn btn-danger" disabled>녹화 종료</button>
+                        </div>
                     </div>
-                    <div id="setupVideoError" class="video-error" style="display: none;">
-                        카메라에 접근할 수 없습니다. 카메라 권한을 확인해주세요.
+                </div>
+
+                <!-- Right section: Questions -->
+                <div class="col-md-4 question-section">
+                    <div class="question-header">
+                        <h5><strong>면접 질문</strong></h5>
+                        <div class="current-question mb-4">
+                            <p class="question-number"><strong>Question 1</strong></p>
+                            <p class="question-content"></p>
+                        </div>
                     </div>
-                    <div id="setupRecordingIndicator" class="recording-indicator" style="display: none;">
-                        <span class="recording-dot"></span>
-                        녹화중
+                    <div class="selected-questions-list">
+                        <!-- 선택된 질문들이 여기에 표시됨 -->
                     </div>
                 </div>
             </div>
@@ -156,14 +170,6 @@
                 alert('자기소개서를 선택해주세요.');
                 return;
             }
-
-            // position 가져오기
-            const positionSpan = formControl.querySelector('span:last-child');
-            if (!positionSpan) {
-                alert('직무 정보를 찾을 수 없습니다.');
-                return;
-            }
-            const position = positionSpan.textContent.trim().replace('/', '').trim();
 
             // 선택된 질문들 가져오기
             const selectedQuestions = Array.from(document.querySelectorAll('input[name="selectedQuestions"]:checked'))
@@ -371,14 +377,6 @@
         initializeCamera();
     }
 
-    // 기존 유틸리티 함수 유지
-    function showResults() {
-        alert('면접 내역을 확인하세요.');
-    }
-
-    function changeBackgroundColor() {
-        document.body.style.backgroundColor = "#8292FF";
-    }
 
     // 페이지 로드 시 카메라 초기화
     document.addEventListener('DOMContentLoaded', initializeCamera);
@@ -438,15 +436,6 @@
         }
     }
 
-    // Welcome message fade-in effect
-    document.addEventListener('DOMContentLoaded', () => {
-        const welcomeMessage = document.querySelector('.welcome-message');
-        if (welcomeMessage) {
-            setTimeout(() => {
-                welcomeMessage.classList.add('fade-in');
-            }, 100);
-        }
-    })
 
     document.addEventListener('DOMContentLoaded', function () {
         // 모달 창 관련 요소
@@ -559,6 +548,40 @@
         }
         if (questionIndicator) {
             questionIndicator.style.display = 'none';
+        }
+    }
+
+    function startRecording() {
+        document.getElementById('startButton').disabled = true;
+        document.getElementById('stopButton').disabled = false;
+        document.getElementById('setupRecordingIndicator').style.display = 'block';
+
+        if (mediaRecorder && mediaRecorder.state === 'inactive') {
+            mediaRecorder.start();
+        }
+    }
+
+    function stopRecording() {
+        document.getElementById('startButton').disabled = false;
+        document.getElementById('stopButton').disabled = true;
+        document.getElementById('setupRecordingIndicator').style.display = 'none';
+
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+            finishInterview();
+        }
+    }
+
+    // 선택된 질문 표시 함수
+    function displaySelectedQuestions(questions) {
+        const questionsContainer = document.querySelector('.selected-questions-list');
+        if (questionsContainer) {
+            questionsContainer.innerHTML = questions.map((question, index) => `
+            <div class="question-item">
+                <strong>질문 ${index + 1}</strong>
+                <p>${question.content}</p>
+            </div>
+        `).join('');
         }
     }
 </script>

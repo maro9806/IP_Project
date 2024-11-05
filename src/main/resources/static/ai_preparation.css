@@ -193,6 +193,11 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.video-section {
+  width: 100%;
+  position: relative;
+}
+
 .video-container {
   width: 100%;
   min-height: 400px;
@@ -212,11 +217,13 @@ body {
   display: flex;
   gap: 10px;
   justify-content: center;
+  margin-top: 20px;
 }
 
 .question-section {
   padding: 20px;
   border-left: 1px solid #dee2e6;
+  background-color: #f8f9fa;
 }
 
 .selected-questions {
@@ -231,6 +238,27 @@ body {
   border-left: 4px solid #0d6efd;
 }
 
+.current-question {
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.question-list {
+  margin-top: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.question-list .question-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: white;
+  border-radius: 4px;
+  border-left: 4px solid #0d6efd;
+}
+
 .recording-indicator {
   position: absolute;
   top: 20px;
@@ -239,4 +267,20 @@ body {
   background-color: rgba(255, 0, 0, 0.8);
   color: white;
   border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.recording-dot {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
 }
