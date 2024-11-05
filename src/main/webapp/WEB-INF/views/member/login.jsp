@@ -116,6 +116,6 @@
             document.getElementById('navbar-placeholder').innerHTML = data;
         });
 </script>
-<%@ include file="../footer.jsp" %>
+
 </body>
 </html>

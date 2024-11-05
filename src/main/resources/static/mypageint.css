@@ -4,7 +4,9 @@
   min-height: calc(100vh - 60px);
   position: relative;
   padding-bottom: 200px; /* footer 공간 확보 */
+  background-color:#f8f9fa ;
 }
+
 
 .mypsidebar-content {
   flex: 1;
@@ -14,7 +16,8 @@
 
 /* 기존 Content-Section 스타일 유지하면서 수정 */
 .Content-Section {
-  margin-top: 20px; /* 100px에서 수정 */
+  padding:0 50px;
+  margin-top: 150px;
   width: 100%;
 }
 

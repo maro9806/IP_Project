@@ -42,4 +42,11 @@ public class MyPageController {
     public String myPageMember(Model model) {
         return "mypage/myprofile";
     }
+
+    @GetMapping("/mypagelist")
+    public String myPageList(Model model) {
+        return "mypage/mypagelist";
+    }
+
+
 }

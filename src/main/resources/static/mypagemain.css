@@ -1,12 +1,38 @@
 body {
     background-color: #f8f9fa;
     font-family: 'Pretendard', sans-serif;
-    margin-top: 70px; /* navbar 높이만큼 여백 */
+    margin: 0;
+    padding-top: 70px; /* Only use padding-top for navbar offset */
 }
 
 .content-section {
-    margin-top: 100px;
     padding: 20px;
+    margin-top: 0;
+    width: 100%;
+}
+
+.page-header {
+    margin-top: 0;
+    margin-bottom: 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.col-2 {
+    width: 250px;
+    flex-shrink: 0;
+    padding-right: 0;
+}
+
+.col-10 {
+    flex-grow: 1;
+    margin-left: 250px;
+    padding-left: 24px;
+    width: calc(100% - 250px);
 }
 
 .status-cards {
@@ -118,8 +144,7 @@ body {
 }
 
 .content-section {
-    margin-top: 20px;
-    padding: 20px;
+    padding: 50px 50px;
     width: 100%;
 }
 

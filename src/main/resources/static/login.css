@@ -1,7 +1,6 @@
 /* Full-screen background with gradient */
 body {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    font-family: 'Arial', sans-serif;
 }
 
 /* Centering the login form */
@@ -73,7 +72,7 @@ body {
 }
 
 /* Login button with hover effect */
-.login-btn {
+.login-btn-m {
     background-color: black;
     color: white;
     width: 90%;
@@ -89,6 +88,11 @@ body {
     background-color: #333;
     transform: scale(1.05);
 }
+
+.footer-links a{
+    text-decoration: none;
+}
+
 /* Hidden class */
 .hidden {
     display: none;
@@ -150,7 +154,8 @@ body {
 .social-login{
     margin:20px;
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 10px;
     justify-content: center;
 }
 
@@ -172,6 +177,7 @@ a {
     color: #000000;
     border: 1px solid transparent;
     border-radius: 10px;
+    text-decoration: none;
 }
 .btn-google{
     background-color: #74a7fb;
@@ -179,6 +185,7 @@ a {
     color: #000000;
     border: 1px solid transparent;
     border-radius: 10px;
+    text-decoration: none;
 }
 
 .btn-naver{
@@ -187,6 +194,7 @@ a {
     color: #000000;
     border: 1px solid transparent;
     border-radius: 10px;
+    text-decoration: none;
 }
 
 .btn-kakao:hover{
@@ -205,7 +213,15 @@ a {
     border-radius: 10px;
 }
 
+.btn-naver:hover{
+    background-color: #259326;
+    padding: 10px;
+    color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+
 .footer-links a:hover{
     text-decoration: none;
-    color:blue;
+    color: #3c3cb3;
 }

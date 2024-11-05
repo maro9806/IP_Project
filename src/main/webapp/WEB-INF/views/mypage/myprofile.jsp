@@ -9,7 +9,6 @@
 <head>
     <%@ include file="../header.jsp" %>
     <title>My Page</title>
-    <link rel="stylesheet" href="<c:url value='/resources/static/mypagebar.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/static/myprofile.css'/>">
 </head>
 <body>
@@ -23,10 +22,12 @@
                <jsp:include page="mypagebar.jsp"/>
             </div>
             <div class="col-10">
+                <div class="profile-header mb-4">
+                    <h2 class="page-header mb-4">
+                        프로필 정보
+                    </h2>
+                </div>
                 <div class="profile-container p-4">
-                    <div class="profile-header mb-4">
-                        <h2 class="mb-4">프로필 정보</h2>
-
                         <!-- Profile Photo Section -->
                         <div class="row mb-5">
                             <div class="col-md-3">
@@ -313,8 +314,279 @@
                         </form>
                     </div>
                 </div>
-                <script src="../static/editbtn.js"></script>
-                <script src="../static/myprofile.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // 전체적인 input btn
+                        const selectedTechStack = document.getElementById('selectedTechStack');
+                        const techButtons = document.querySelectorAll('.tech-btn');
+                        const addCustomTechBtn = document.getElementById('addCustomTechBtn');
+                        const customTechInput = document.getElementById('customTechInput');
+                        const newTechInput = document.getElementById('newTechInput');
+                        const submitCustomTech = document.getElementById('submitCustomTech');
+                        const cancelCustomTech = document.getElementById('cancelCustomTech');
+
+                        let selectedTechs = new Set();
+
+                        //스택별 태그 넣기
+                        function addTechStack(tech) {
+                            if (selectedTechs.has(tech)) return;
+                            const tag = document.createElement('div');
+                            tag.className = 'tech-tag';
+                            tag.innerHTML = `
+            <span class="tech-name">${tech}</span>
+            <button type="button" class="delete-tech" aria-label="Remove ${tech}">-</button>
+        `;
+                            // 삭제 버튼 측면에 추가
+                            tag.querySelector('.delete-tech').addEventListener('click', () => {
+                                tag.remove();
+                                selectedTechs.delete(tech);
+                                updateButtonStates();
+                            });
+
+                            selectedTechStack.appendChild(tag);
+                            selectedTechs.add(tech);
+                            updateButtonStates();
+                        }
+                        techButtons.forEach(button => {
+                            button.addEventListener('click', function() {
+                                const tech = this.dataset.tech;
+                                if (!selectedTechs.has(tech)) {
+                                    addTechStack(tech);
+                                }
+                            });
+                        });
+
+                        // 커스텀 인풋
+                        if (addCustomTechBtn) {
+                            addCustomTechBtn.addEventListener('click', function() {
+                                customTechInput.style.display = 'block';
+                                newTechInput.focus();
+                                addCustomTechBtn.style.display = 'none';
+                            });
+                        }
+
+                        if (submitCustomTech) {
+                            submitCustomTech.addEventListener('click', function() {
+                                addCustomTechnology();
+                            });
+                        }
+
+                        if (cancelCustomTech) {
+                            cancelCustomTech.addEventListener('click', function() {
+                                hideCustomTechInput();
+                            });
+                        }
+
+                        if (newTechInput) {
+                            newTechInput.addEventListener('keypress', function(e) {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    addCustomTechnology();
+                                }
+                            });
+                        }
+
+                        function addCustomTechnology() {
+                            const techName = newTechInput.value.trim();
+                            if (techName && !selectedTechs.has(techName)) {
+                                addTechStack(techName);
+                                hideCustomTechInput();
+                            }
+                        }
+
+                        function hideCustomTechInput() {
+                            if (customTechInput) customTechInput.style.display = 'none';
+                            if (addCustomTechBtn) addCustomTechBtn.style.display = 'inline-block';
+                            if (newTechInput) newTechInput.value = '';
+                        }
+
+                        //btn update
+                        function updateButtonStates() {
+                            techButtons.forEach(button => {
+                                const tech = button.dataset.tech;
+                                if (selectedTechs.has(tech)) {
+                                    button.disabled = true;
+                                    button.classList.add('selected');
+                                } else {
+                                    button.disabled = false;
+                                    button.classList.remove('selected');
+                                }
+                            });
+                        }
+
+                        // 학력
+                        let educationCounter = 0;
+                        document.getElementById('addEducation')?.addEventListener('click', function() {
+                            educationCounter++;
+                            const newEducation = `
+            <div class="education-entry mb-3" id="education-${educationCounter}">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">학교명</label>
+                        <input type="text" class="form-control" placeholder="학교명을 입력하세요">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">전공</label>
+                        <input type="text" class="form-control" placeholder="전공을 입력하세요">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">졸업상태</label>
+                        <select class="form-select">
+                            <option value="">선택하세요</option>
+                            <option value="graduated">졸업</option>
+                            <option value="attending">재학중</option>
+                            <option value="leave">휴학</option>
+                            <option value="dropout">중퇴</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="button" class="btn btn-outline-danger"
+                                onclick="removeSection('education-${educationCounter}')">
+                            삭제
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+                            const educationContainer = document.getElementById('educationContainer');
+                            educationContainer.insertAdjacentHTML('beforeend', newEducation);
+                        });
+
+                        // 경력
+                        let careerCounter = 0;
+                        document.getElementById('addCareer')?.addEventListener('click', function() {
+                            careerCounter++;
+                            const newCareer = `
+            <div class="career-entry mb-3" id="career-${careerCounter}">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">회사명</label>
+                        <input type="text" class="form-control" placeholder="회사명을 입력하세요">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">직무</label>
+                        <input type="text" class="form-control" placeholder="직무를 입력하세요">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">근무기간</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" placeholder="년">
+                            <input type="number" class="form-control" placeholder="개월">
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="button" class="btn btn-outline-danger"
+                                onclick="removeSection('career-${careerCounter}')">
+                            삭제
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+                            const careerContainer = document.getElementById('careerContainer');
+                            careerContainer.insertAdjacentHTML('beforeend', newCareer);
+                        });
+
+                        // 수정 취소
+                        const editBtn = document.getElementById('editBtn');
+                        const cancelBtn = document.getElementById('cancelBtn');
+                        const saveBtn = document.getElementById('saveBtn');
+
+                        if (cancelBtn) cancelBtn.style.display = 'none';
+                        if (saveBtn) saveBtn.style.display = 'none';
+
+                        let originalValues = {};
+
+                        function getFormValues() {
+                            const values = {};
+                            document.querySelectorAll('input, select, textarea').forEach(element => {
+                                values[element.id || element.name] = element.value;
+                            });
+                            return values;
+                        }
+
+                        function setFieldsReadOnly(readonly) {
+                            document.querySelectorAll('input, select, textarea').forEach(element => {
+                                element.readOnly = readonly;
+                                if (element.tagName.toLowerCase() === 'select') {
+                                    element.disabled = readonly;
+                                }
+                            });
+
+                            document.querySelectorAll('.btn-outline-primary').forEach(btn => {
+                                btn.style.display = readonly ? 'none' : 'inline-block';
+                            });
+
+                            document.querySelectorAll('.btn-outline-danger').forEach(btn => {
+                                btn.style.display = readonly ? 'none' : 'inline-block';
+                            });
+
+                            // 기술 스택 블럭화
+                            techButtons.forEach(button => {
+                                button.disabled = readonly;
+                            });
+
+                            document.querySelectorAll('.delete-tech').forEach(button => {
+                                button.style.display = readonly ? 'none' : 'inline-block';
+                            });
+
+                            // 커스텀 인풋 추가 설정ㄴ
+                            if (readonly) {
+                                if (addCustomTechBtn) addCustomTechBtn.style.display = 'none';
+                                if (customTechInput) customTechInput.style.display = 'none';
+                            } else {
+                                if (addCustomTechBtn) addCustomTechBtn.style.display = 'inline-block';
+                            }
+                        }
+
+                        setFieldsReadOnly(true);
+
+                        editBtn?.addEventListener('click', function() {
+                            originalValues = getFormValues();
+
+                            if (cancelBtn) cancelBtn.style.display = 'block';
+                            if (saveBtn) saveBtn.style.display = 'block';
+                            if (editBtn) editBtn.style.display = 'none';
+
+                            setFieldsReadOnly(false);
+                        });
+
+                        cancelBtn?.addEventListener('click', function() {
+                            for (let id in originalValues) {
+                                const element = document.getElementById(id);
+                                if (element) {
+                                    element.value = originalValues[id];
+                                }
+                            }
+
+                            if (cancelBtn) cancelBtn.style.display = 'none';
+                            if (saveBtn) saveBtn.style.display = 'none';
+                            if (editBtn) editBtn.style.display = 'block';
+
+                            setFieldsReadOnly(true);
+                        });
+
+                        saveBtn?.addEventListener('click', function() {
+                            originalValues = getFormValues();
+
+                            if (cancelBtn) cancelBtn.style.display = 'none';
+                            if (saveBtn) saveBtn.style.display = 'none';
+                            if (editBtn) editBtn.style.display = 'block';
+
+                            setFieldsReadOnly(true);
+
+                            alert('저장되었습니다!');
+                        });
+                    });
+
+                    // 전체 설정 (remove)
+                    function removeSection(id) {
+                        const section = document.getElementById(id);
+                        if (section) {
+                            section.remove();
+                        }
+                    }
+                </script>
                 <!-- Bootstrap JS -->
 
             </div>

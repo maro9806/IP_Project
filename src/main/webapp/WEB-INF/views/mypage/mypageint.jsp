@@ -18,9 +18,12 @@
     <div class="mypsidebar-container">
         <jsp:include page="mypagebar.jsp"/>
         <div class="mypsidebar-content">
-            <div class="Content-Section p-4">
+            <div class="Content-Section">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>'홍길동'님의 자기소개서 목록</h2>
+                    <h2 class="page-header">
+                        자기소개서 목록
+                        <span class="header-badge">(총 3건)</span>
+                    </h2>
                 </div>
                 <div class="card">
             <div class="card-body">
@@ -56,7 +59,7 @@
                             <td>1</td>
                             <td>중근당</td>
                             <td>Back-End 개발자</td>
-                            <td>자소서 제목이 만약에 엄청나게 길다면~~~~~~~~~~~~</td>
+                            <td><a href="${pageContext.request.contextPath}/mypage/mypagelist">자소서 제목이 만약에 엄청나게 길다면~~~~~~~~~~~~</a></td>
                             <td>2024.10.15</td>
                             <td>
                                 <div class="d-flex gap-2">

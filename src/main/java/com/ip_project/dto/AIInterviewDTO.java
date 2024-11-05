@@ -19,4 +19,7 @@ public class AIInterviewDTO {
     private String videoUrl;
     private Long memberId;             // iproIdx 대신 memberId 사용
     private List<AIQuestionDTO> questions;
+
+    public void setStatus(AIInterviewStatus aiInterviewStatus) {
+    }
 }

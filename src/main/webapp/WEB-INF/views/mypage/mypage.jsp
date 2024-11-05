@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="<c:url value='/resources/static/mypagemain.css'/>">
 </head>
 <body>
-    <jsp:include page="../navbar.jsp" />
-    <div class="mypsidebar-container">
 
+<jsp:include page="../navbar.jsp" />
+<div class="mypsidebar-container">
     <div class="main-content">
         <div class="row">
             <div class="col-2">
@@ -22,7 +22,9 @@
             </div>
             <div class="col-10">
                 <div class="content-section">
-                    <h2><strong>___님의 마이페이지</strong></h2>
+                    <h2 class="page-header">
+                        <span class="user-name">${userName}</span>님의 마이페이지
+                    </h2>
 
                     <div class="status-cards">
                         <div class="status-item">

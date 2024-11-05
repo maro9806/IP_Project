@@ -9,8 +9,7 @@
 <head>
     <%@ include file="../header.jsp" %>
     <title>My Page</title>
-    <link rel="stylesheet" href="<c:url value='/resources/static/mypagebar.css'/>">
-    <link rel="stylesheet" href="<c:url value='/resources/static/myprofile.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/static/mypagevid.css'/>">
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>
@@ -21,71 +20,65 @@
         </div>
         <div class="col-10">
             <div class="mypcontent">
-                <h2>영상 면접 내역</h2>
+                <h2 class="page-header">
+                    면접 영상 내역
+                </h2>
                 <div class="row">
                     <!-- Video Section -->
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <div class="video-preview">
                             <div class="video-box">
-                                <img src="https://via.placeholder.com/700x380" alt="" class="img-fluid">
+                                <img src="/api/placeholder/700/380" alt="Video preview">
                             </div>
                         </div>
                     </div>
+
                     <!-- Questions Section -->
-                    <div class="col-md-6">
-                        <div class="video-AIQuestions">
-                            <h4>영상 면접 질문</h4>
+                    <div class="col-6">
+                        <div class="video-questions">
+                            <h4 class="section-title">면접 질문</h4>
                             <div class="question-item">
-                                <button class="btn btn-light">
-                                    <strong>Q1.</strong> 인생에서 중요하게 여기는 것과 가치관에 대해 말씀해주세요.
+                                <button class="question-button">
+                                    <span class="question-number">Q1.</span>CSS적용도
                                 </button>
                             </div>
                             <div class="question-item">
-                                <button class="btn btn-light">
-                                    <strong>Q2.</strong> 인생에서 중요하게 여기는 것과 가치관에 대해 말씀해주세요.
+                                <button class="question-button">
+                                    <span class="question-number">Q2.</span>제대로
                                 </button>
                             </div>
                             <div class="question-item">
-                                <button class="btn btn-light">
-                                    <strong>Q3.</strong> 인생에서 중요하게 여기는 것과 가치관에 대해 말씀해주세요.
+                                <button class="question-button">
+                                    <span class="question-number">Q3.</span>안하고
                                 </button>
                             </div>
                             <div class="question-item">
-                                <button class="btn btn-light">
-                                    <strong>Q4.</strong> 인생에서 중요하게 여기는 것과 가치관에 대해 말씀해주세요.
+                                <button class="question-button">
+                                    <span class="question-number">Q4.</span>30분 끙끙대서
                                 </button>
                             </div>
                             <div class="question-item">
-                                <button class="btn btn-light">
-                                    <strong>Q5.</strong> 인생에서 중요하게 여기는 것과 가치관에 대해 말씀해주세요.
+                                <button class="question-button">
+                                    <span class="question-number">Q5.</span>만든게
                                 </button>
                             </div>
                             <div class="question-item">
-                                <button class="btn btn-light">
-                                    <strong>Q6.</strong> 인생에서 중요하게 여기는 것과 가치관에 대해 말씀해주세요.
+                                <button class="question-button">
+                                    <span class="question-number">Q6.</span>진짜 멍청했네..
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Company Information and My Answer Section -->
-                <div class="company-info mt-5">
-                    <h4>기업정보</h4>
-                    <div class="info-box">
-                        <!-- Placeholder for company information -->
-                        <p>여기에 기업 정보가 표시됩니다...</p>
-                    </div>
-
-                    <h4>나의 답변</h4>
+                <!-- Company Information and Answer Section -->
+                <div class="answer-box-info">
+                    <h4 class="section-title">사용자 답변</h4>
                     <div class="answer-box">
-                        <!-- Placeholder for answer -->
-                        <p>여기에 나의 답변이 표시됩니다...</p>
+                        <p>솔직히 이것만 있어도 될지도?</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 </body>
 </html>
