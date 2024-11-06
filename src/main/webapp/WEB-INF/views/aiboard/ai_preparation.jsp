@@ -479,14 +479,17 @@
 
     // 전역 변수로 선택된 자기소개서의 position을 저장
     let selectedPosition = '';
+    let username = '';
+    let selfId = '';
 
-    // 자기소개서 로드 함수
     function loadSelfIntroduction(selfIdx) {
+        selfId = selfIdx; // selfId 저장
         $.ajax({
             url: `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/` + selfIdx,
             method: 'GET',
             dataType: 'json',
             success: function (data) {
+                username = data.username;
                 const company = data.company;
                 const position = data.position;
                 const title = data.title;
@@ -598,17 +601,19 @@
             document.getElementById('interviewStopButton').disabled = true;
             document.getElementById('interviewRecordingIndicator-2').style.display = 'none';
 
+            // mediaRecorder의 ondataavailable 이벤트 핸들러 설정
+            mediaRecorder.ondataavailable = async (event) => {
+                if (event.data && event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                    // 마지막 데이터 수집 후 저장 처리
+                    await saveRecording();
+                }
+            };
+
             // 녹화 중지
             mediaRecorder.stop();
             isRecording = false;
             console.log('녹화가 중지되었습니다.');
-
-            // 스트림 트랙 중지
-            const tracks = mediaRecorder.stream.getTracks();
-            tracks.forEach(track => track.stop());
-
-            // 녹화된 데이터를 서버로 전송
-            setTimeout(() => uploadRecording(), 1000); // 녹화 데이터가 모두 수집될 때까지 잠시 대기
 
         } catch (error) {
             console.error('녹화 중지 오류:', error);
@@ -672,32 +677,30 @@
             }
 
             // Blob 생성
-            const blob = new Blob(recordedChunks, {
-                type: 'video/webm'
-            });
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
 
-            // FormData 생성 및 파일 추가
-            const formData = new FormData();
-            formData.append('video', blob, 'interview-recording.webm');
+            // 현재 날짜를 YYYYMMDD 형식으로 포매팅
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const formattedDate = `${year}${month}${day}`;
 
-            // CSRF 토큰 가져오기
-            const csrfToken = document.querySelector("meta[name='_csrf']").getAttribute('content');
-            const csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute('content');
+            // 파일명 생성 (username과 selfId 포함)
+            const fileName = `${username}_${selfId}_${formattedDate}.webm`;
 
-            // 서버로 전송
-            const response = await fetch(`/aiboard/api/interview/${currentInterviewId}/video`, {
-                method: 'POST',
-                headers: {
-                    [csrfHeader]: csrfToken
-                },
-                body: formData
-            });
+            // 파일 다운로드
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
 
-            if (!response.ok) {
-                throw new Error(`Server responded with ${response.status}`);
-            }
-
-            // 성공적으로 저장된 후 다음 질문으로 이동 또는 종료
+            // 다음 질문으로 이동 또는 종료
             const currentQuestionNumber = parseInt(document.querySelector('.current-question .question-number strong').textContent.split(' ')[1]);
             const totalQuestions = document.querySelectorAll('.question-item').length;
 
@@ -707,12 +710,13 @@
                 finishInterview();
             }
 
-        } catch (error) {
-            console.error('Recording save error:', error);
-            alert('녹화 저장 중 오류가 발생했습니다: ' + error.message);
-        } finally {
-            // 청크 초기화
+            // 녹화 데이터 초기화
             recordedChunks = [];
+            console.log('녹화 저장 완료:', fileName);
+
+        } catch (error) {
+            console.error('저장 오류:', error);
+            alert('녹화 파일 저장 중 오류가 발생했습니다: ' + error.message);
         }
     }
 
