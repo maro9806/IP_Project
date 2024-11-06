@@ -19,7 +19,7 @@
 <div class="login-container">
     <div class="login-box">
         <div class="brand-section">
-            <img src="<c:url value='/resources/static/img/logo.svg'/>" alt="lgLogo" class="lglogo">
+            <img src="<c:url value='/resources/static/img/white.PNG'/>" alt="lgLogo" class="lglogo">
             <h1 class="login-title">AI 면접의 첫 걸음</h1>
         </div>
 

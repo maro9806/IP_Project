@@ -3,6 +3,7 @@
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   z-index: 1000;
+  background-color: #f8f9fa;
 }
 
 /* 네비게이션 바 기본 설정 */
@@ -23,7 +24,7 @@
 
 /* 로고 설정 */
 #logo {
-  height: 25px;
+  height: 45px;
   min-width: 80px;
 }
 
@@ -46,7 +47,7 @@
 }
 
 .nav-link:hover {
-  color: #4c3996;
+  color: #27507e;
   font-size: 17px;
 }
 

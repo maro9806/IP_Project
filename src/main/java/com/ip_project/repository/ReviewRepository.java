@@ -18,4 +18,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             ) WHERE rnum > :startRow
             """, nativeQuery = true)
     List<Review> findByPage(@Param("startRow") int startRow, @Param("endRow") int endRow);
+
 }

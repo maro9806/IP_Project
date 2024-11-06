@@ -35,7 +35,7 @@
         </div>
 
         <div class="search-dropdown">
-            <select name="career" class="dropdown-button">
+            <select name="reviewCareer" class="dropdown-button">
                 <option value="all" ${param.career == 'all' ? 'selected' : ''}>경력 전체</option>
                 <!-- 다른 경력 옵션들 -->
             </select>
@@ -68,15 +68,15 @@
             </tr>
             </thead>
             <tbody>
-            <%--<c:forEach var="board" items="${list}">
+            <c:forEach var="board" items="${list}" varStatus="i">
                 <tr>
-                    <td>${board.idx}</td>
-                    <td>${board.companyName}</td>
-                    <td>${board.title}</td>
-                    <td><fmt:formatDate value="${board.createDate}" pattern="yyyy-MM-dd"/></td>
-                    <td>${board.viewCount}</td>
+                    <td>${i.count}</td>
+                    <td>${board.reviewCompany}</td>
+                    <td>${board.reviewTitle}</td>
+                    <td>${board.formattedReviewDate}</td>
+                    <td>${board.count}</td>
                 </tr>
-            </c:forEach>--%>
+            </c:forEach>
             </tbody>
         </table>
 

@@ -1,6 +1,10 @@
 package com.ip_project.controller;
 
+import com.ip_project.dto.ReviewDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,15 +14,25 @@ import com.ip_project.service.ReviewService;
 
 import java.util.List;
 
+
 @Controller
 @RequestMapping("/review_board")
+@RequiredArgsConstructor
 public class ReviewController {
 
-    @Autowired
-    private ReviewService service;
+    private final ReviewService service;
+
+    @PostMapping("/write")
+    public String writeReview(@ModelAttribute ReviewDTO reviewDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        service.saveReview(reviewDTO, userDetails.getUsername());
+        return "redirect:/review_board/review_list";
+    }
+
 
     @GetMapping("/review_list")
     public String list(Model model, @RequestParam(name = "page", defaultValue = "1") int pageNum) {
+        service.list(model);
+
         int pageSize = 15; // 한 페이지당 게시글 수
         int totalCount = service.getTotalCount(); // 전체 게시글 수
         int totalPages = (int) Math.ceil((double) totalCount / pageSize); // 전체 페이지 수
@@ -63,6 +77,11 @@ public class ReviewController {
         service.remove(idx);
         return "redirect:list";
     }
+
+
+
+
+
 
 
 }

@@ -16,6 +16,7 @@
 <!-- Sidebar -->
 <div class="mypsidebar">
   <div class="sidebar-title">My IP</div>
+  <div class="sidebar-divider"></div>
   <ul class="sidebar-menu">
     <li>
       <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypage'/>">
@@ -42,10 +43,10 @@
         <span>AI 면접 내역</span>
       </a>
     </li>
-    </ul>
+  </ul>
 
-  <div class="sidebar-divider"></div>
   <div class="sidebar-title">관심 기업</div>
+  <div class="sidebar-divider"></div>
 
   <c:forEach var="company" items="${companies}">
     <div class="highlight-item">

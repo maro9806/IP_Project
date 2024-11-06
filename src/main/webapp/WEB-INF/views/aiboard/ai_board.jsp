@@ -14,13 +14,19 @@
 <body>
 <jsp:include page="../navbar.jsp" />
 
+<!-- 배너 -->
+<div class="jumbotron p-5 rounded">
+  <h1 class="display-4">AI 면접 준비</h1>
+  <p class="lead">AI가 면접 질문 추출 및 답변을 도와주고 가상 면접 기회를 제공해요</p>
+  <hr>
+</div>
+<%--  <div class="banner mb-5" style="height:150px">--%>
+<%--    <h3 class="title">AI 면접 준비</h3>--%>
+<%--    <p class="p-title">AI가 면접 질문 추출 및 답변을 도와주고 가상 면접 기회를 제공해요</p>--%>
+<%--  </div>--%>
+
 <!-- 메인 콘텐츠 -->
 <div class="content d-flex flex-column align-items-center">
-  <!-- 배너 -->
-  <div class="banner mb-5" style="height:150px">
-    <h3 class="title">AI 면접 준비</h3>
-    <p class="p-title">AI가 면접 질문 추출 및 답변을 도와주고 가상 면접 기회를 제공해요</p>
-  </div>
 
   <!-- 섹션 -->
   <h4 class="h-title">면접 진행 순서</h4>
