@@ -590,6 +590,7 @@
         }
     }
 
+
     function stopRecording() {
         try {
             if (!isRecording || !mediaRecorder) {
