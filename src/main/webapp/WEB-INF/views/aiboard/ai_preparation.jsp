@@ -22,9 +22,11 @@
 <div id="setupSection" class="main-content">
     <div class="camera-container">
         <div class="row justify-content-center position-relative">
-            <div class="card col-lg-8 d-flex flex-row">
+            <div class="card camera-card col-lg-8 d-flex flex-row">
                 <!-- Left section: Video -->
-                <div class="video-section">
+                <div class="video-section d-flex flex-column">
+                    <h5><strong>면접 환경 설정</strong></h5>
+                    <p><sec:authentication property="principal.member.name"/>님 영상 면접을 진행할 자기소개서와 질문을 선택해주세요.</p>
                     <div class="video-container">
                         <!-- 여기에 비디오가 동적으로 추가됨 -->
                     </div>
@@ -100,9 +102,16 @@
 <div id="questionSection" class="main-content hidden">
     <div class="container">
         <div class="row justify-content-center position-relative">
-            <div class="card col-lg-10 d-flex flex-row interview-card">
+            <div class="card camera-card col-lg-8 d-flex flex-row">
                 <!-- Left section: Video -->
                 <div class="col-md-8">
+                    <div class="question-header">
+                        <h5><strong>면접 질문</strong></h5>
+                        <div class="current-question mb-4">
+                            <p class="question-number"><strong>Question 1</strong></p>
+                            <p class="question-content"></p>
+                        </div>
+                    </div>
                     <div class="video-section">
                         <div class="video-container">
                             <!-- 비디오가 동적으로 추가됨 -->
@@ -114,29 +123,24 @@
                             <span class="recording-dot"></span>
                             녹화중
                         </div>
-                        <!-- 녹화 제어 버튼 -->
-                        <div class="button-group mt-3">
-                            <button id="interviewStartButton" onclick="startRecording()" class="btn btn-primary">녹화 시작
-                            </button>
-                            <button id="interviewStopButton" onclick="stopRecording()" class="btn btn-danger" disabled>
-                                녹화 종료
-                            </button>
-                        </div>
+                    </div>
+                    <!-- 녹화 제어 버튼 -->
+                    <div class="button-group mt-3">
+                        <button id="interviewStartButton" onclick="startRecording()" class="btn btn-primary">녹화 시작
+                        </button>
+                        <button id="interviewStopButton" onclick="stopRecording()" class="btn btn-danger" disabled>
+                            녹화 종료
+                        </button>
                     </div>
                 </div>
+
                 <!-- Right section: Questions -->
                 <div class="col-md-4 question-section">
-                    <div class="question-header">
-                        <h5><strong>면접 질문</strong></h5>
-                        <div class="current-question mb-4">
-                            <p class="question-number"><strong>Question 1</strong></p>
-                            <p class="question-content"></p>
-                        </div>
-                    </div>
+
                     <div class="selected-questions-list">
                         <!-- 선택된 질문들이 여기에 표시됨 -->
                     </div>
-                </div>
+                </div>`
             </div>
         </div>
     </div>
@@ -299,7 +303,7 @@
             videoElement.autoplay = true;
             videoElement.playsInline = true;
             videoElement.style.width = '100%';
-            videoElement.style.height = 'auto';
+            videoElement.style.height = '100%';
 
             const container = document.querySelector('#questionSection .video-container');
             container.innerHTML = '';
@@ -423,7 +427,7 @@
             videoElement.playsInline = true;
             videoElement.muted = true;
             videoElement.style.width = '100%';
-            videoElement.style.height = 'auto';
+            videoElement.style.height = '100%';
 
             videoContainer.innerHTML = '';
             videoContainer.appendChild(videoElement);
