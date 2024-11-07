@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/stage.css">
 </head>
 <body>
-<jsp:include page="../navbar.jsp" />
+<jsp:include page="../navbar.jsp"/>
 
 <div class="content">
 
@@ -39,12 +39,14 @@
                     </colgroup>
 
                     <tr>
-                        <td> <b><label for="select_company">기업명</label></b>
-                            <input id="select_company" class="form-control" name="company-name" readonly style="width:200px; background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"/>
+                        <td><b><label for="select_company">기업명</label></b>
+                            <input id="select_company" class="form-control" name="company-name" readonly
+                                   style="width:200px; background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"/>
                         </td>
                         <td>
                             <b><label for="select_position">지원 직무 </label></b>
-                            <input id="select_position" class="form-control" name="job-position" readonly style="width:200px; background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"/>
+                            <input id="select_position" class="form-control" name="job-position" readonly
+                                   style="width:200px; background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"/>
                         </td>
                         <td style="text-align: right;">
                             <button id="loadModalBtn" class="btn btn-dark">자기소개서 불러오기</button>
@@ -53,12 +55,18 @@
                     <tbody id="QnAs">
                     <tr style="border-top:1px solid gray;">
                         <td colspan="3">
-                            <label for="select_question"><strong>자기소개서</strong></label><input readonly id="select_question" type="text" class="form-control" name="select-company" style="background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;" />
+                            <label for="select_question"><strong>자기소개서</strong></label><input readonly
+                                                                                              id="select_question"
+                                                                                              type="text"
+                                                                                              class="form-control"
+                                                                                              name="select-company"
+                                                                                              style="background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"/>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <textarea id="select_answer" class="form-control" name="select-answers" rows="6" readonly style="background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"></textarea>
+                            <textarea id="select_answer" class="form-control" name="select-answers" rows="6" readonly
+                                      style="background-color: #f5f5f5; color: #6c757d; border: 1px solid #ced4da;"></textarea>
                         </td>
                     </tr>
                     </tbody>
@@ -88,11 +96,13 @@
             </div>
             <ul style="list-style: none; padding: 0;">
                 <c:forEach items="${selfBoards}" var="selfBoard">
-                    <li onclick="loadSelfIntroduction(${selfBoard.selfIdx})" class="btn btn-outline-dark mb-2 text-start" style="width: 100%;">
+                    <li onclick="loadSelfIntroduction(${selfBoard.selfIdx})"
+                        class="btn btn-outline-dark mb-2 text-start" style="width: 100%;">
                         <div>
                             <small>${fn:substring(selfBoard.selfDate, 0, 10)} ${fn:substring(selfBoard.selfDate, 11, 16)}</small>
                             <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/><br> <!-- 작성일 표시 -->
-                            <strong><c:out value="${selfBoard.selfCompany}"/></strong> <strong>${selfBoard.selfPosition}</strong> <br>
+                            <strong><c:out value="${selfBoard.selfCompany}"/></strong>
+                            <strong>${selfBoard.selfPosition}</strong> <br>
                             <span>${selfBoard.selfTitle}</span>
                         </div>
                     </li>
@@ -106,7 +116,8 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <form action="${pageContext.request.contextPath}/aiboard/saveIntroduction" method="post" onsubmit="return validateForm()">
+            <form action="${pageContext.request.contextPath}/aiboard/saveIntroduction" method="post"
+                  onsubmit="return validateForm()">
                 <div id="questions-container" style="width:95%; padding-left:5%;">
                     <div class="question-block">
                         <table style="width:100%;">
@@ -115,14 +126,16 @@
                                 <col style="width: 70%;">
                             </colgroup>
                             <tr>
-                                <td colspan="2" id="self_title"> <b><label for="self_title">자기소개서 작성하기</label></b>
-                                    <input type="text" class="form-control" name="title" placeholder="자기소개서 제목을 작성하세요." />
+                                <td colspan="2" id="self_title"><b><label for="self_title">자기소개서 작성하기</label></b>
+                                    <input type="text" class="form-control" name="title"
+                                           placeholder="자기소개서 제목을 작성하세요."/>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td style="padding-right:30px"> <b>기업명</b>
-                                    <select id="companySelect" onchange="updateJobRoles()" class="form-control" name="companySelect" style="width:200px;">
+                                <td style="padding-right:30px"><b>기업명</b>
+                                    <select id="companySelect" onchange="updateJobRoles()" class="form-control"
+                                            name="company" style="width:200px;">
                                         <option value="">기업명 선택하기</option>
                                         <option value="Nexon">넥슨</option>
                                         <option value="Kakao">카카오</option>
@@ -138,7 +151,7 @@
                                 </td>
                                 <td>
                                     <b>지원 직무</b>
-                                    <select id="jobSelect" class="form-control" name="jobPosition" style="width:200px;">
+                                    <select id="jobSelect" class="form-control" name="position" style="width:200px;">
                                         <option value="">직무 선택하기</option>
                                     </select>
                                 </td>
@@ -150,12 +163,14 @@
                             </tr>
                             <tr>
                                 <td colspan="2" id="first-question-row">
-                                    <input type="text" id="question-1" class="form-control" name="questions" placeholder="문항1. 자기소개서 문항을 작성하세요." />
+                                    <input type="text" id="question-1" class="form-control" name="questions"
+                                           placeholder="문항1. 자기소개서 문항을 작성하세요."/>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <textarea id="coverLetter" class="form-control" rows="7" maxlength="1000"  name="answers" placeholder="여기에 자기소개서를 작성하세요."></textarea>
+                                    <textarea id="coverLetter" class="form-control" rows="7" maxlength="1000"
+                                              name="answers" placeholder="여기에 자기소개서를 작성하세요."></textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -183,13 +198,14 @@
             'CI/CD 개발자', 'DevOps 개발자', '보안 기술지원 엔지니어'],
         Line: ['Line Messenger PM', 'Backend', 'Search/ML Engineer', 'Front-end Engineer', 'Server Engineer'],
         Carrot: ['네트워크/서버/보안', 'Machine LEarning', '백엔드-중고거래', '백엔드-커뮤니티', '웹기획(Product Manager)', '웹 개발', 'UI/UX디자인', 'Front-end개발', 'DBA 데이터 관리자'],
-        Naver : ['웹서비스/플랫폼 서버개발', '데이터 분석개발 및 엔지니어', '프론트엔드', '백엔드', '안드로이드 개발'],
-        Delivery: ['로봇딜리버리플랫폼팀 서버 개발자', '프론트엔드 기술자', '보안 시스템 및 솔루션 운영자','백엔드 시스템 개발자','QA Engineer'],
+        Naver: ['웹서비스/플랫폼 서버개발', '데이터 분석개발 및 엔지니어', '프론트엔드', '백엔드', '안드로이드 개발'],
+        Delivery: ['로봇딜리버리플랫폼팀 서버 개발자', '프론트엔드 기술자', '보안 시스템 및 솔루션 운영자', '백엔드 시스템 개발자', 'QA Engineer'],
         NcSoft: ['개발 PM', '서버 프로그래머', '엔진 프로그래머', '게임 보안/안티치트 개발자', '게임 프로그래밍'],
         Netmable: ['서버 프로그래밍', '클라이언트 프로그래머', '플랫폼 백엔드', '플랫폼 프론트엔드', '인프라'],
         Coupang: ['Data Analyst', 'Frontend Platform Engineer', 'Call System Developer', 'QA Manager', 'Security Researcher', 'ML Engineer'],
         Toss: ['Data Analyst', 'Frontend Platform Engineer', 'Call System Developer', 'QA Manager', 'Security Researcher', 'ML Engineer']
-    };0
+    };
+    0
 
     function updateJobRoles() {
         const companySelect = document.getElementById('companySelect');
@@ -210,7 +226,7 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // 모달 창 요소 가져오기
         var loadModal = document.getElementById("loadModal");
         var modal = document.getElementById("myModal");
@@ -224,32 +240,32 @@
         var myCloseBtn = modal.querySelector(".close");
 
         // 페이지 로드 시 loadModal 표시
-        window.onload = function() {
+        window.onload = function () {
             if (loadModal.style.display !== "block") {
                 loadModal.style.display = "block";
             }
         };
 
         // "자기소개서 불러오기" 버튼을 클릭하면 모달을 보여줍니다
-        loadModalBtn.onclick = function() {
+        loadModalBtn.onclick = function () {
             loadModal.style.display = "block";
         };
 
         // "자기소개서 작성하기" 버튼을 클릭하면 모달을 보여줍니다
-        openModalBtn.onclick = function() {
+        openModalBtn.onclick = function () {
             modal.style.display = "block";
         }
 
         // 각 모달의 닫기 버튼 클릭 시 해당 모달을 닫음
-        loadCloseBtn.onclick = function() {
+        loadCloseBtn.onclick = function () {
             loadModal.style.display = "none";
         };
-        myCloseBtn.onclick = function() {
+        myCloseBtn.onclick = function () {
             modal.style.display = "none";
         }
 
         // 모달 바깥을 클릭하면 해당 모달을 닫음
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == loadModal) {
                 loadModal.style.display = "none";
             } else if (event.target == modal) {
@@ -266,13 +282,13 @@
         const originalCharCount = document.getElementById("charCount");
 
         // 원래 있는 coverLetter에 글자 수 세기 기능 추가
-        originalCoverLetter.addEventListener('input', function() {
+        originalCoverLetter.addEventListener('input', function () {
             const currentLength = this.value.length;
             const maxLength = this.getAttribute('maxlength') || 1000;
             originalCharCount.textContent = currentLength + '자/' + maxLength + '자 (공백포함)';
         });
 
-        addButton.addEventListener('click', function(event) {
+        addButton.addEventListener('click', function (event) {
             event.preventDefault(); // 기본 제출 동작을 막음
             questionCounter++;
 
@@ -320,15 +336,15 @@
 
             const currentLength = this.value ? this.value.length : 0;
 
-            coverLetter.addEventListener('input', function() {
-                charCount.textContent = currentLength+'자/1000자 (공백 포함)';
+            coverLetter.addEventListener('input', function () {
+                charCount.textContent = currentLength + '자/1000자 (공백 포함)';
             });
 
             // 새로 추가된 textarea에 대한 글자 수 카운터 이벤트 리스너
             const newTextarea = newQuestionBlock.querySelector('.coverLetter');
             const newCharCount = newQuestionBlock.querySelector('.charCount');
 
-            newTextarea.addEventListener('input', function() {
+            newTextarea.addEventListener('input', function () {
                 const currentLength = this.value ? this.value.length : 0;
                 const maxLength = this.getAttribute('maxlength') || 1000;
                 newCharCount.textContent = currentLength + '자/' + maxLength + '자 (공백포함)';
@@ -336,13 +352,13 @@
 
             // 삭제 버튼 이벤트 리스너
             const removeButton = newQuestionBlock.querySelector('.remove-button');
-            removeButton.addEventListener('click', function() {
+            removeButton.addEventListener('click', function () {
                 newQuestionBlock.remove();
             });
 
             // 새로운 추가 버튼 이벤트 리스너
             const newAddButton = newQuestionBlock.querySelector('.add-question-button');
-            newAddButton.addEventListener('click', function(event) {
+            newAddButton.addEventListener('click', function (event) {
                 event.preventDefault();
                 addButton.click(); // 기존 추가 버튼의 클릭 이벤트를 재사용
             });
@@ -352,19 +368,19 @@
     // 폼 유효성 검사 함수
     function validateForm() {
         const title = document.querySelector("input[name='title']").value;
-        const company = document.querySelector("select[name='company']").value;
-        const position = document.querySelector("select[name='position']").value;
+        const company = document.getElementById("companySelect").value;
+        const position = document.getElementById("jobSelect").value;
         const question = document.querySelector("input[name='questions']").value;
         const answer = document.querySelector("textarea[name='answers']").value;
 
         if (!title || !company || !position || !question || !answer) {
             alert("모든 필드를 채워주세요.");
-            return false;  // 폼 제출 방지
+            return false;
         }
-        return true;  // 유효성 검사 통과
+        return true;
     }
 
-    document.getElementById('closeModal').onclick = function() {
+    document.getElementById('closeModal').onclick = function () {
         // 모달을 숨기도록 설정
         document.getElementById('modal').style.display = 'none';
     };
@@ -374,10 +390,10 @@
         <%--console.log("AJAX 요청 URL:", url);  // 요청 URL 로그--%>
         // AJAX 요청으로 데이터를 가져오기
         $.ajax({
-            url: 'http://localhost:8081/aiboard/loadSelfIntroduction/'+selfIdx,
+            url: 'http://localhost:8081/aiboard/loadSelfIntroduction/' + selfIdx,
             method: 'GET',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 // 가져온 데이터를 input, textarea에 채우기
                 document.getElementById("select_company").value = data.company;
                 document.getElementById("select_position").value = data.position;
@@ -414,7 +430,7 @@
                 // 모달 닫기
                 loadModal.style.display = "none";
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error fetching self-introduction:', error);
             }
         });
