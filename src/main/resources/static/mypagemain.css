@@ -48,6 +48,10 @@ body {
     flex: 1;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 2px solid #dce2eb;
+    font-weight:500;
+    color:#1e3e72;
+
 }
 
 .card-container {
@@ -75,7 +79,6 @@ body {
 .status-number {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #666;
 }
 
 .table-responsive {

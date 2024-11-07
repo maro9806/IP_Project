@@ -11,6 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/corpboard.css">
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/review_list.css">--%>
 
 </head>
 
@@ -72,7 +73,7 @@
                 <tr>
                     <td>${i.count}</td>
                     <td>${board.reviewCompany}</td>
-                    <td>${board.reviewTitle}</td>
+                    <td><a href="${pageContext.request.contextPath}/review_board/review_content">${board.reviewTitle}</a></td>
                     <td>${board.formattedReviewDate}</td>
                     <td>${board.count}</td>
                 </tr>

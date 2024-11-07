@@ -18,18 +18,12 @@ public class ReviewDTO {
     private String reviewCompany;
     private String reviewPosition;
     private Long count;
-    private String place;
-    private String people;
-    private String type;
-    private String process;
-    private String reaction;
     private String atmosphere;
     private String sorrow;
     private String advice;
     private String username;
     private String period;
-    private String careerLevel;
-    private String formatType;
+    private String formatType; // 이거 머임??
     private List<IntroQuestionDTO> questions;
 
 

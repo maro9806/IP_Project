@@ -13,6 +13,7 @@
 </head>
 <body>
 <jsp:include page="../navbar.jsp" />
+
 <!-- Main Content -->
 <div class="main-content">
     <div class="container">
@@ -46,16 +47,17 @@
                     </div>
 
                     <div class="input-group">
-                        <label class="input-label">경력구분</label>
-                        <select class="input-field" name="reviewCareer" required>
+                        <label class="input-label">합격여부</label>
+                        <select class="input-field" name="result" required>
                             <option value="">선택해주세요</option>
-                            <option value="신입">신입</option>
-                            <option value="경력">경력</option>
-                            <option value="인턴">인턴</option>
+                            <option value="결과대기중">결과대기중</option>
+                            <option value="합격">합격</option>
+                            <option value="불합격">불합격</option>
                         </select>
                     </div>
                 </div>
             </div>
+
 
             <div class="title-section">
                 <div class="input-group">
@@ -73,65 +75,43 @@
 
                 <input type="hidden" name="formatType" id="formatType" value="free">
 
+                <!-- 자유 양식 섹션 -->
                 <div id="free-format">
                     <div class="content-group">
-                        <label class="content-label">면접은 어디에서 보셨습니까?</label>
-                        <textarea class="content-textarea" name="place" placeholder="" required></textarea>
-                    </div>
-
-                    <div class="content-group">
-                        <label class="content-label">면접관 및 지원자는 몇 명이었습니까?</label>
-                        <textarea class="content-textarea" name="people" placeholder="" required></textarea>
-                    </div>
-
-                    <div class="content-group">
-                        <label class="content-label">면접유형은 어땠습니까?</label>
-                        <textarea class="content-textarea" name="type" placeholder="" required></textarea>
-                    </div>
-
-                    <div class="content-group">
-                        <label class="content-label">면접 진행방식에 대해 적어주세요.</label>
-                        <textarea class="content-textarea" name="process" placeholder="" required></textarea>
-                    </div>
-
-                    <div class="content-group">
-                        <label class="content-label">면접관 반응은 어떠했습니까?</label>
-                        <textarea class="content-textarea" name="reaction" placeholder="" required></textarea>
-                    </div>
-
-                    <div class="content-group">
-                        <label class="content-label">면접 분위기는 어떠했습니까?</label>
+                        <label class="content-label">면접 분위기나 진행방식은 어떠했습니까?</label>
                         <textarea class="content-textarea" name="atmosphere" placeholder="" required></textarea>
                     </div>
                     <div class="content-group">
-                        <label class="content-label">면접 후 아쉬웠던 점은 무엇입니까?</label>
+                        <label class="content-label">면접에서 좋았던 점이나 아쉬웠던 점은 무엇입니까?</label>
                         <textarea class="content-textarea" name="sorrow" placeholder="" required></textarea>
                     </div>
                     <div class="content-group">
-                        <label class="content-label">면접 준비생을 위한 조언 한 마디 부탁드립니다.</label>
+                        <label class="content-label">면접 합격 팁이나 조언이 있다면?</label>
                         <textarea class="content-textarea" name="advice" placeholder="" required></textarea>
                     </div>
                 </div>
 
+                <!-- 질문-답변 섹션 -->
                 <div id="qa-format" style="display: none;">
                     <div id="questions-container">
                         <div class="question-section">
                             <label class="content-label">질문 1</label>
-                            <input type="text" class="input-field" name="questions[0].question" placeholder="질문을 입력하세요" required>
+                            <input type="text" class="input-field mb-3" name="questions[0].question" placeholder="질문을 입력하세요" required>
                             <textarea class="content-textarea" name="questions[0].answer" placeholder="답변을 입력하세요..." required></textarea>
                         </div>
                     </div>
                     <button type="button" class="add-question-btn">질문 추가하기</button>
-
-
-                    <div class="form-buttons">
-                        <button type="button" class="btn btn-cancel">취소</button>
-                        <button type="submit" class="btn btn-submit">작성완료</button>
-                    </div>
                 </div>
+
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-cancel">취소</button>
+                    <button type="submit" class="btn btn-submit">작성완료</button>
+                </div>
+            </div>
         </form>
     </div>
 </div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -147,12 +127,14 @@
         // Format toggle
         toggleBtns.forEach(btn => {
             btn.addEventListener('click', function() {
+                // 모든 버튼의 활성화 클래스 제거
                 toggleBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
+                this.classList.add('active'); // 현재 클릭된 버튼 활성화
+
                 const format = this.dataset.format;
                 formatTypeInput.value = format;
-                console.log("Format set to: " + format);
 
+                // 양식에 따라 섹션 표시 전환
                 if (format === 'free') {
                     freeFormat.style.display = 'block';
                     qaFormat.style.display = 'none';
@@ -169,7 +151,7 @@
             const newQuestion = document.createElement('div');
             newQuestion.className = 'question-section';
             newQuestion.innerHTML ="<label class=\"content-label\">질문 " + (questionCounter + 1) + "</label>" +
-                "<input type=\"text\" class=\"input-field\" name=\"questions[" + questionCounter + "].question\" placeholder=\"질문을 입력하세요\" required>" +
+                "<input type=\"text\" class=\"input-field mb-3\" name=\"questions[" + questionCounter + "].question\" placeholder=\"질문을 입력하세요\" required>" +
                 "<textarea class=\"content-textarea\" name=\"questions[" + questionCounter + "].answer\" placeholder=\"답변을 입력하세요...\" required></textarea>";
             questionsContainer.appendChild(newQuestion);
             questionCounter++;

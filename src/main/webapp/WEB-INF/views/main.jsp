@@ -15,187 +15,100 @@
 </head>
 
 <body>
-<!-- Navbar 포함 -->
 <jsp:include page="navbar.jsp"/>
-<!-- Navbar 이용해서 로고이미지, 메뉴 총 4개, 검색 창, 마이페이지 버튼, 프로필 이미지, 알람 아이콘, 로그인 아이디, 로그아웃 아이콘-->
 
-<div class="main-content">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-9">
-                <!-- Carousel -->
-                <div id="adCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <!-- 슬라이드 이미지 -->
-                        <div class="carousel-item active">
-                            <img src="<c:url value='/resources/static/img/Skict2025.svg'/>" class="d-block w-100"
-                                 alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="<c:url value='/resources/static/img/ITsemi.svg'/>" class="d-block w-100"
-                                 alt="...">
-                        </div>
-                    </div>
-                    <!-- 이미지 수동 이동 버튼  -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#adCarousel"
-                            data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#adCarousel"
-                            data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>기업과 나를 잇는 면접 코칭 AI <br>면접 질문 준비부터 실전 면접 연습까지</h1>
+        <p>최고의 면접을 위한<br>가장 똑똑한 방법, IP:PRO</p>
+        <button class="start-button">지금 시작해보세요!</button>
+    </div>
+</section>
+
+<!-- Chat Section -->
+<section class="chat-section">
+    <h2>이런 고민을 하고 계시다면<br>지금 IP:PRO와 함께해 보세요!
+    </h2>
+    <div class="chat-bubbles">
+        <div class="chat-bubble left">"면접 준비는 해야 하는데 어디서부터 시작해야 할지 모르겠어요."</div>
+        <div class="chat-bubble right">"제가 잘 준비하고 있는 건지, 부족한 부분은 무엇인지 알고 싶어요."</div>
+        <div class="chat-bubble left">"실전처럼 연습하고 싶은데 혼자서는 한계가 있어요..."</div>
+    </div>
+</section>
+
+<!-- Center Section -->
+<section class="center-section">
+    <div class="center-content">
+        <div class="text-content">
+            <span class="question-tag">어떻게 진행되나요?</span>
+            <h2 class="main-heading">
+                기업 직무 경험 <br>
+                세가지 종류의 예상 면접 질문 제공 <br>
+                IPRO의 피드백을 바탕으로 면접준비를 함께 해 보세요!
+            </h2>
+            <p class="sub-text">
+                다양한 기업 정보를 가지고 있는 AI피드백으로<br>
+                면접 준비에 도움이 필요한 모든 분들에게 경험에 기반한 노하우를 공유해 드립니다.
+            </p>
+        </div>
+
+        <!-- Side-by-side feature section -->
+        <div class="feature-row">
+            <div class="feature-illustration">
+                <img src="/resources/static/img/ai-robot.svg" alt="AI Robot illustration">
             </div>
-            <div class="col-md-3">
-                <div class="login-section">
-                    <sec:authorize access="!isAuthenticated()">
-                        <!-- 비로그인 상태 -->
-                        <div class="login-message">
-                            <p>로그인하여 IP:PRO를 이용해보세요</p>
-                            <a href="${pageContext.request.contextPath}/member/login">
-                                <button class="login-btn">IP:PRO 로그인</button>
-                            </a>
-                        </div>
-                    </sec:authorize>
-
-                    <sec:authorize access="isAuthenticated()">
-                        <!-- 로그인 상태 -->
-                        <div class="login-message">
-                            <p><sec:authentication property="principal.username"/>님 환영합니다!</p>
-                            <a href="${pageContext.request.contextPath}/member/logout">
-                                <button class="login-btn">로그아웃</button>
-                            </a>
-                        </div>
-                    </sec:authorize>
-                </div>
+            <div class="feature-text">
+                <span class="feature-tag">다양한 피드백 & 프로그램</span>
+                <h3>IPRO에서 준비한<br>분야별, 업종별 다양한 피드백과<br>프로그램을 살펴보세요!</h3>
             </div>
         </div>
     </div>
-        <div class="container2">
-            <div class="row" style="margin-top: 110px; margin-left: 10%; margin-right: 10%">
-                <div class="col-12">
-                    <h4 style="font-weight: bold;">로그인 하고 AI 맟춤 면접 추천받기</h4>
-                </div>
-                <div class="corp-card-container">
-                    <div class="corp-card-content">
-                        <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/Nexonmain.svg'/>" class="card-img-top"
-                                 alt="Card 1 Image">
-                            <div class="card-body">
-                                <p class="card-title">넥슨</p>
-                                <h5 class="card-text">[넥토리얼]</h5>
-                                <h5 class="card-text">게임프로그래밍</h5>
-                                <p class="card-date">2024-11-11(월)23:59</p>
-                            </div>
-                        </div>
-                        <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/Kakaomain.svg'/>" class="card-img-top"
-                                 alt="Card 1 Image">
-                            <div class="card-body">
-                                <p class="card-title">카카오</p>
-                                <h5 class="card-text">광고 SDK 개발 </h5>
-                                <h5 class="card-text">FE개발자 (경력)</h5>
-                                <p class="card-date">2024-11-11(월)23:59</p>
-                            </div>
-                        </div>
-                        <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/Netmarblemain.svg'/>" class="card-img-top"
-                                 alt="Card 1 Image">
-                            <div class="card-body">
-                                <p class="card-title">넷마블</p>
-                                <h5 class="card-text">나 혼자만 레벨업</h5>
-                                <h5 class="card-text">UI 디자인</h5>
-                                <p class="card-date">2024-11-11(월)23:59</p>
-                            </div>
-                        </div>
-                        <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
-                                 alt="Card 1 Image">
-                            <div class="card-body">
-                                <p class="card-title">Card 4</p>
-                                <h5 class="card-text">corp name</h5>
-                                <p class="card-date">2024-11-11(월)23:59</p>
-                            </div>
-                        </div>
-                        <div class="card corp-card">
-                            <img src="<c:url value='/resources/static/img/240card.svg'/>" class="card-img-top"
-                                 alt="Card 1 Image">
-                            <div class="card-body">
-                                <p class="card-title">Card 5</p>
-                                <h5 class="card-text">corp name</h5>
-                                <p class="card-date">2024-11-11(월)23:59</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="${pageContext.request.contextPath}/company/corpmain">
-                    <button class="view-more-btn">더 많은 공고 보기</button>
-                    </a>
-                </div>
-            </div>
+</section>
+
+
+<!-- Container 5 -->
+<div class="container5">
+    <!-- Title Section -->
+    <div class="title-section">
+        <h2 class="main-title">최고의 면접을 위한</h2>
+        <h2 class="main-title">가장 똑똑한 방법, IP:PRO</h2>
+        <div class="underline"></div>
+    </div>
+
+    <!-- Feature Grid -->
+    <div class="feature-grid">
+        <div class="feature-item">
+            <h3>완벽한 면접을 위해</h3>
+            <p>바로바로 체크해서 피드백</p>
         </div>
-    <div class="sub-content">
-        <div class="container3">
-            <div class="col-12">
-                <p>기업과 나를 잇는 면접 코칭 AI </p>
-                <p> 면접 질문 준비부터 실전 면접 연습까지</p>
-            </div>
+        <div class="feature-item">
+            <h3>형식적인 평가 시스템이 아닌,</h3>
+            <p>구직자의 성장을 위해</p>
         </div>
-        <div class="container4">
-            <div class="container4-wrapper">
-                <img src="/resources/static/img/mainintroimg3.svg" class="left-img" alt="AI Interview Image">
-            </div>
+        <div class="feature-item">
+            <h3>실제 면접 후기와</h3>
+            <p>기업 완벽분석을 통해 만든 데이터</p>
         </div>
+    </div>
 
-        <!-- Container 5 -->
-        <div class="container5">
-            <!-- Title Section -->
-            <div class="title-section">
-                <h2 class="main-title">최고의 면접을 위한</h2>
-                <h2 class="main-title">가장 똑똑한 방법, IP:PRO</h2>
-                <div class="underline"></div>
-            </div>
-
-            <!-- Feature Grid -->
-            <div class="feature-grid">
-                <!-- Feature Item 1 -->
-                <div class="feature-item">
-                    <h3>완벽한 면접을 위해</h3>
-                    <p>바로바로 체크해서 피드백</p>
-                </div>
-
-                <!-- Feature Item 2 -->
-                <div class="feature-item">
-                    <h3>형식적인 평가 시스템이 아닌,</h3>
-                    <p>구직자의 성장을 위해</p>
-                </div>
-
-                <!-- Feature Item 3 -->
-                <div class="feature-item">
-                    <h3>실제 면접 후기와</h3>
-                    <p>기업 완벽분석을 통해 만든 데이터</p>
-                </div>
-            </div>
-                <div class="main-img-box-grid">
-                <div class="main-img-box">
-                    <img src="<c:url value='/resources/static/img/mainintroimg4.svg' />"
-                         alt="Feature illustration 1" class="main-box-img">
-                </div>
-                <div class="main-img-box">
-                    <img src="<c:url value='/resources/static/img/mainintroimg5.svg' />"
-                         alt="Feature illustration 2" class="main-box-img">
-                </div>
-                <div class="main-img-box">
-                    <img src="<c:url value='/resources/static/img/mainintroimg6.svg' />"
-                         alt="Feature illustration 3" class="main-box-img">
-                </div>
-            </div>
+    <div class="main-img-box-grid">
+        <div class="main-img-box">
+            <img src="<c:url value='/resources/static/img/mainintroimg4.svg' />"
+                 alt="Feature illustration 1" class="main-box-img">
+        </div>
+        <div class="main-img-box">
+            <img src="<c:url value='/resources/static/img/mainintroimg5.svg' />"
+                 alt="Feature illustration 2" class="main-box-img">
+        </div>
+        <div class="main-img-box">
+            <img src="<c:url value='/resources/static/img/mainintroimg6.svg' />"
+                 alt="Feature illustration 3" class="main-box-img">
         </div>
     </div>
 </div>
-    <jsp:include page="footer.jsp"/>
-</body>
+</div>
 
+<jsp:include page="footer.jsp"/>
+</body>
 </html>

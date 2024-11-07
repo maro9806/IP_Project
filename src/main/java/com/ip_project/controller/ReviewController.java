@@ -2,7 +2,6 @@ package com.ip_project.controller;
 
 import com.ip_project.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -28,7 +27,6 @@ public class ReviewController {
         return "redirect:/review_board/review_list";
     }
 
-
     @GetMapping("/review_list")
     public String list(Model model, @RequestParam(name = "page", defaultValue = "1") int pageNum) {
         service.list(model);
@@ -53,6 +51,11 @@ public class ReviewController {
         model.addAttribute("pageGroupSize", pageGroupSize);
 
         return "review_board/review_list";
+    }
+
+    @GetMapping("/review_content")
+    public String reviewContent() {
+        return "review_board/interviewcomment";
     }
 
     @GetMapping("/review_write")

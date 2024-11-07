@@ -40,27 +40,11 @@ public class Review {
     @Column(name = "REVIEW_POSITION", nullable = false, length = 255) //직무
     private String reviewPosition;
 
-    @Column(name = "REVIEW_CAREER", nullable = true, length = 255) //경력
-    private String reviewCareer;
+    @Column(name = "REVIEW_RESULT", nullable = false, length = 255) //결과
+    private String result;
 
-
-    @Column(name = "REVIEW_COUNT", nullable = true, length = 255)
-    private Long count;
-
-    @Column(name = "REVIEW_PLACE", nullable = true, length = 255) //면접장소
-    private String place;
-
-    @Column(name = "REVIEW_PEOPLE", nullable = true, length = 255) //지원자수
-    private String people;
-
-    @Column(name = "REVIEW_TYPE", nullable = true, length = 255) //면접 유형
-    private String type;
-
-    @Column(name = "REVIEW_PROCESS", nullable = true, length = 255) //진행방식
-    private String process;
-
-    @Column(name = "REVIEW_REACTION", nullable = true, length = 255) //면접관 반응
-    private String reaction;
+    @Column(name = "REVIEW_PERIOD", nullable = true, length = 255) //지원 분기(20xx년 상반기/하반기)
+    private String period;
 
     @Column(name = "REVIEW_ATMOSPHERE", nullable = true, length = 255) //면접 분위기
     private String atmosphere;
@@ -71,8 +55,26 @@ public class Review {
     @Column(name = "REVIEW_ADVICE", nullable = true, length = 255) //조언
     private String advice;
 
-    @Column(name = "REVIEW_PERIOD", nullable = true, length = 255) //지원 분기(20xx년 상반기/하반기)
-    private String period;
+    @Column(name = "REVIEW_COUNT", nullable = true, length = 255)
+    private Long count;
+
+//    @Column(name = "REVIEW_CAREER", nullable = true, length = 255) //경력
+//    private String reviewCareer;
+
+//    @Column(name = "REVIEW_PLACE", nullable = true, length = 255) //면접장소
+//    private String place;
+
+//    @Column(name = "REVIEW_PEOPLE", nullable = true, length = 255) //지원자수
+//    private String people;
+
+//    @Column(name = "REVIEW_TYPE", nullable = true, length = 255) //면접 유형
+//    private String type;
+
+//    @Column(name = "REVIEW_PROCESS", nullable = true, length = 255) //진행방식
+//    private String process;
+
+//    @Column(name = "REVIEW_REACTION", nullable = true, length = 255) //면접관 반응
+//    private String reaction;
 
 
     @ManyToOne

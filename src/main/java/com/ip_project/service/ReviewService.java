@@ -29,27 +29,19 @@ public class ReviewService {
         review.setReviewTitle(reviewDTO.getReviewTitle());
         review.setReviewCompany(reviewDTO.getReviewCompany());
         review.setReviewPosition(reviewDTO.getReviewPosition());
-        review.setReviewCareer(reviewDTO.getReviewCareer());
         review.setPeriod(reviewDTO.getPeriod());
         review.setCount(0L);
         review.setMember(memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found")));
 
         // 자유형식 처리
-        review.setPlace(reviewDTO.getPlace());
-        review.setPeople(reviewDTO.getPeople());
-        review.setType(reviewDTO.getType());
-        review.setProcess(reviewDTO.getProcess());
-        review.setReaction(reviewDTO.getReaction());
         review.setAtmosphere(reviewDTO.getAtmosphere());
         review.setSorrow(reviewDTO.getSorrow());
         review.setAdvice(reviewDTO.getAdvice());
 
         String content = String.format(
-                "면접 장소: %s\n면접 인원: %s\n면접 유형: %s\n진행 방식: %s\n" +
-                        "면접관 반응: %s\n면접 분위기: %s\n아쉬웠던 점: %s\n조언: %s",
-                review.getPlace(), review.getPeople(), review.getType(),
-                review.getProcess(), review.getReaction(), review.getAtmosphere(),
+                "면접 분위기: %s\n아쉬웠던 점: %s\n조언: %s",
+                review.getAtmosphere(),
                 review.getSorrow(), review.getAdvice()
         );
         review.setReviewContent(content);
@@ -68,22 +60,14 @@ public class ReviewService {
                         .append("\n\n");
             }
 
-
         reviewRepository.save(review);
     }
 
-    //전체 면접 후기보기
+
     public void list(Model model) {
         List<Review> list = reviewRepository.findAll();
         model.addAttribute("list", list);
     }
-
-    //사용자 개인 면접 후기
-    public void listByUsername(Model model, String username) {
-        List<Review> reviews = reviewRepository.findByMemberUsername(username);
-        model.addAttribute("reviews", reviews);
-    }
-
 
     public Review get(Long idx) {
         return reviewRepository.findById(idx)
