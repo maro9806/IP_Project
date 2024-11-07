@@ -121,26 +121,25 @@
                             </tr>
 
                             <tr>
-                                <td style="padding-right:30px"> <b><label for="company-name">기업명</label></b>
-                                    <select id="company-name" class="form-control" name="company" style="width:200px;">
+                                <td style="padding-right:30px"> <b>기업명</b>
+                                    <select id="companySelect" onchange="updateJobRoles()" class="form-control" name="companySelect" style="width:200px;">
                                         <option value="">기업명 선택하기</option>
-                                        <option value="네이버">네이버</option>
-                                        <option value="넥슨">넥슨</option>
-                                        <option value="당근마켓">당근마켓</option>
-                                        <option value="라인플러스">라인플러스</option>
+                                        <option value="Nexon">넥슨</option>
+                                        <option value="Kakao">카카오</option>
+                                        <option value="Line">라인 플러스</option>
+                                        <option value="Carrot">당근마켓</option>
+                                        <option value="Naver">네이버</option>
+                                        <option value="Delivery">배달의 민족</option>
+                                        <option value="NCsoft">NC 소프트</option>
+                                        <option value="Netmable">넷마블</option>
+                                        <option value="Coupang">쿠팡</option>
+                                        <option value="Toss">토스</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <b><label for="job-position">지원 직무 </label></b>
-                                    <select id="job-position" class="form-control" name="position" style="width:200px;">
+                                    <b>지원 직무</b>
+                                    <select id="jobSelect" class="form-control" name="jobPosition" style="width:200px;">
                                         <option value="">직무 선택하기</option>
-                                        <option value="Back-End개발자">Back-End</option>
-                                        <option value="Front-End개발자">Front-End</option>
-                                        <option value="개발직군">개발직군</option>
-                                        <option value="디자인직군">디자인직군</option>
-                                        <option value="마케팅직군">마케팅직군</option>
-                                        <option value="기획직군">기획직군</option>
-
                                     </select>
                                 </td>
                             </tr>
@@ -178,6 +177,39 @@
 
 
 <script>
+    const jobRoles = {
+        Nexon: ['게임 프로그래밍', '시스템 엔지니어', '정보 보안', '시스템 엔지니어', '어플리케이션 엔지니어', '데이터 분석 매니저'],
+        Kakao: ['백엔드 개발자(Server)', '백엔드 개발자(Java)', '데이터 엔지니어', 'ML 엔지니어', '시스템 엔지니어', 'NoSQL 엔지니어',
+            'CI/CD 개발자', 'DevOps 개발자', '보안 기술지원 엔지니어'],
+        Line: ['Line Messenger PM', 'Backend', 'Search/ML Engineer', 'Front-end Engineer', 'Server Engineer'],
+        Carrot: ['네트워크/서버/보안', 'Machine LEarning', '백엔드-중고거래', '백엔드-커뮤니티', '웹기획(Product Manager)', '웹 개발', 'UI/UX디자인', 'Front-end개발', 'DBA 데이터 관리자'],
+        Naver : ['웹서비스/플랫폼 서버개발', '데이터 분석개발 및 엔지니어', '프론트엔드', '백엔드', '안드로이드 개발'],
+        Delivery: ['로봇딜리버리플랫폼팀 서버 개발자', '프론트엔드 기술자', '보안 시스템 및 솔루션 운영자','백엔드 시스템 개발자','QA Engineer'],
+        NcSoft: ['개발 PM', '서버 프로그래머', '엔진 프로그래머', '게임 보안/안티치트 개발자', '게임 프로그래밍'],
+        Netmable: ['서버 프로그래밍', '클라이언트 프로그래머', '플랫폼 백엔드', '플랫폼 프론트엔드', '인프라'],
+        Coupang: ['Data Analyst', 'Frontend Platform Engineer', 'Call System Developer', 'QA Manager', 'Security Researcher', 'ML Engineer'],
+        Toss: ['Data Analyst', 'Frontend Platform Engineer', 'Call System Developer', 'QA Manager', 'Security Researcher', 'ML Engineer']
+    };0
+
+    function updateJobRoles() {
+        const companySelect = document.getElementById('companySelect');
+        const jobSelect = document.getElementById('jobSelect');
+        const selectedCompany = companySelect.value;
+
+        // 직무 선택 박스 초기화
+        jobSelect.innerHTML = '<option value="">직무 선택하기</option>';
+
+        // 선택된 기업에 해당하는 직무 추가
+        if (selectedCompany in jobRoles) {
+            jobRoles[selectedCompany].forEach(role => {
+                const option = document.createElement('option');
+                option.value = role;
+                option.textContent = role;
+                jobSelect.appendChild(option);
+            });
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // 모달 창 요소 가져오기
         var loadModal = document.getElementById("loadModal");
