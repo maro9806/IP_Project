@@ -171,7 +171,7 @@
                         </div>
 
                         <div class="custom-card">
-                            <div class="card-title">지원 현황</div>
+                            <div class="card-title">면접 후기</div>
                             <div class="table-responsive">
                                 <table class="table custom-table">
                                     <thead>
