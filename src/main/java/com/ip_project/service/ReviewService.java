@@ -72,11 +72,18 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-
+    //전체 면접 후기보기
     public void list(Model model) {
         List<Review> list = reviewRepository.findAll();
         model.addAttribute("list", list);
     }
+
+    //사용자 개인 면접 후기
+    public void listByUsername(Model model, String username) {
+        List<Review> reviews = reviewRepository.findByMemberUsername(username);
+        model.addAttribute("reviews", reviews);
+    }
+
 
     public Review get(Long idx) {
         return reviewRepository.findById(idx)

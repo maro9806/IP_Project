@@ -171,30 +171,28 @@
                         </div>
 
                         <div class="custom-card">
-                            <div class="card-title">면접 후기</div>
+                            <div class="card-title">내가 쓴 면접후기</div>
                             <div class="table-responsive">
                                 <table class="table custom-table">
                                     <thead>
                                     <tr>
                                         <th>날짜</th>
                                         <th>기업명</th>
-                                        <th>활동내용</th>
+                                        <th>제목</th>
                                         <th>상태</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>2024.03.15</td>
-                                        <td>네이버</td>
-                                        <td>대졸 인턴 채용 면접 서류</td>
-                                        <td><span class="status-badge status-completed">불합격</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2024.03.14</td>
-                                        <td>카카오</td>
-                                        <td>실무 면접 실시</td>
-                                        <td><span class="status-badge status-pending">결과대기중</span></td>
-                                    </tr>
+                                        <c:forEach var="board" items="${reviews}" varStatus="i">
+                                            <td>${board.formattedReviewDate}</td>
+                                            <td>
+                                                    ${board.reviewTitle}
+                                            </td>
+                                            <td>${board.reviewPosition}</td>
+                                            <td><span class="status-badge status-completed">불합격</span></td>
+                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>

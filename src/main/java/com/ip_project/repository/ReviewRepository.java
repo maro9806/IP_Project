@@ -19,4 +19,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             """, nativeQuery = true)
     List<Review> findByPage(@Param("startRow") int startRow, @Param("endRow") int endRow);
 
+    List<Review> findByMemberUsername(@Param("username") String username);
+
 }
