@@ -6,3 +6,6 @@ comm1 <br>
 
 comm2 <br>
 24.10.16 entitiy.member 확장
+
+24.11.08
+aiboardcontroller - > ai_question 경로 변경 해야함
