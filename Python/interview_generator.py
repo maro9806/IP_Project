@@ -7,6 +7,7 @@ def get_db_connection():
     # .env 파일 로드
     load_dotenv()
 
+
     oracledb.init_oracle_client()
 
     dsn = oracledb.makedsn(
