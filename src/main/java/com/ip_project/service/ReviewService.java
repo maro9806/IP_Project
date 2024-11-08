@@ -1,6 +1,7 @@
 package com.ip_project.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.ip_project.dto.ReviewDTO;
 import com.ip_project.entity.IntroQuestion;
@@ -49,17 +50,17 @@ public class ReviewService {
         StringBuilder contentBuilder = new StringBuilder();
 
 
-            for (ReviewDTO.IntroQuestionDTO questionDTO : reviewDTO.getQuestions()) {
-                IntroQuestion question = new IntroQuestion();
-                question.setIntroQuestion(questionDTO.getQuestion());
-                question.setIntroAnswer(questionDTO.getAnswer());
-                question.setReview(review);
-                review.getQuestions().add(question);
+        for (ReviewDTO.IntroQuestionDTO questionDTO : reviewDTO.getQuestions()) {
+            IntroQuestion question = new IntroQuestion();
+            question.setIntroQuestion(questionDTO.getQuestion());
+            question.setIntroAnswer(questionDTO.getAnswer());
+            question.setReview(review);
+            review.getQuestions().add(question);
 
-                contentBuilder.append("질문: ").append(questionDTO.getQuestion())
-                        .append("\n답변: ").append(questionDTO.getAnswer())
-                        .append("\n\n");
-            }
+            contentBuilder.append("질문: ").append(questionDTO.getQuestion())
+                    .append("\n답변: ").append(questionDTO.getAnswer())
+                    .append("\n\n");
+        }
 
         reviewRepository.save(review);
     }
@@ -76,6 +77,12 @@ public class ReviewService {
         } else {
             return reviewRepository.findByReviewResultAndKeyword(orderBy, keyword);
         }
+    }
+
+    //사용자 개인 면접 후기
+    public void listByUsername(Model model, String username) {
+        List<Review> reviews = reviewRepository.findByMemberUsername(username);
+        model.addAttribute("reviews", reviews);
     }
 
     public void findById(Long idx, Model model) {

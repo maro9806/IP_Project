@@ -7,11 +7,9 @@ import com.ip_project.entity.Member;
 import com.ip_project.entity.SelfBoard;
 import com.ip_project.entity.SelfIntroduction;
 import com.ip_project.repository.MemberRepository;
-import com.ip_project.service.AIInterviewService;
-import com.ip_project.service.SelfBoardService;
-import com.ip_project.service.SelfIntroductionService;
-import com.ip_project.service.VirtualService;
+import com.ip_project.service.*;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,12 +18,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequestMapping("/aiboard")
 @RequiredArgsConstructor
@@ -36,6 +38,9 @@ public class AIBoardController {
     private final SelfBoardService selfBoardService;
     private final MemberRepository memberRepository;
     private final VirtualService virtualService;
+    private final InterviewQuestionService questionService;
+
+    private static final String PYTHON_SCRIPT_PATH = "C:/Users/USER/Desktop/실전프로젝트/back/IP_Project/Python/interview_generator.py";
 
     @GetMapping("/ai_board")  // 추가된 매핑
     public String aiBoard() {
@@ -109,8 +114,48 @@ public class AIBoardController {
     }
 
     @GetMapping("/ai_makequestion")
-    public String aiMakeQuestion() {
-        return "aiboard/ai_makequestion";
+    public String aiMakeQuestion(@RequestParam(name = "selfIdx", required = true) Long selfIdx, Model model) {
+        log.info("Starting interview question generation for selfIdx: {}", selfIdx);
+        try {
+            // Python 실행 경로 설정
+            String pythonPath = "python";  // 또는 시스템 환경에 맞는 Python 경로
+            ProcessBuilder pb = new ProcessBuilder(
+                    pythonPath,
+                    PYTHON_SCRIPT_PATH,
+                    selfIdx.toString()
+            );
+
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+
+            // 출력 읽기
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder output = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                log.info("Python output: {}", line);
+                output.append(line).append("\n");
+            }
+
+            int exitCode = process.waitFor();
+            log.info("Python script completed with exit code: {}", exitCode);
+
+            if (exitCode == 0) {
+                // DB에서 생성된 질문들 조회
+                List<Map<String, Object>> questions = questionService.getQuestionsBySelfIdx(selfIdx);
+                if (questions != null && !questions.isEmpty()) {
+                    model.addAttribute("questions", questions);
+                    return "aiboard/ai_makequestion";
+                }
+            }
+
+            log.error("Failed to generate questions. Output: {}", output);
+            return "redirect:/aiboard/ai_custominfo";
+
+        } catch (Exception e) {
+            log.error("Error generating interview questions", e);
+            return "redirect:/aiboard/ai_custominfo";
+        }
     }
 
     @GetMapping("/ai_question")

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<jsp:include page="../navbar.jsp"/>
+<jsp:include page="../navbar.jsp" />
 <div class="mypsidebar-container">
     <div class="main-content">
         <div class="row">
@@ -48,27 +48,37 @@
 
                     <div class="card-container">
                         <div class="custom-card">
-                            <div class="card-title">내가 쓴 면접후기</div>
+                            <div class="card-title d-flex justify-content-between">
+                                최근 자기소개서
+                                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypageint'/>"  style="text-decoration: none; color:gray;">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table custom-table">
+                                    <colgroup>
+                                        <col style="width: 20%;">
+                                        <col style="width: 60%;">
+                                        <col style="width: 20%;">
+                                    </colgroup>
                                     <thead>
                                     <tr>
-                                        <th>날짜</th>
                                         <th>기업명</th>
                                         <th>제목</th>
-                                        <th>상태</th>
+                                        <th>작성일</th>
+
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <c:forEach var="board" items="${reviews}" varStatus="i">
-                                        <td>${board.formattedReviewDate}</td>
-                                        <td>
-                                                ${board.reviewTitle}
-                                        </td>
-                                        <td>${board.reviewPosition}</td>
-                                        <td><span class="status-badge status-completed">불합격</span></td>
-                                    </tr>
+                                    <c:forEach items="${selfBoards}" var="selfBoard" varStatus="status">
+                                        <c:if test="${status.index < 3}">
+                                            <tr>
+                                                <td><c:out value="${selfBoard.selfCompany}"/></td>
+                                                <td><a href='${pageContext.request.contextPath}/mypage/mypagelist/${selfBoard.selfIdx}'><c:out value="${selfBoard.selfTitle}"/></a></td>
+                                                <td>${fn:substring(selfBoard.selfDate, 0, 10)}
+                                                    <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/></td>
+                                            </tr>
+                                        </c:if>
                                     </c:forEach>
                                     </tbody>
                                 </table>
@@ -78,8 +88,7 @@
                         <div class="custom-card">
                             <div class="card-title d-flex justify-content-between">
                                 AI 면접 내역
-                                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypagevid'/>"
-                                   style="text-decoration: none; color:gray;">
+                                <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypagevid'/>"  style="text-decoration: none; color:gray;">
                                     <i class="bi bi-chevron-right"></i>
                                 </a>
                             </div>
@@ -164,30 +173,32 @@
                         </div>
 
                         <div class="custom-card">
-                            <div class="card-title">지원 현황</div>
+                            <div class="card-title">면접 후기</div>
                             <div class="table-responsive">
                                 <table class="table custom-table">
                                     <thead>
                                     <tr>
                                         <th>날짜</th>
-                                        <th>기업명</th>
-                                        <th>활동내용</th>
+                                        <th>제목</th>
+                                        <th>직무</th>
                                         <th>상태</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>2024.03.15</td>
-                                        <td>네이버</td>
-                                        <td>대졸 인턴 채용 면접 서류</td>
-                                        <td><span class="status-badge status-completed">불합격</span></td>
+                                        <c:forEach var="board" items="${reviews}" varStatus="i">
+                                        <td>${board.formattedReviewDate}</td>
+                                        <td>
+                                            <a href="${pageContext.request.contextPath}/review_board/review_list">
+                                                    ${board.reviewTitle}
+                                            </a>
+                                        </td>
+                                        <td>${board.reviewPosition}</td>
+                                        <td><span class="status-badge status-completed">
+                                                ${board.result}
+                                        </span></td>
                                     </tr>
-                                    <tr>
-                                        <td>2024.03.14</td>
-                                        <td>카카오</td>
-                                        <td>실무 면접 실시</td>
-                                        <td><span class="status-badge status-pending">결과대기중</span></td>
-                                    </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -200,4 +211,3 @@
 </div>
 </body>
 </html>
-

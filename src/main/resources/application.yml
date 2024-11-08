@@ -50,4 +50,7 @@ server:
       init-parameters:
         development: true  # JSP 개발 모드 활성화
 debug: true
-
+python:
+  script:
+    path=C:/Users/USER/Desktop/실전프로젝트/back/IP_Project/Python/interview_generator:
+      py:

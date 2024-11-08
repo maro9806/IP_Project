@@ -75,8 +75,7 @@
         </div>
 
         <!-- 면접질문 생성하기 버튼 컨테이너 수정 -->
-        <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_makequestion'"
-                type="submit" id="next" class="btn btn-primary">
+        <button onclick="generateQuestions()" type="button" id="next" class="btn btn-primary">
             면접질문 생성하기
         </button>
     </div>
@@ -227,6 +226,8 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
+        const storedSelfIdx = localStorage.getItem('currentSelfIdx');
+        console.log("Stored selfIdx on page load:", storedSelfIdx);
         // 모달 창 요소 가져오기
         var loadModal = document.getElementById("loadModal");
         var modal = document.getElementById("myModal");
@@ -386,27 +387,25 @@
     };
 
     function loadSelfIntroduction(selfIdx) {
-        <%--const url = `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/` + selfIdx;--%>
-        <%--console.log("AJAX 요청 URL:", url);  // 요청 URL 로그--%>
-        // AJAX 요청으로 데이터를 가져오기
-        $.ajax({
-            url: 'http://localhost:8081/aiboard/loadSelfIntroduction/' + selfIdx,
-            method: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                // 가져온 데이터를 input, textarea에 채우기
-                document.getElementById("select_company").value = data.company;
-                document.getElementById("select_position").value = data.position;
+    // 현재 선택된 self_idx를 localStorage에 저장할 때 문자열로 변환
+    localStorage.setItem('currentSelfIdx', selfIdx.toString());
 
-                // 질문과 답변을 추가할 tbody 선택
-                const questionsAndAnswers = document.getElementById('QnAs');
-                questionsAndAnswers.innerHTML = ''; // 기존 내용 지우기
+    $.ajax({
+        url: 'http://localhost:8081/aiboard/loadSelfIntroduction/' + selfIdx,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            // 기존 코드는 그대로 유지
+            document.getElementById("select_company").value = data.company;
+            document.getElementById("select_position").value = data.position;
 
-                // 질문과 답변 배열 길이
-                const questionsLength = data.questions.length;
-                const answersLength = data.answers.length;
-                // 질문과 답변을 테이블에 추가
-                for (let i = 0; i < Math.min(questionsLength, answersLength); i++) {
+            const questionsAndAnswers = document.getElementById('QnAs');
+            questionsAndAnswers.innerHTML = '';
+
+            const questionsLength = data.questions.length;
+            const answersLength = data.answers.length;
+
+            for (let i = 0; i < Math.min(questionsLength, answersLength); i++) {
                     const question = data.questions[i];
                     const answer = data.answers[i];
 
@@ -428,13 +427,42 @@
                 }
 
                 // 모달 닫기
-                loadModal.style.display = "none";
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching self-introduction:', error);
-            }
-        });
+            loadModal.style.display = "none";
+
+            // 디버깅용 출력
+            console.log("Stored selfIdx:", localStorage.getItem('currentSelfIdx'));
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching self-introduction:', error);
+        }
+    });
+}
+
+
+    function generateQuestions() {
+    const selectedSelfIdx = localStorage.getItem('currentSelfIdx');
+    console.log("Generating questions for selfIdx:", selectedSelfIdx);
+
+    if (!selectedSelfIdx) {
+        alert('자기소개서를 먼저 선택해주세요.');
+        return;
     }
+
+    // AJAX로 요청을 보내고 결과를 기다림
+    $.ajax({
+        url: '${pageContext.request.contextPath}/aiboard/ai_makequestion',
+        method: 'GET',
+        data: { selfIdx: selectedSelfIdx },
+        success: function(response) {
+            // 성공 시 페이지 이동
+            window.location.href = '${pageContext.request.contextPath}/aiboard/ai_makequestion?selfIdx=' + selectedSelfIdx;
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert('질문 생성 중 오류가 발생했습니다.');
+        }
+    });
+}
 </script>
 
 <jsp:include page="../footer.jsp"/>

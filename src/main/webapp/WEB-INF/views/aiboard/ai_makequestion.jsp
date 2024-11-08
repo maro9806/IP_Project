@@ -46,23 +46,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr >
+            <tr>
                 <td rowspan="2"><strong>기업</strong></td>
                 <td>질문1</td>
                 <td>
-                    <button id="q1" class="accordion">질문 1번 내용입니다.</button>
-                    <div class="panel">
-                        <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                    </div>
-                </td >
+                    <button id="q1" class="accordion">${questions[0].IPRO_QUESTION}</button>
+                </td>
             </tr>
-            <tr  style="border-bottom:1px solid #edebeb;">
+            <tr style="border-bottom:1px solid #edebeb;">
                 <td>질문2</td>
                 <td>
-                    <button id="q2" class="accordion">질문 2번 내용입니다.</button>
-                    <div class="panel">
-                        <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                    </div>
+                    <button id="q2" class="accordion">${questions[1].IPRO_QUESTION}</button>
                 </td>
             </tr>
 
@@ -70,27 +64,27 @@
                 <td rowspan="2"><strong>직무</strong></td>
                 <td>질문3</td>
                 <td>
-                    <button id="q3"  class="accordion">질문 3번 내용입니다.</button>
-
+                    <button id="q3" class="accordion">${questions[2].IPRO_QUESTION}</button>
                 </td>
             </tr>
             <tr style="border-bottom:1px solid #edebeb;">
                 <td>질문4</td>
                 <td>
-                    <button id="q4" class="accordion">질문 4번 내용입니다.</button>
+                    <button id="q4" class="accordion">${questions[3].IPRO_QUESTION}</button>
                 </td>
             </tr>
+
             <tr>
                 <td rowspan="2"><strong>경험</strong></td>
                 <td>질문5</td>
                 <td>
-                    <button id="q5" class="accordion">질문 5번 내용입니다.</button>
+                    <button id="q5" class="accordion">${questions[4].IPRO_QUESTION}</button>
                 </td>
             </tr>
             <tr>
                 <td>질문6</td>
                 <td>
-                    <button id="q6" class="accordion">질문 6번 내용입니다.</button>
+                    <button id="q6" class="accordion">${questions[5].IPRO_QUESTION}</button>
                 </td>
             </tr>
             </tbody>

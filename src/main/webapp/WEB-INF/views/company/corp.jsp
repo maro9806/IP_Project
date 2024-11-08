@@ -15,18 +15,20 @@
 <body>
 <jsp:include page="../navbar.jsp"/>
 
-<div class="main-content">
-    <!-- Jumbotron -->
-    <div class="jumbotron p-5 rounded">
-        <h1 class="display-4">기업 분석</h1>
-        <p class="lead">원하는 기업 분석을 한 눈에 기업 SWOT 레포트를 제공해요.</p>
-        <hr class="my-4">
-        <div class="input-group mb-0 w-50 mx-auto">
-            <input type="text" class="form-control" placeholder="기업명을 입력하세요" aria-label="Search" name="corp" id="corpInput" required
-                   value="${param.corp}"/>
-            <button class="btn btn-toolbar btn-dark" id="searchButton" type="button">Search</button>
-        </div>
+<div class="jumbotron p-5 rounded">
+    <h1 class="display-4">기업 분석</h1>
+    <p class="lead">AI가 분석해주는 SWOT · 최신 동향</p>
+    <hr class="my-4">
+    <div class="input-group mb-0 w-50 mx-auto">
+        <input type="text" class="form-control" placeholder="기업명을 입력하세요" aria-label="Search" name="corp"
+               id="corpInput" required
+               value="${param.corp}"/>
+        <button class="btn btn-toolbar btn-dark" id="searchButton" type="button">Search</button>
     </div>
+</div>
+
+<div class="main-content pt-0">
+
 
     <!-- 기업 정보 Section -->
     <section class="container my-5">
@@ -41,9 +43,6 @@
                     </div>
                     <div class="col-md-9">
                         <table class="table">
-                            <colgroup>
-
-                            </colgroup>
                             <tbody>
                             <tr>
                                 <th>기업명:</th>
@@ -144,17 +143,14 @@
 
 
     <!-- 기업 최신 동향 Section -->
-    <section class="container my-5">
-        <h4>최신 동향</h4>
+    <section class="container d-flex flex-column my-5">
+        <h4><strong>최신 동향 뉴스</strong></h4>
         <table class="news-table">
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th style="width:100px;">이미지</th>
-                <th style="width:900px;">제목</th> <!-- 뉴스 제목--> <!-- 클릭하면 뉴스 url로-->
-                <th>내용</th> <!-- 뉴스 설명-->
-            </tr>
-            </thead>
+            <colgroup>
+                <col style="width: 20%;">
+                <col style="width: 70%;">
+                <col style="width: 10%;">
+            </colgroup>
             <tbody id="newsTableBody">
 
             </tbody>
@@ -196,8 +192,8 @@
                     // 데이터가 존재하면 테이블에 추가
                     if (data && data.articles) {
                         $.each(data.articles, function(index, article) {
-                            const row = '<tr><td>' + (parseInt(index) + 1) +
-                                '</td><td><a href="' + article.url + '" target="_blank">' +
+                            const row =
+                                '<tr> <td><a href="' + article.url + '" target="_blank">' +
                                 '<img src="' + article.image_url + '" alt="뉴스 이미지"></a></td>' +
                                 '<td style="text-align:left">' +
                                 '<a href="' + article.url + '" target="_blank">' +

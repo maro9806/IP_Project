@@ -8,6 +8,7 @@ import com.ip_project.mapper.AIInterviewMapper;
 import com.ip_project.repository.AIInterviewRepository;
 import com.ip_project.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +25,8 @@ public class AIInterviewService {
     private final AIInterviewRepository interviewRepository;
     private final AIInterviewMapper interviewMapper;
     private final AIVideoStorageService videoStorageService;
+    private final JdbcTemplate jdbcTemplate;
+
 
     @Transactional
     public AIInterviewDTO createInterview(AIInterviewDTO dto) {
@@ -69,4 +73,7 @@ public class AIInterviewService {
         }
         interviewRepository.deleteById(id);
     }
+
+
+
 }

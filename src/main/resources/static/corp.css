@@ -5,7 +5,7 @@
 
 /* Jumbotron styling */
 .jumbotron {
-  background-image: url('/resources/static/img/cor-001.png');
+  background-image: url('/resources/static/img/cor-001.png') !important;
   color: #fff;
   border-radius: 10px;
   padding: 30px;
@@ -45,7 +45,7 @@
 }
 .news-table th, .news-table td {
   border: 1px solid #ddd;
-  padding: 8px;
+  padding: 20px !important;
   text-align: center;  /* 가운데 정렬 */
 }
 .news-table th {
@@ -53,8 +53,7 @@
 }
 
 .news-table img {
-  width:150px;
-  height:100px;
+  width:210px;
 }
 
 /*기업 정보 Section*/

@@ -10,7 +10,7 @@ body {
 }
 /* Jumbotron styling */
 .jumbotron {
-    background-image: url('/resources/static/img/cor-001.png');
+    background-image: url('/resources/static/img/cor-001.png') !important;
     color: #fff;
     border-radius: 10px;
     padding: 30px;

@@ -9,18 +9,17 @@
     <title>2 stage</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/stage.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/2stage.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/ai_question.css">
 
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>
+<div class="jumbotron p-5 rounded">
+    <h1 class="display-4">AI 면접 준비</h1>
+    <p class="lead">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
+    <hr>
+</div>
 <div class="content">
-    <div class="banner mb-5">
-        <h3 class="title">AI 면접 코칭</h3>
-        <p class="p-title">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
-    </div>
-
     <h4 class="h-title"> 2. 질문 답변하기 </h4>
 
     <p><h5>기업질문 > 직무질문 > 경험질문</h5></p>

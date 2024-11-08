@@ -25,7 +25,7 @@ def get_qa_chain(retriever):
     return qa_chain
 
 def generate_ai_message(qa_chain, query):
-    ai_message = qa_chain({"query": query})
+    ai_message = qa_chain.invoke({"query": query})
     if ai_message and 'result' in ai_message:
         return ai_message['result']
     else:

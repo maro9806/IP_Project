@@ -6,27 +6,22 @@
 
 <html>
 <head>
-    <title>3 stage</title>
+    <title>check</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/stage.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/2stage.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/3stage.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/ai_makequestion.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 <body>
 
 <jsp:include page="../navbar.jsp"/>
-
+<div class="jumbotron p-5 rounded">
+    <h1 class="display-4">AI 면접 준비</h1>
+    <p class="lead">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
+    <hr>
+</div>
 <div class="content">
-    <div class="banner mb-5">
-        <h3 class="title">AI 면접 코칭</h3>
-        <br>
-        <h5 class="p-title">면접 답변이 모두 완료 되었습니다.</h5>
-        <h5 class="p-title"> 질문 및 답변 확인을 확인하세요. </h5>
-    </div>
-
     <h4 class="h-title">3. 질문 및 답변 확인하기</h4>
     <h5>질문 답변 확인 > 저장</h5>
 

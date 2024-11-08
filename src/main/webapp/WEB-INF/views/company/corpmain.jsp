@@ -9,19 +9,20 @@
 <link rel="stylesheet" href="<c:url value='/resources/static/corpmain.css'/>">
 
 <jsp:include page="../navbar.jsp"/>
-
-<div class="main-content">
-    <div class="jumbotron p-5 rounded">
-        <h1 class="display-4">기업 분석</h1>
-        <p class="lead">AI가 분석해주는 SWOT · 최신 동향</p>
-        <hr class="my-4">
-        <div class="input-group mb-0 w-50 mx-auto">
-            <input type="text" class="form-control" placeholder="기업명을 입력하세요" aria-label="Search" name="corp"
-                   id="corpInput" required
-                   value="${param.corp}"/>
-            <button class="btn btn-toolbar btn-dark" id="searchButton" type="button">Search</button>
-        </div>
+<div class="jumbotron p-5 rounded">
+    <h1 class="display-4">기업 분석</h1>
+    <p class="lead">AI가 분석해주는 SWOT · 최신 동향</p>
+    <hr class="my-4">
+    <div class="input-group mb-0 w-50 mx-auto">
+        <input type="text" class="form-control" placeholder="기업명을 입력하세요" aria-label="Search" name="corp"
+               id="corpInput" required
+               value="${param.corp}"/>
+        <button class="btn btn-toolbar btn-dark" id="searchButton" type="button">Search</button>
     </div>
+</div>
+
+<div class="main-content pt-0">
+
     <div class="container mt-4">
 
         <div class="row row-cols-1 row-cols-md-5 g-4">
