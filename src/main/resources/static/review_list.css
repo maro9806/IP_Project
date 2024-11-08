@@ -6,7 +6,33 @@ body {
     padding: 0;
     background-color: #f8f9fa;
 }
+.result-tag{
+    display:none;
+    color: white;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 12px;
+    font-size: 12px;
+}
+/* CSS */
+.result-tag.pass {
 
+    display: inline-flex;
+    background-color: #ebd052; /* 합격일 때 */
+}
+
+.result-tag.fail {
+    background-color: #e38e86; /* 불합격일 때 */
+    color: white;
+    display:block;
+}
+
+.result-tag.pending {
+    background-color: #8b807f; /* 결과 대기중일 때 */
+    color: white;
+    display:block;
+}
 .main-content {
     margin-top: 5rem;
 }
@@ -21,7 +47,6 @@ body {
 .hero-section {
     position: relative;
     width: 1368px;
-    height: 286px;
     margin: 0 auto;
     padding: 48px 32px;
     box-sizing: border-box;
@@ -100,25 +125,24 @@ body {
     background: #ffffff;
     border-radius: 12px;
     padding: 1.5rem;
-    margin-bottom: 3rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .search-form {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 1rem;
 }
 
 .search-group {
     display: flex;
     gap: 1rem;
-    flex-wrap: wrap;
-    flex: 1;
+    /*flex-wrap: wrap;*/
+    /*flex: 1;*/
 }
 
 .search-select {
-    min-width: 140px;
+    min-width: 200px;
     padding: 0.75rem;
     border: 1px solid #E1E8ED;
     border-radius: 8px;
@@ -134,11 +158,16 @@ body {
 
 .search-input {
     flex: 1;
-    min-width: 200px;
+    min-width: 650px;
     padding: 0.75rem;
     border: 1px solid #9ce975;
     border-radius: 8px;
     font-size: 0.95rem;
+}
+
+.search-input-group{
+    display:flex;
+    gap:15px;
 }
 
 .btn-primary {
@@ -228,7 +257,9 @@ th {
 tr:hover {
     background: #F8F9FA;
 }
-
+.review-title{
+    margin-bottom:20px;
+}
 /* Company Review Section Styles */
 .company-reviews-section {
     margin-top: 48px;
@@ -237,7 +268,7 @@ tr:hover {
 .company-reviews-section h2 {
     font-size: 24px;
     font-weight: 600;
-    margin-bottom: 24px;
+    margin-bottom:0;
 }
 
 .review-card {
@@ -249,7 +280,7 @@ tr:hover {
 }
 
 .review-card:hover {
-    border-color: #626FC7;
+    border-color: #3aa376;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
@@ -288,6 +319,7 @@ tr:hover {
 }
 
 .blockquote-footer {
+    margin-top: 5px;
     font-size: 13px;
     color: #888;
 }

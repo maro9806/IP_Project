@@ -17,13 +17,14 @@ public class ReviewDTO {
     private String reviewCareer;
     private String reviewCompany;
     private String reviewPosition;
+    private String result;
     private Long count;
     private String atmosphere;
     private String sorrow;
     private String advice;
     private String username;
     private String period;
-    private String formatType; // 이거 머임??
+    private String formatType;
     private List<IntroQuestionDTO> questions;
 
 

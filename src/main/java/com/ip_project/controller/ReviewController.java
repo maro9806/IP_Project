@@ -53,9 +53,22 @@ public class ReviewController {
         return "review_board/review_list";
     }
 
-    @GetMapping("/review_content")
-    public String reviewContent() {
-        return "review_board/interviewcomment";
+    @GetMapping("/search")
+    public String getReviews(
+            @RequestParam(value = "orderBy", required = false, defaultValue = "all") String orderBy,
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+            Model model
+    ) {
+        List<Review> reviews = service.getReviews(orderBy, keyword);
+        model.addAttribute("list", reviews);
+        return "review_board/review_list";  // redirect 제거
+    }
+
+
+    @GetMapping("/review_view/{idx}")
+    public String reviewView(Model model, @PathVariable Long idx) {
+        service.findById(idx, model);
+        return "review_board/review_view";
     }
 
     @GetMapping("/review_write")

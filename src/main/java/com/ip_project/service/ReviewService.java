@@ -30,6 +30,7 @@ public class ReviewService {
         review.setReviewCompany(reviewDTO.getReviewCompany());
         review.setReviewPosition(reviewDTO.getReviewPosition());
         review.setPeriod(reviewDTO.getPeriod());
+        review.setResult(reviewDTO.getResult());
         review.setCount(0L);
         review.setMember(memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found")));
@@ -69,6 +70,20 @@ public class ReviewService {
         model.addAttribute("list", list);
     }
 
+    public List<Review> getReviews(String orderBy, String keyword) {
+        if (orderBy.equals("all")) {
+            return reviewRepository.findAllByKeyword(keyword);
+        } else {
+            return reviewRepository.findByReviewResultAndKeyword(orderBy, keyword);
+        }
+    }
+
+    public void findById(Long idx, Model model) {
+        Review dto = reviewRepository.findById(idx)
+                .orElseThrow(() -> new RuntimeException("Review not found")); // 없으면 예외 처리
+        model.addAttribute("reviewDto", dto); // Optional을 벗겨내고 Review 객체만 추가
+    }
+
     public Review get(Long idx) {
         return reviewRepository.findById(idx)
                 .orElseThrow(() -> new RuntimeException("Review not found with id: " + idx));
@@ -102,11 +117,9 @@ public class ReviewService {
         return reviewRepository.findByPage(startRow, endRow);
     }
 
-    //사용자 개인 면접 후기
-    public void listByUsername(Model model, String username) {
-        List<Review> reviews = reviewRepository.findByMemberUsername(username);
-        model.addAttribute("reviews", reviews);
-    }
+
+
+
 
 
 

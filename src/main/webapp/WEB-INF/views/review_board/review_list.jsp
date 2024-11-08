@@ -10,238 +10,214 @@
     <title>IPro</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/corpboard.css">
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/review_list.css">--%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/review_list.css">
 
 </head>
 
 <body>
 <jsp:include page="../navbar.jsp"/>
-<div class="main-content">
-    <div class="jumbotron p-5 rounded">
-        <h1 class="display-4">기업 면접 후기 & 리뷰</h1>
-        <p class="lead">앞으로 근무할 기업은 어떤 모습일까 궁금하시죠?</p>
-        <hr class="my-4 ">
-        <p>현직 선배님들의 기업 리뷰와 미리 알아보는 면접 후기</p>
-    </div>
-    <div class="container">
-        <!-- Search Section-->
-        <div class="search-section">
-    <form action="" method="get">
-        <div class="search-dropdown">
-            <select name="orderBy" class="dropdown-button">
-                <option value="newest" ${param.orderBy == 'newest' ? 'selected' : ''}>최신순</option>
-                <option value="oldest" ${param.orderBy == 'oldest' ? 'selected' : ''}>등록순</option>
-            </select>
+<main class="main-content">
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>기업 면접 후기 & 리뷰</h1>
+            <p class="hero-subtitle">앞으로 근무할 기업은 어떤 모습일까 궁금하시죠?</p>
+            <p class="hero-subtitle">현직 선배님들의 기업 리뷰와 미리 알아보는 면접 후기</p>
         </div>
+    </section>
 
-        <div class="search-dropdown">
-            <select name="reviewCareer" class="dropdown-button">
-                <option value="all" ${param.career == 'all' ? 'selected' : ''}>경력 전체</option>
-                <!-- 다른 경력 옵션들 -->
-            </select>
-        </div>
+    <div class="container d-flex flex-column" style="gap:0">
+        <!-- Search Section -->
+        <section class="search-section">
+            <form action="${pageContext.request.contextPath}/review_board/search" method="get" class="search-form">
+                <div class="search-group">
+                    <select name="orderBy" class="search-select">
+                        <option value="all" ${param.orderBy == 'all' ? 'selected' : ''}>합격 여부</option>
+                        <option value="합격" ${param.orderBy == '합격' ? 'selected' : ''}>합격</option>
+                        <option value="불합격" ${param.orderBy == '불합격' ? 'selected' : ''}>불합격</option>
+                        <option value="결과대기중" ${param.orderBy == '결과대기중' ? 'selected' : ''}>결과대기중</option>
+                    </select>
+                </div>
+                <div class="search-input-group">
+                    <input type="text" name="keyword" class="search-input" placeholder="기업명" value="${param.keyword}">
+                    <button type="submit" class="btn-primary">검색</button>
+                    <button type="button" class="btn-secondary" onclick="location.href='${pageContext.request.contextPath}/review_board'">초기화</button>
+                </div>
+            </form>
+        </section>
 
-        <div class="search-dropdown">
-            <select name="jobType" class="dropdown-button">
-                <option value="all" ${param.jobType == 'all' ? 'selected' : ''}>직무·직업 전체</option>
-                <!-- 다른 직무 옵션들 -->
-            </select>
-        </div>
-
-        <input type="text" name="keyword" class="search-input" placeholder="기업명"
-               value="${param.keyword}">
-        <button type="submit" class="search-button">검색</button>
-        <button type="button" class="reset-button" onclick="location.href='?'">⟲</button>
-    </form>
+        <!--  Reviews Section -->
+        <section class="company-reviews-section">
+<div class="review-title d-flex justify-content-between align-items-center">
+            <h2 style="text-align:center;">면접 후기</h2>
+    <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/review_board/review_write'">
+        <span class="write-icon">✎</span>리뷰 등록하기
+    </button>
 </div>
-        <!-- AIInterview review Section Table style -->
-        <!-- Table Section for Notice Board -->
-        <h2 class="section-title">면접 후기</h2>
-        <table class="table table-striped notice-board">
-            <thead>
-            <tr>
-                <th scope="col">번호</th>
-                <th scope="col">기업명</th>
-                <th scope="col">글 제목</th>
-                <th scope="col">Date</th>
-                <th scope="col">Count</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="board" items="${list}" varStatus="i">
-                <tr>
-                    <td>${i.count}</td>
-                    <td>${board.reviewCompany}</td>
-                    <td><a href="${pageContext.request.contextPath}/review_board/review_content">${board.reviewTitle}</a></td>
-                    <td>${board.formattedReviewDate}</td>
-                    <td>${board.count}</td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+            <div class="row row-cols-1 g-1">
+                <c:forEach var="board" items="${list}" varStatus="i">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/review_board/review_view/${board.reviewIdx}">
+                        <div class="col">
+                            <div class="review-card">
+                                <div class="reviewcard-body">
+
+                                    <div class="corpreviewtitle">
+                                        <h5 class="reviewcard-title">${board.reviewCompany}</h5>
+                                        <p class="reviewcard-text">${board.reviewPosition}</p>
+                                        <footer>
+                                            <button type="button" class="result-tag">
+                                                    <c:set var="resultClass" value="" />
+                                                <c:choose>
+                                                <c:when test="${board.result == '합격'}">
+                                                    <c:set var="resultClass" value="pass" />
+                                                </c:when>
+                                                <c:when test="${board.result == '불합격'}">
+                                                    <c:set var="resultClass" value="fail" />
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:set var="resultClass" value="pending" />
+                                                </c:otherwise>
+                                                </c:choose>
+                                                <button type="button" class="result-tag ${resultClass}">
+                                                        ${board.result}
+                                            </button>
+                                        </footer>
+                                    </div>
+                                    <div class="content-wrapper">
+                                        <div class="corpreviewtext1">
+                                            <h5>[${board.period}] ${board.reviewTitle}</h5>
+                                        </div>
+                                        <div class="corpreviewtext2">
+                                            <p><strong>"면접은 어디에서, 몇 시에 보셨습니까?"</strong></p>
+                                            <p>강남 본사에서 오후 2시에 면접을 보았습니다. 지하철 2호선 강남역에서 도보 5분 거리에 위치해 있었고, </p>
+                                            <p>면접 시작 30분 전에 도착하여 대기실에서 담당자분께서 안내해 주셨습니다.</p>
+                                        </div>
+                                    </div>
+                                    <span class="review-count">${board.formattedReviewDate}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </c:forEach>
+            </div>
+        </section>
+
+        <br>
 
 
-        <!-- Pagination -->
-        <div class="pagination">
-            <c:if test="${groupStart > 1}">
-                <button onclick="location.href='?page=${groupStart-1}'">&lt;</button>
-            </c:if>
-
-            <c:forEach begin="${groupStart}" end="${groupEnd}" var="pageNum">
-                <button onclick="location.href='?page=${pageNum}'"
-                        class="${pageNum == currentPage ? 'active' : ''}">
-                        ${pageNum}
-                </button>
-            </c:forEach>
-
-            <c:if test="${groupEnd < totalPages}">
-                <button onclick="location.href='?page=${groupEnd+1}'">&gt;</button>
-            </c:if>
-        </div>
-        <!-- Write Button -->
-        <button class="write-button" onclick="location.href='${pageContext.request.contextPath}/review_board/review_write'">
-            <span class="write-icon">✎</span>
-            후기 등록하기
-        </button>
-        <!--corp review Section -->
-        <h2 class="section-title mt-5">기업 리뷰</h2>
-        <div class="row row-cols-1 g-4">
-            <div class="col">
-                <div class="reviewcard">
-                    <div class="reviewcard-body">
-                        <img src="/api/placeholder/100/100" alt="review Image">
-                        <div class="corpreviewtitle">
-                            <h5 class="reviewcard-title">넥슨(주)</h5>
-                            <p class="reviewcard-text">뭘 써야할까</p>
-                            <footer class="blockquote-footer">사용자 닉네임 1</footer>
-                        </div>
-                        <div class="content-wrapper">
-                            <div class="corpreviewtext1">
-                                <a># 대기업</a>
-                                <a># 복장 자유</a>
-                                <a># 자유로운 출근</a>
-                            </div>
-                            <div class="corpreviewtext2">
-                                <p>"근무시간 상관없이 주어진 업무만 다 하면 퇴근이 가능하다."</p>
-                                <p>"자유로운 분위기 속에서 책임감이 부여되는 곳, 열린 마인드의 경영진"</p>
-                            </div>
-                        </div>
-                        <span class="review-count">기업 리뷰 -건</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="reviewcard">
-                    <div class="reviewcard-body">
-                        <img src="/api/placeholder/100/100" alt="review Image">
-                        <div class="corpreviewtitle">
-                            <h5 class="reviewcard-title">넥슨(주)</h5>
-                            <p class="reviewcard-text">뭘 써야할까</p>
-                            <footer class="blockquote-footer">사용자 닉네임 1</footer>
-                        </div>
-                        <div class="content-wrapper">
-                            <div class="corpreviewtext1">
-                                <a># 대기업</a>
-                                <a># 복장 자유</a>
-                                <a># 자유로운 출근</a>
-                            </div>
-                            <div class="corpreviewtext2">
-                                <p>"근무시간 상관없이 주어진 업무만 다 하면 퇴근이 가능하다."</p>
-                                <p>"자유로운 분위기 속에서 책임감이 부여되는 곳, 열린 마인드의 경영진"</p>
-                            </div>
-                        </div>
-                        <span class="review-count">기업 리뷰 -건</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="reviewcard">
-                    <div class="reviewcard-body">
-                        <img src="/api/placeholder/100/100" alt="review Image">
-                        <div class="corpreviewtitle">
-                            <h5 class="reviewcard-title">넥슨(주)</h5>
-                            <p class="reviewcard-text">뭘 써야할까</p>
-                            <footer class="blockquote-footer">사용자 닉네임 1</footer>
-                        </div>
-                        <div class="content-wrapper">
-                            <div class="corpreviewtext1">
-                                <a># 대기업</a>
-                                <a># 복장 자유</a>
-                                <a># 자유로운 출근</a>
-                            </div>
-                            <div class="corpreviewtext2">
-                                <p>"근무시간 상관없이 주어진 업무만 다 하면 퇴근이 가능하다."</p>
-                                <p>"자유로운 분위기 속에서 책임감이 부여되는 곳, 열린 마인드의 경영진"</p>
-                            </div>
-                        </div>
-                        <span class="review-count">기업 리뷰 -건</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="reviewcard">
-                    <div class="reviewcard-body">
-                        <img src="/api/placeholder/100/100" alt="review Image">
-                        <div class="corpreviewtitle">
-                            <h5 class="reviewcard-title">넥슨(주)</h5>
-                            <p class="reviewcard-text">뭘 써야할까</p>
-                            <footer class="blockquote-footer">사용자 닉네임 1</footer>
-                        </div>
-                        <div class="content-wrapper">
-                            <div class="corpreviewtext1">
-                                <a># 대기업</a>
-                                <a># 복장 자유</a>
-                                <a># 자유로운 출근</a>
-                            </div>
-                            <div class="corpreviewtext2">
-                                <p>"근무시간 상관없이 주어진 업무만 다 하면 퇴근이 가능하다."</p>
-                                <p>"자유로운 분위기 속에서 책임감이 부여되는 곳, 열린 마인드의 경영진"</p>
-                            </div>
-                        </div>
-                        <span class="review-count">기업 리뷰 -건</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="reviewcard">
-                    <div class="reviewcard-body">
-                        <img src="/api/placeholder/100/100" alt="review Image">
-                        <div class="corpreviewtitle">
-                            <h5 class="reviewcard-title">넥슨(주)</h5>
-                            <p class="reviewcard-text">뭘 써야할까</p>
-                            <footer class="blockquote-footer">사용자 닉네임 1</footer>
-                        </div>
-                        <div class="content-wrapper">
-                            <div class="corpreviewtext1">
-                                <a># 대기업</a>
-                                <a># 복장 자유</a>
-                                <a># 자유로운 출근</a>
-                            </div>
-                            <div class="corpreviewtext2">
-                                <p>"근무시간 상관없이 주어진 업무만 다 하면 퇴근이 가능하다."</p>
-                                <p>"자유로운 분위기 속에서 책임감이 부여되는 곳, 열린 마인드의 경영진"</p>
-                            </div>
-                        </div>
-                        <span class="review-count">기업 리뷰 -건</span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
-
+</main>
+<jsp:include page="../footer.jsp"/>
+</body>
 <script>
-    document.querySelectorAll('.AIInterview-header').forEach(header => {
-        header.addEventListener('click', () => {
-            const card = header.closest('.AIInterview-card');
-            card.classList.toggle('active');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get current URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemsPerPage = 5; // Set limit to 5 items per page
+
+        // Handle pagination click events
+        function handlePaginationClick(e) {
+            e.preventDefault();
+            const href = this.getAttribute('onclick')?.match(/href='([^']+)'/)?.[1];
+            if (href) {
+                // Preserve existing search parameters while updating page
+                const currentParams = new URLSearchParams(window.location.search);
+                const newParams = new URLSearchParams(href.split('?')[1]);
+
+                // Update page parameter
+                currentParams.set('page', newParams.get('page'));
+
+                // Keep existing search parameters
+                const orderBy = currentParams.get('orderBy');
+                const career = currentParams.get('career');
+                const jobType = currentParams.get('jobType');
+                const keyword = currentParams.get('keyword');
+
+                // Construct new URL
+                let newUrl = `?page=${newParams.get('page')}`;
+                if (orderBy) newUrl += `&orderBy=${orderBy}`;
+                if (career) newUrl += `&career=${career}`;
+                if (jobType) newUrl += `&jobType=${jobType}`;
+                if (keyword) newUrl += `&keyword=${keyword}`;
+
+                // Navigate to new URL
+                window.location.href = newUrl;
+
+                // Smooth scroll to reviews section
+                document.querySelector('.reviews-section').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Attach event listeners to pagination buttons
+        const pageButtons = document.querySelectorAll('.page-btn');
+        pageButtons.forEach(button => {
+            button.removeEventListener('click', handlePaginationClick); // Remove any existing listeners
+            button.addEventListener('click', handlePaginationClick);
         });
+
+        // Handle search form
+        const searchForm = document.querySelector('.search-form');
+        if (searchForm) {
+            searchForm.addEventListener('submit', (e) => {
+                const keyword = searchForm.querySelector('.search-input').value.trim();
+
+                // Add validation if needed
+                if (keyword.length < 1 && keyword.length > 0) {
+                    e.preventDefault();
+                    alert('검색어는 1글자 이상 입력해주세요.');
+                }
+
+                // Add page parameter with value 1 when searching
+                const pageInput = document.createElement('input');
+                pageInput.type = 'hidden';
+                pageInput.name = 'page';
+                pageInput.value = '1';
+                searchForm.appendChild(pageInput);
+            });
+        }
+
+        // Handle reset button
+        const resetButton = document.querySelector('.btn-secondary');
+        if (resetButton) {
+            resetButton.addEventListener('click', () => {
+                const inputs = searchForm.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    if (input.type === 'text') {
+                        input.value = '';
+                    } else if (input.tagName === 'SELECT') {
+                        input.selectedIndex = 0;
+                    }
+                });
+                // Reset to page 1
+                window.location.href = '?page=1';
+            });
+        }
+
+        // Handle responsive table
+        function handleResponsiveTable() {
+            const table = document.querySelector('.reviews-table table');
+            if (table) {
+                const windowWidth = window.innerWidth;
+                if (windowWidth < 768) {
+                    const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
+                    table.querySelectorAll('tbody tr').forEach(row => {
+                        row.querySelectorAll('td').forEach((cell, index) => {
+                            cell.setAttribute('data-label', headers[index]);
+                        });
+                    });
+                }
+            }
+        }
+
+        // Initialize responsive table
+        handleResponsiveTable();
+        window.addEventListener('resize', handleResponsiveTable);
     });
 </script>
 
 
-<jsp:include page="../navbar.jsp"/>
+
 </body>
 
 </html>

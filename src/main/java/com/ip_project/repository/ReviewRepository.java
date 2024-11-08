@@ -21,4 +21,13 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findByMemberUsername(@Param("username") String username);
 
+    // 키워드를 기준으로 모든 리뷰를 검색
+    @Query("SELECT r FROM Review r WHERE r.reviewCompany LIKE %:keyword%")
+    List<Review> findAllByKeyword(@Param("keyword") String keyword);
+
+    // 특정 합격 여부와 키워드를 기준으로 리뷰를 검색
+    @Query("SELECT r FROM Review r WHERE r.result = :orderBy AND r.reviewCompany LIKE %:keyword%")
+    List<Review> findByReviewResultAndKeyword(@Param("orderBy") String orderBy, @Param("keyword") String keyword);
+
+
 }

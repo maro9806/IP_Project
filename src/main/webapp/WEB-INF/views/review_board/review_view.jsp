@@ -39,58 +39,63 @@
     <div class="interview-card">
         <div class="interview-header">
             <div class="metadata-tags">
-                    <span class="tag">
+                 <span class="tag">
                         <i class="far fa-calendar"></i>
-                        2024년 상반기
+                        ${reviewDto.period}
                     </span>
                 <span class="tag">
                         <i class="fas fa-laptop-code"></i>
-                        백엔드개발자
+                        ${reviewDto.reviewPosition}
                     </span>
-                <span class="tag">
-                        <i class="fas fa-user-graduate"></i>
-                        신입
-                    </span>
-                <span class="tag">
-                        <i class="far fa-eye"></i>
-                        3,464
-                    </span>
+                <button type="button" class="result-tag">
+                    <c:set var="resultClass" value="" />
+                    <c:choose>
+                    <c:when test="${reviewDto.result == '합격'}">
+                        <c:set var="resultClass" value="pass" />
+                    </c:when>
+                    <c:when test="${reviewDto.result == '불합격'}">
+                        <c:set var="resultClass" value="fail" />
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="resultClass" value="pending" />
+                    </c:otherwise>
+                    </c:choose>
+                    <button type="button" class="result-tag ${resultClass}">
+                        ${reviewDto.result}
+                    </button>
+
             </div>
-            <h1 class="interview-title">(주)네이버 - 백엔드개발자</h1>
+            <h1 class="interview-title">${reviewDto.reviewCompany} - ${reviewDto.reviewPosition}</h1>
         </div>
 
         <div class="question-container">
             <div class="question-block">
                 <div class="question">
                     <span class="question-number">1</span>
-                    면접은 어디에서, 몇 시에 보셨습니까?
+                    면접 분위기나 진행방식은 어떠했습니까?
                 </div>
                 <div class="answer">
-                    강남 본사에서 오후 2시에 면접을 보았습니다. 지하철 2호선 강남역에서 도보 5분 거리에 위치해 있었고,
-                    면접 시작 30분 전에 도착하여 대기실에서 담당자분께서 안내해 주셨습니다.
+                    ${reviewDto.atmosphere}
                 </div>
             </div>
 
             <div class="question-block">
                 <div class="question">
                     <span class="question-number">2</span>
-                    면접관 및 지원자는 몇 명이었습니까?
+                    면접에서 좋았던 점이나 아쉬웠던 점은 무엇입니까?
                 </div>
                 <div class="answer">
-                    면접관 4명, 지원자 1명으로 진행되었습니다.
-                    면접관분들은 개발팀 리더 1명, 시니어 개발자 2명, HR 담당자 1명으로 구성되어 있었습니다.
+                    ${reviewDto.sorrow}
                 </div>
             </div>
 
             <div class="question-block">
                 <div class="question">
                     <span class="question-number">3</span>
-                    면접 진행방식에 대해 설명해주세요.
+                    면접 합격 팁이나 조언이 있다면?
                 </div>
                 <div class="answer">
-                    전체 면접은 약 1시간 정도 소요되었습니다.
-                    먼저 자기소개를 하고, 이력서 기반 프로젝트 질문이 30분,
-                    기술 질문이 20분, 마지막으로 회사 관련 질문이 10분 정도 진행되었습니다.
+                    ${reviewDto.advice}
                 </div>
             </div>
         </div>
