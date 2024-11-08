@@ -26,6 +26,8 @@ public class MyPageController {
     private final AIInterviewService interviewService;
     private final SelfBoardService selfBoardService;
     private final SelfIntroductionService selfIntroductionService;
+    private final ReviewService reviewService;
+
 
     @GetMapping("/mypage")
     public String myPage(Model model) {
@@ -36,6 +38,8 @@ public class MyPageController {
         // 해당 사용자의 면접 목록 가져오기
         model.addAttribute("interviews", interviewService.getInterviewsByUsername(username));
         selfBoardService.listByUsername(model, username);
+        reviewService.listByUsername(model, username);
+
         return "mypage/mypage";
     }
 

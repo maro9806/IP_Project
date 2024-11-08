@@ -102,9 +102,11 @@ public class ReviewService {
         return reviewRepository.findByPage(startRow, endRow);
     }
 
-
-
-
+    //사용자 개인 면접 후기
+    public void listByUsername(Model model, String username) {
+        List<Review> reviews = reviewRepository.findByMemberUsername(username);
+        model.addAttribute("reviews", reviews);
+    }
 
 
 
