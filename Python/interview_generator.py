@@ -1,12 +1,12 @@
-import oracledb
-from pjfunction import get_interview_questions, get_personality_questions
+import os
 from dotenv import load_dotenv
-import datetime
-
-load_dotenv()
+import oracledb
 
 def get_db_connection():
     """Oracle DB 연결 설정"""
+    # .env 파일 로드
+    load_dotenv()
+
     oracledb.init_oracle_client()
 
     dsn = oracledb.makedsn(
@@ -16,9 +16,9 @@ def get_db_connection():
     )
 
     connection = oracledb.connect(
-        user='Insa5_SpringA_final_1',
-        password='aischool1',
-        dsn=dsn
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        dsn=os.getenv('DB_DSN', dsn)  # DSN이 환경변수에 없으면 기본값 사용
     )
     return connection
 
