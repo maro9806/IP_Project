@@ -4,6 +4,7 @@ import com.ip_project.dto.SelfIntroductionDTO;
 import com.ip_project.entity.SelfBoard;
 import com.ip_project.entity.SelfIntroduction;
 import com.ip_project.service.AIInterviewService;
+import com.ip_project.service.ReviewService;
 import com.ip_project.service.SelfBoardService;
 import com.ip_project.service.SelfIntroductionService;
 import jakarta.persistence.EntityNotFoundException;
