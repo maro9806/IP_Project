@@ -215,30 +215,25 @@ def save_interview_questions(self_idx, questions):
         cursor.close()
         connection.close()
 
+import sys
+import time
+
+def main():
+    while True:
+        try:
+            # stdin에서 self_idx 읽기
+            self_idx = sys.stdin.readline().strip()
+            if self_idx:
+                print(f"Processing self_idx: {self_idx}")
+                result = generate_interview_questions(int(self_idx))
+                if result:
+                    ipro_idx, questions = result
+                    print(f"Successfully generated questions for {self_idx}")
+                sys.stdout.flush()
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            sys.stdout.flush()
+        time.sleep(0.1)
+
 if __name__ == "__main__":
-    import sys
-    import traceback
-
-    try:
-        if len(sys.argv) < 2:
-            print("Error: self_idx argument is required")
-            sys.exit(1)
-
-        self_idx = int(sys.argv[1])
-        print(f"Starting process for self_idx: {self_idx}")
-
-        result = generate_interview_questions(self_idx)
-        if result:
-            ipro_idx, questions = result
-            print(f"Successfully generated and saved {len(questions)} questions")
-            print(f"IPRO_IDX: {ipro_idx}")
-            sys.exit(0)
-        else:
-            print("Failed to generate questions")
-            sys.exit(1)
-
-    except Exception as e:
-        print(f"Error occurred: {str(e)}")
-        print("Traceback:")
-        traceback.print_exc()
-        sys.exit(1)
+    main()
