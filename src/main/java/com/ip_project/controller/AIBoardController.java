@@ -9,6 +9,7 @@ import com.ip_project.entity.SelfIntroduction;
 import com.ip_project.repository.MemberRepository;
 import com.ip_project.service.*;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -117,21 +117,15 @@ public class AIBoardController {
     public String aiMakeQuestion(@RequestParam(name = "selfIdx", required = true) Long selfIdx, Model model) {
         log.info("Starting interview question generation for selfIdx: {}", selfIdx);
         try {
-            // Python 실행 경로와 스크립트 경로를 절대 경로로 지정
-            String pythonPath = "C:\\Python39\\python.exe";  // Python 설치 경로를 실제 경로로 수정
-            String scriptPath = "C:\\Users\\USER\\Desktop\\실전프로젝트\\back\\IP_Project\\Python\\interview_generator.py"; // 실제 스크립트 경로로 수정
-
-            // 작업 디렉토리 설정
-            ProcessBuilder pb = new ProcessBuilder(pythonPath, scriptPath, selfIdx.toString());
-            pb.directory(new File("C:\\Users\\USER\\Desktop\\실전프로젝트\\back\\IP_Project\\Python")); // Python 스크립트가 있는 디렉토리
-
-            // 환경변수 설정 (필요한 경우)
-            Map<String, String> env = pb.environment();
-            env.put("PYTHONPATH", "C:\\Users\\USER\\Desktop\\실전프로젝트\\back\\IP_Project\\Python");
+            // Python 실행 경로 설정
+            String pythonPath = "python";  // 또는 시스템 환경에 맞는 Python 경로
+            ProcessBuilder pb = new ProcessBuilder(
+                    pythonPath,
+                    PYTHON_SCRIPT_PATH,
+                    selfIdx.toString()
+            );
 
             pb.redirectErrorStream(true);
-
-            log.info("Executing Python script: {} {} {}", pythonPath, scriptPath, selfIdx);
             Process process = pb.start();
 
             // 출력 읽기
@@ -160,7 +154,6 @@ public class AIBoardController {
 
         } catch (Exception e) {
             log.error("Error generating interview questions", e);
-            e.printStackTrace();  // 상세한 에러 로그
             return "redirect:/aiboard/ai_custominfo";
         }
     }

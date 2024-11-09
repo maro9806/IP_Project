@@ -441,8 +441,6 @@
 
     function generateQuestions() {
     const selectedSelfIdx = localStorage.getItem('currentSelfIdx');
-    console.log("Generating questions for selfIdx:", selectedSelfIdx);
-
     if (!selectedSelfIdx) {
         alert('자기소개서를 먼저 선택해주세요.');
         return;
@@ -462,7 +460,6 @@
             alert('질문 생성 중 오류가 발생했습니다.');
         }
     });
-}
 </script>
 
 <jsp:include page="../footer.jsp"/>
