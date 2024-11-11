@@ -1,7 +1,10 @@
 import oracledb
 from pjfunction import get_interview_questions, get_personality_questions
-from dotenv import load_dotenv
 import datetime
+import sys
+import traceback
+import os
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -10,14 +13,14 @@ def get_db_connection():
     oracledb.init_oracle_client()
 
     dsn = oracledb.makedsn(
-        host='project-db-stu3.smhrd.com',
-        port=1524,
-        service_name='xe'
+        host=os.getenv('DB_HOST'),
+        port=int(os.getenv('DB_PORT')),
+        service_name=os.getenv('DB_SERVICE')
     )
 
     connection = oracledb.connect(
-        user='Insa5_SpringA_final_1',
-        password='aischool1',
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
         dsn=dsn
     )
     return connection
@@ -214,10 +217,43 @@ def save_interview_questions(self_idx, questions):
         cursor.close()
         connection.close()
 
-if __name__ == "__main__":
-    import sys
-    import traceback
+def check_existing_questions(self_idx):
+    """자기소개서에 대한 기존 질문이 있는지 확인"""
+    connection = get_db_connection()
+    cursor = connection.cursor()
 
+    try:
+        query = """
+        SELECT IPRO_IDX, IPRO_QUESTION 
+        FROM INTERVIEW_PRO 
+        WHERE SELF_IDX = :self_idx
+        """
+        cursor.execute(query, self_idx=self_idx)
+        questions = cursor.fetchall()
+        return questions
+
+    finally:
+        cursor.close()
+        connection.close()
+
+def delete_existing_questions(self_idx):
+    """기존 질문들 삭제"""
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute("""
+        DELETE FROM INTERVIEW_PRO
+        WHERE SELF_IDX = :self_idx
+        """, self_idx=self_idx)
+        connection.commit()
+        print(f"Deleted existing questions for self_idx: {self_idx}")
+
+    finally:
+        cursor.close()
+        connection.close()
+
+if __name__ == "__main__":
     try:
         if len(sys.argv) < 2:
             print("Error: self_idx argument is required")
@@ -225,6 +261,13 @@ if __name__ == "__main__":
 
         self_idx = int(sys.argv[1])
         print(f"Starting process for self_idx: {self_idx}")
+
+        # 기존 질문 확인 및 삭제
+        existing_questions = check_existing_questions(self_idx)
+        if existing_questions:
+            print(f"Found {len(existing_questions)} existing questions")
+            print("Deleting existing questions...")
+            delete_existing_questions(self_idx)
 
         result = generate_interview_questions(self_idx)
         if result:
