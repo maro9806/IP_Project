@@ -78,18 +78,18 @@
   /*transition: transform 0.3s ease; !* 부드러운 변환 효과 *!*/
 }
 
-#S{
-  background-color: #cae1f9;
-}
-#W{
-  background-color: #ffcd6f;
-}
-#O{
-  background-color: #d9eb9f;
-}
-#T{
-  background-color: #ffd5d5;
-}
+/*#S{*/
+/*  background-color: #cae1f9;*/
+/*}*/
+/*#W{*/
+/*  background-color: #ffcd6f;*/
+/*}*/
+/*#O{*/
+/*  background-color: #d9eb9f;*/
+/*}*/
+/*#T{*/
+/*  background-color: #ffd5d5;*/
+/*}*/
 
 .swot-card:hover {
   transform: scale(1.05);           /* Hover 시 살짝 확대 */
@@ -110,10 +110,15 @@
 }
 
 /* 각 SWOT 요소에 맞는 색상 */
-.swot-letter-S { color: #5c6bb9; } /* Strengths - */
-.swot-letter-W { color: orange; } /* Weaknesses - 주황색 */
-.swot-letter-O { color: #539325; } /* Opportunities -  */
-.swot-letter-T { color: #cb2d3c; }
+.swot-letter-S { color: #65a9f9; } /* Strengths - */
+.swot-letter-W { color: #ffc11b; } /* Weaknesses - 주황색 */
+.swot-letter-O { color: #78b746; } /* Opportunities -  */
+.swot-letter-T { color: #e56a76; }
+
+h1.swot-letter-S +h5 { color: #65a9f9; } /* Strengths - */
+h1.swot-letter-W +h5 { color: #ffc11b; } /* Weaknesses -  */
+h1.swot-letter-O +h5 { color: #78b746; } /* Opportunities -  */
+h1.swot-letter-T +h5 { color: #e56a76; }
 
 /* 내용 텍스트 스타일 */
 .card-text {
@@ -123,15 +128,9 @@
   text-align: left;
 }
 
-.swot-card h1 {
-  background-color:#ffffff;
-}
-
-
 .swot-card h5 {
   font-size: 1.5rem;
-  margin-bottom: 35px;
-  color: #272727;
+  margin-bottom: 50px;
 }
 
 .swot-card ul {

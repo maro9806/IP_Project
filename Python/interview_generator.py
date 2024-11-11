@@ -1,290 +1,135 @@
 import oracledb
 from pjfunction import get_interview_questions, get_personality_questions
-import datetime
-import sys
-import traceback
 import os
 from dotenv import load_dotenv
-
+import concurrent.futures
+import sys
 import io
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
+# 표준 출력 인코딩 설정
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 load_dotenv()
 
 def get_db_connection():
-    """Oracle DB 연결 설정"""
-    oracledb.init_oracle_client()
-
-    dsn = oracledb.makedsn(
-        host=os.getenv('DB_HOST'),
-        port=int(os.getenv('DB_PORT')),
-        service_name=os.getenv('DB_SERVICE')
-    )
-
-    connection = oracledb.connect(
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD'),
-        dsn=dsn
-    )
-    return connection
-
-def get_company_position_info(self_idx):
-    """회사명과 직무 정보 가져오기"""
-    connection = get_db_connection()
-    cursor = connection.cursor()
-
     try:
-        query = """
-        SELECT SELF_COMPANY, SELF_POSITION 
-        FROM SELF_BOARD 
-        WHERE SELF_IDX = :self_idx
-        """
-        cursor.execute(query, self_idx=self_idx)
-        result = cursor.fetchone()
+        # 기본 Oracle 클라이언트 초기화
+        oracledb.init_oracle_client()
 
-        if result:
-            print(f"Found company info: {result}")  # 디버깅용 출력
+        connection = oracledb.connect(
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            dsn=f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_SERVICE')}"
+        )
+        print("DB 연결 성공")
+        return connection
+    except Exception as e:
+        print(f"DB 연결 오류: {str(e)}")
+        raise
+
+def get_data_parallel(self_idx):
+    """병렬로 회사 정보와 자기소개서 데이터 가져오기"""
+    connection = get_db_connection()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT sb.SELF_COMPANY, sb.SELF_POSITION, 
+                       si.INTRO_QUESTION, si.INTRO_ANSWER
+                FROM SELF_BOARD sb
+                LEFT JOIN SELF_INTRODUCTION si ON sb.SELF_IDX = si.SELF_IDX
+                WHERE sb.SELF_IDX = :1
+            """, [self_idx])
+            results = cursor.fetchall()
+
+            if not results:
+                print(f"데이터를 찾을 수 없습니다. self_idx: {self_idx}")
+                return None, None, None
+
+            company_name = results[0][0]
+            job_position = results[0][1]
+            intro_text = "\n\n".join([f" {row[2]}\nA: {row[3]}" for row in results if row[2] and row[3]])
+
+            print(f"데이터 조회 성공 - 회사: {company_name}, 직무: {job_position}")
+            return company_name, job_position, intro_text
+    except Exception as e:
+        print(f"데이터 조회 오류: {str(e)}")
+        raise
+    finally:
+        connection.close()
+
+def generate_and_save_questions(self_idx, company_name, job_position, intro_text):
+    """질문 생성 및 저장"""
+    try:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+            print("질문 생성 시작...")
+            job_future = executor.submit(get_interview_questions, company_name, job_position)
+            personality_future = executor.submit(get_personality_questions, intro_text)
+
+            job_questions = job_future.result()
+            personality_questions = personality_future.result()
+
+        all_questions = []
+        if isinstance(job_questions, str):
+            all_questions.extend([q.strip() for q in job_questions.split('\n') if q.strip()])
         else:
-            print(f"No company info found for self_idx: {self_idx}")  # 디버깅용 출력
+            all_questions.extend(job_questions)
 
-        return result if result else (None, None)
+        if isinstance(personality_questions, str):
+            all_questions.extend([q.strip() for q in personality_questions.split('\n') if q.strip()])
+        else:
+            all_questions.extend(personality_questions)
 
-    except Exception as e:
-        print(f"Error getting company info: {str(e)}")  # 디버깅용 출력
-        raise
+        print(f"생성된 질문 수: {len(all_questions)}")
 
-    finally:
-        cursor.close()
-        connection.close()
+        # 질문 저장
+        connection = get_db_connection()
+        try:
+            with connection.cursor() as cursor:
+                print("기존 질문 삭제 중...")
+                cursor.execute("DELETE FROM INTERVIEW_PRO WHERE SELF_IDX = :1", [self_idx])
 
-def get_self_introduction_data(self_idx):
-    """특정 자기소개서의 모든 문항을 가져와서 하나의 문자열로 결합"""
-    connection = get_db_connection()
-    cursor = connection.cursor()
+                print("새 질문 저장 중...")
+                for i, question in enumerate(all_questions, 1):
+                    cursor.execute("""
+                        INSERT INTO INTERVIEW_PRO (IPRO_IDX, IPRO_QUESTION, SELF_IDX)
+                        VALUES ((SELECT NVL(MAX(IPRO_IDX), 0) + 1 FROM INTERVIEW_PRO), :1, :2)
+                    """, [question, self_idx])
 
-    try:
-        query = """
-        SELECT INTRO_QUESTION, INTRO_ANSWER 
-        FROM SELF_INTRODUCTION 
-        WHERE SELF_IDX = :self_idx
-        ORDER BY INTRO_IDX
-        """
-        cursor.execute(query, self_idx=self_idx)
-        rows = cursor.fetchall()
-
-        combined_text = "\n\n".join([f"Q: {row[0]}\nA: {row[1]}" for row in rows])
-        return combined_text
-
-    finally:
-        cursor.close()
-        connection.close()
-
-def save_interview_questions(self_idx, questions):
-    """면접 질문을 데이터베이스에 저장"""
-    connection = get_db_connection()
-    cursor = connection.cursor()
-
-    try:
-        # 동일한 자소서에 대한 가장 큰 ipro_idx 값 찾기
-        cursor.execute("""
-            SELECT NVL(MAX(IPRO_IDX), 0)
-            FROM INTERVIEW_PRO
-        """)
-
-        max_ipro_idx = cursor.fetchone()[0]
-
-        # 각 질문을 데이터베이스에 저장
-        first_idx = max_ipro_idx + 1
-        for i, question in enumerate(questions, 0):
-            current_idx = first_idx + i
-            print(f"Trying to insert question {i+1} with IPRO_IDX {current_idx}: {question[:50]}...")  # 디버깅용
-            cursor.execute("""
-                INSERT INTO INTERVIEW_PRO (
-                    IPRO_IDX,
-                    IPRO_QUESTION,
-                    SELF_IDX
-                ) VALUES (
-                    :ipro_idx,
-                    :question,
-                    :self_idx
-                )
-            """, {
-                'ipro_idx': current_idx,
-                'question': question,
-                'self_idx': self_idx
-            })
-            print(f"Successfully inserted question {i+1}")  # 디버깅용
-
-        connection.commit()
-        print(f"All questions saved with IPRO_IDX range: {first_idx} to {current_idx}")  # 디버깅용
-        return first_idx
+                connection.commit()
+                print("질문 저장 완료")
+        finally:
+            connection.close()
 
     except Exception as e:
-        print(f"Error saving questions: {str(e)}")
-        connection.rollback()
+        print(f"질문 생성/저장 오류: {str(e)}")
         raise
 
-    finally:
-        cursor.close()
-        connection.close()
-
-def generate_interview_questions(self_idx):
-    """자기소개서 기반으로 면접 질문 생성 및 저장"""
-    # 회사명과 직무 정보 가져오기
-    company_name, job_position = get_company_position_info(self_idx)
-    if not company_name or not job_position:
-        print("Error: Company or position information not found")
-        return None
-
-    # 자기소개서 내용 가져오기
-    introduction_text = get_self_introduction_data(self_idx)
-    if not introduction_text:
-        print("Error: Self introduction data not found")
-        return None
-
-    # 직무 관련 질문 생성
-    job_questions = get_interview_questions(company_name, job_position)
-    # 개행을 기준으로 질문 분리
-    if isinstance(job_questions, str):
-        job_questions = [q.strip() for q in job_questions.split('\n') if q.strip()]
-    print("\n=== 직무 관련 질문 ===")
-    print(job_questions)
-
-    # 인성 관련 질문 생성
-    personality_questions = get_personality_questions(introduction_text)
-    # 개행을 기준으로 질문 분리
-    if isinstance(personality_questions, str):
-        personality_questions = [q.strip() for q in personality_questions.split('\n') if q.strip()]
-    print("\n=== 인성 관련 질문 ===")
-    print(personality_questions)
-
-    # 모든 질문 합치기
-    all_questions = job_questions + personality_questions
-
-    # 질문을 데이터베이스에 저장
-    ipro_idx = save_interview_questions(self_idx, all_questions)
-
-    return ipro_idx, all_questions
-
-def save_interview_questions(self_idx, questions):
-    """면접 질문을 데이터베이스에 저장"""
-    connection = get_db_connection()
-    cursor = connection.cursor()
-
+def main(self_idx):
     try:
-        # 동일한 자소서에 대한 가장 큰 ipro_idx 값 찾기
-        cursor.execute("""
-            SELECT NVL(MAX(IPRO_IDX), 0)
-            FROM INTERVIEW_PRO
-        """)
+        print(f"처리 시작 - self_idx: {self_idx}")
 
-        max_ipro_idx = cursor.fetchone()[0]
+        company_name, job_position, intro_text = get_data_parallel(self_idx)
+        if not all([company_name, job_position, intro_text]):
+            print("필요한 데이터가 없습니다")
+            return False
 
-        # 각 질문을 데이터베이스에 저장
-        first_idx = max_ipro_idx + 1
-        for i, question in enumerate(questions):
-            if not question.strip():  # 빈 문자열이나 공백만 있는 경우 건너뛰기
-                continue
-
-            current_idx = first_idx + i
-            print(f"\nTrying to insert question {i+1} with IPRO_IDX {current_idx}")
-            print(f"Question: {question}")  # 전체 질문 내용 출력
-
-            cursor.execute("""
-                INSERT INTO INTERVIEW_PRO (
-                    IPRO_IDX,
-                    IPRO_QUESTION,
-                    SELF_IDX
-                ) VALUES (
-                    :ipro_idx,
-                    :question,
-                    :self_idx
-                )
-            """, {
-                'ipro_idx': current_idx,
-                'question': question,
-                'self_idx': self_idx
-            })
-            print(f"Successfully inserted question {i+1}")
-
-        connection.commit()
-        print(f"\nAll questions saved with IPRO_IDX range: {first_idx} to {current_idx}")
-        return first_idx
+        generate_and_save_questions(self_idx, company_name, job_position, intro_text)
+        print("처리 완료")
+        return True
 
     except Exception as e:
-        print(f"Error saving questions: {str(e)}")
-        connection.rollback()
-        raise
-
-    finally:
-        cursor.close()
-        connection.close()
-
-def check_existing_questions(self_idx):
-    """자기소개서에 대한 기존 질문이 있는지 확인"""
-    connection = get_db_connection()
-    cursor = connection.cursor()
-
-    try:
-        query = """
-        SELECT IPRO_IDX, IPRO_QUESTION 
-        FROM INTERVIEW_PRO 
-        WHERE SELF_IDX = :self_idx
-        """
-        cursor.execute(query, self_idx=self_idx)
-        questions = cursor.fetchall()
-        return questions
-
-    finally:
-        cursor.close()
-        connection.close()
-
-def delete_existing_questions(self_idx):
-    """기존 질문들 삭제"""
-    connection = get_db_connection()
-    cursor = connection.cursor()
-
-    try:
-        cursor.execute("""
-        DELETE FROM INTERVIEW_PRO
-        WHERE SELF_IDX = :self_idx
-        """, self_idx=self_idx)
-        connection.commit()
-        print(f"Deleted existing questions for self_idx: {self_idx}")
-
-    finally:
-        cursor.close()
-        connection.close()
+        print(f"오류 발생: {str(e)}")
+        return False
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Error: self_idx argument is required")
+        sys.exit(1)
+
     try:
-        if len(sys.argv) < 2:
-            print("Error: self_idx argument is required")
-            sys.exit(1)
-
-        self_idx = int(sys.argv[1])
-        print(f"Starting process for self_idx: {self_idx}")
-
-        # 기존 질문 확인 및 삭제
-        existing_questions = check_existing_questions(self_idx)
-        if existing_questions:
-            print(f"Found {len(existing_questions)} existing questions")
-            print("Deleting existing questions...")
-            delete_existing_questions(self_idx)
-
-        result = generate_interview_questions(self_idx)
-        if result:
-            ipro_idx, questions = result
-            print(f"Successfully generated and saved {len(questions)} questions")
-            print(f"IPRO_IDX: {ipro_idx}")
-            sys.exit(0)
-        else:
-            print("Failed to generate questions")
-            sys.exit(1)
-
+        success = main(int(sys.argv[1]))
+        sys.exit(0 if success else 1)
     except Exception as e:
-        print(f"Error occurred: {str(e)}")
-        print("Traceback:")
-        traceback.print_exc()
+        print(f"Fatal error: {str(e)}")
         sys.exit(1)

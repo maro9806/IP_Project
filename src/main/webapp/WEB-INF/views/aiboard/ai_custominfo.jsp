@@ -451,10 +451,36 @@
         return;
     }
 
+    // 로딩 표시 추가
+    const loadingDiv = document.createElement('div');
+    loadingDiv.id = 'loadingIndicator';
+    loadingDiv.className = 'text-center mt-3';
+    loadingDiv.innerHTML = `
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p>질문을 생성하는 중입니다...</p>
+    `;
+    document.querySelector('#questionForm').appendChild(loadingDiv);
+
     // form의 hidden input에 selfIdx 설정
     document.getElementById('selfIdxInput').value = selectedSelfIdx;
-    // form 제출
-    document.getElementById('questionForm').submit();
+
+    try {
+        // form 제출
+        document.getElementById('questionForm').submit();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('질문 생성 중 오류가 발생했습니다.');
+    } finally {
+        // 2초 후 로딩 표시 제거
+        setTimeout(() => {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+            }
+        }, 2000);
+    }
 }
 </script>
 

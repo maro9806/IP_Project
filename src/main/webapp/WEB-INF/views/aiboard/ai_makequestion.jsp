@@ -93,7 +93,10 @@
 
     </div>
         <div>
-            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_custominfo'" class="btn btn-secondary">질문 다시 생성하기</button>
+            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_makequestion?selfIdx=${param.selfIdx}'"
+                    class="btn btn-secondary">
+                질문 다시 생성하기
+            </button>
             <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_question'"
                     type="submit" id="next"
                     class="btn btn-primary">
@@ -118,6 +121,23 @@
             // this.classList.remove('accordion'); // 필요에 따라 class도 제거 가능
         });
     });
+
+    function regenerateQuestions() {
+        const selfIdx = ${param.selfIdx};  // 현재 selfIdx 가져오기
+        // 로딩 표시 추가
+        const loadingDiv = `
+        <div id="loadingIndicator" class="text-center mt-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p>새로운 질문을 생성하는 중입니다...</p>
+        </div>
+    `;
+        document.body.insertAdjacentHTML('beforeend', loadingDiv);
+
+        // 페이지 이동
+        window.location.href = '/aiboard/ai_makequestion?selfIdx=' + selfIdx + '&regenerate=true';
+    }
 </script>
 
 

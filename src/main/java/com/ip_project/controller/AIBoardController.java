@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Controller
@@ -104,10 +105,11 @@ public class AIBoardController {
     public String aiMakeQuestion(@RequestParam(name = "selfIdx", required = true) Long selfIdx, Model model) {
         log.info("Starting interview question generation for selfIdx: {}", selfIdx);
         try {
-            // FastAPI 서버로 요청 전송
+            // FastAPI 서버로 요청을 보내서 새로운 질문 생성
             Map<String, Long> requestBody = new HashMap<>();
             requestBody.put("self_idx", selfIdx);
 
+            // FastAPI 호출
             ResponseEntity<Map> response = restTemplate.postForEntity(
                     FASTAPI_URL,
                     requestBody,
@@ -115,6 +117,7 @@ public class AIBoardController {
             );
 
             if (response.getStatusCode() == HttpStatus.OK) {
+                // 새로 생성된 질문 조회
                 List<Map<String, Object>> questions = questionService.getQuestionsBySelfIdx(selfIdx);
                 if (questions != null && !questions.isEmpty()) {
                     model.addAttribute("questions", questions);
@@ -122,9 +125,14 @@ public class AIBoardController {
                 }
             }
 
+            // 질문 생성 실패 시
+            log.error("Failed to generate questions for selfIdx: {}", selfIdx);
+            model.addAttribute("error", "질문 생성에 실패했습니다.");
             return "redirect:/aiboard/ai_custominfo";
+
         } catch (Exception e) {
-            log.error("Error in aiMakeQuestion", e);
+            log.error("Error in aiMakeQuestion for selfIdx: {}", selfIdx, e);
+            model.addAttribute("error", "오류가 발생했습니다.");
             return "redirect:/aiboard/ai_custominfo";
         }
     }
