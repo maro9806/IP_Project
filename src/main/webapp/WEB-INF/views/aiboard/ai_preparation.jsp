@@ -140,7 +140,8 @@
                     <div class="selected-questions-list">
                         <!-- 선택된 질문들이 여기에 표시됨 -->
                     </div>
-                </div>`
+                </div>
+                `
             </div>
         </div>
     </div>
@@ -227,60 +228,49 @@
             // 질문 섹션 업데이트
             const questionSectionDiv = document.querySelector('.question-section');
 
-// 헤더 부분 생성
-            const headerDiv = document.createElement('div');
-            headerDiv.className = 'question-header';
-
-            const title = document.createElement('h5');
-            title.innerHTML = '<strong>면접 질문</strong>';
-
-            const currentQuestionDiv = document.createElement('div');
-            currentQuestionDiv.className = 'current-question mb-4';
-
-            const currentQuestionNumber = document.createElement('p');
-            currentQuestionNumber.className = 'question-number';
-            currentQuestionNumber.innerHTML = '<strong>Question 1</strong>';
-
-            const currentQuestionContent = document.createElement('p');
-            currentQuestionContent.className = 'question-content';
-            currentQuestionContent.textContent = selectedQuestions[0].content;
-
-// 현재 질문 조립
-            currentQuestionDiv.appendChild(currentQuestionNumber);
-            currentQuestionDiv.appendChild(currentQuestionContent);
-
-// 헤더 조립
-            headerDiv.appendChild(title);
-            headerDiv.appendChild(currentQuestionDiv);
-
-// 질문 리스트 생성
+            // 질문 목록 생성
             const questionsList = document.createElement('div');
             questionsList.className = 'selected-questions-list';
+            questionsList.innerHTML = '<strong>면접 질문 목록</strong>';
 
-// 각 질문 아이템 생성
-            selectedQuestions.forEach(question => {
-                const questionItem = document.createElement('div');
-                questionItem.className = 'question-item';
+            // 질문 테이블 생성
+            // 질문 테이블 생성
+            const tableDiv = document.createElement('div');
+            tableDiv.className = 'table-responsive mt-3';
 
-                const numberPara = document.createElement('p');
-                numberPara.className = 'question-number';
-                numberPara.innerHTML = `<strong>Question ${question.orderNumber}</strong>`;
+            let tableHtml = '<table class="table">' +
+                '<thead>' +
+                '<tr>' +
+                '<th style="width: 20%">번호</th>' +
+                '<th style="width: 80%">질문 내용</th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>';
 
-                const contentPara = document.createElement('p');
-                contentPara.className = 'question-content';
-                contentPara.textContent = question.content;
-
-                questionItem.appendChild(numberPara);
-                questionItem.appendChild(contentPara);
-                questionsList.appendChild(questionItem);
+            selectedQuestions.forEach((question, i) => {
+                tableHtml += '<tr>' +
+                    '<td>Question ' + (i + 1) + '</td>' +
+                    '<td>' + question.content + '</td>' +
+                    '</tr>';
             });
 
-// 기존 내용 제거
-            questionSectionDiv.innerHTML = '';
+            tableHtml += '</tbody></table>';
+            tableDiv.innerHTML = tableHtml;
 
-// 새로운 내용 추가
-            questionSectionDiv.appendChild(headerDiv);
-            questionSectionDiv.appendChild(questionsList);
+// 첫 번째 질문을 현재 질문으로 설정
+            const currentQuestionDiv = document.createElement('div');
+            currentQuestionDiv.className = 'current-question mb-4';
+            currentQuestionDiv.innerHTML =
+                '<h5><strong>현재 질문</strong></h5>' +
+                '<div class="current-question-content">' +
+                '<p class="question-number"><strong>Question 1</strong></p>' +
+                '<p class="question-content">' + selectedQuestions[0].content + '</p>' +
+                '</div>';
+
+// 요소들 조립
+            questionSectionDiv.innerHTML = '';
+            questionSectionDiv.appendChild(currentQuestionDiv);
+            questionSectionDiv.appendChild(tableDiv);
 
             // 비디오 녹화 시작
             await startVideoRecording();
@@ -497,9 +487,7 @@
                 const company = data.company;
                 const position = data.position;
                 const title = data.title;
-                const questions = data.questions;
-                const answers = data.answers;
-                const iproQuestions = data.iproQuestions; // IPRO_QUESTION 데이터
+                const iproQuestions = data.iproQuestions;
 
                 selectedPosition = position;
 
@@ -507,22 +495,36 @@
                 resultDiv.innerHTML = '<strong>자기소개서</strong>' +
                     '<div class="form-control mb-3"><span>' + company + '</span>' +
                     '<span> / ' + position + '</span></div>' +
-                    '<strong>예상질문</strong><div class="question-list">';
+                    '<strong>예상질문</strong>';
 
-                // IPRO_QUESTION을 체크박스로 표시
+                // 질문 테이블 생성
+                const tableDiv = document.createElement('div');
+                tableDiv.className = 'table-responsive mt-3';
+
+                let tableHtml = '<table class="table">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th style="width: 10%">번호</th>' +
+                    '<th style="width: 80%">질문 내용</th>' +
+                    '<th style="width: 10%">선택</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+
                 if (iproQuestions && iproQuestions.length > 0) {
                     iproQuestions.forEach((question, i) => {
-                        resultDiv.innerHTML += `
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="${question}"
-                                   id="question${i}" name="selectedQuestions">
-                            <label class="form-check-label" for="question${i}">
-                                ${i + 1}. ${question}
-                            </label>
-                        </div>`;
+                        tableHtml += '<tr>' +
+                            '<td>' + (i + 1) + '</td>' +
+                            '<td>' + question + '</td>' +
+                            '<td>' +
+                            '<input class="form-check-input" type="checkbox" ' +
+                            'value="' + question + '" ' +
+                            'id="question' + i + '" ' +
+                            'name="selectedQuestions">' +
+                            '</td>' +
+                            '</tr>';
                     });
                 } else {
-                    // 예상 질문이 없을 경우 기본 질문 표시
                     const defaultQuestions = [
                         "회사를 선택한 이유는 무엇인가요?",
                         "직무와 관련된 경험을 설명해주세요.",
@@ -530,18 +532,22 @@
                     ];
 
                     defaultQuestions.forEach((question, i) => {
-                        resultDiv.innerHTML += `
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="${question}"
-                                   id="question${i}" name="selectedQuestions">
-                            <label class="form-check-label" for="question${i}">
-                                ${i + 1}. ${question}
-                            </label>
-                        </div>`;
+                        tableHtml += '<tr>' +
+                            '<td>' + (i + 1) + '</td>' +
+                            '<td>' + question + '</td>' +
+                            '<td>' +
+                            '<input class="form-check-input" type="checkbox" ' +
+                            'value="' + question + '" ' +
+                            'id="question' + i + '" ' +
+                            'name="selectedQuestions">' +
+                            '</td>' +
+                            '</tr>';
                     });
                 }
 
-                resultDiv.innerHTML += '</div>';
+                tableHtml += '</tbody></table>';
+                tableDiv.innerHTML = tableHtml;
+                resultDiv.appendChild(tableDiv);
                 resultDiv.style.display = 'block';
                 loadModal.style.display = "none";
 
@@ -646,7 +652,7 @@
                 throw new Error('녹화된 데이터가 없습니다.');
             }
 
-            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const blob = new Blob(recordedChunks, {type: 'video/webm'});
             const formData = new FormData();
             formData.append('video', blob, 'recording.webm');
 
@@ -694,8 +700,10 @@
                 throw new Error('녹화된 데이터가 없습니다.');
             }
 
-            // Blob 생성
             const blob = new Blob(recordedChunks, { type: 'video/webm' });
+
+            // 현재 질문 번호 가져오기
+            const currentQuestionNumber = parseInt(document.querySelector('.current-question .question-number strong').textContent.split(' ')[1]);
 
             // 현재 날짜를 YYYYMMDD 형식으로 포매팅
             const date = new Date();
@@ -704,8 +712,8 @@
             const day = String(date.getDate()).padStart(2, '0');
             const formattedDate = `${year}${month}${day}`;
 
-            // 파일명 생성 (username과 selfId 포함)
-            const fileName = `${username}_${selfId}_${formattedDate}.webm`;
+            // 파일명 생성 (self_idx와 질문번호를 포함)
+            const fileName = `${selfId}_Question${currentQuestionNumber}_${formattedDate}.webm`;
 
             // 파일 다운로드
             const url = window.URL.createObjectURL(blob);
@@ -719,7 +727,6 @@
             document.body.removeChild(a);
 
             // 다음 질문으로 이동 또는 종료
-            const currentQuestionNumber = parseInt(document.querySelector('.current-question .question-number strong').textContent.split(' ')[1]);
             const totalQuestions = document.querySelectorAll('.question-item').length;
 
             if (currentQuestionNumber < totalQuestions) {

@@ -22,14 +22,16 @@ public class SelfIntroductionService {
         List<SelfIntroduction> selfIntroductions = selfIntroductionRepository.findAllBySelfBoard(selfBoard);
 
         SelfIntroductionDTO dto = new SelfIntroductionDTO();
-        dto.setIdx(selfBoard.getSelfIdx());
-        dto.setDate(selfBoard.getSelfDate());
-        dto.setTitle(selfBoard.getSelfTitle());
-        dto.setCompany(selfBoard.getSelfCompany());
-        dto.setPosition(selfBoard.getSelfPosition());
+        dto.setIdx(selfBoard.getSelfIdx());  // selfIdx 설정
+        dto.setDate(selfBoard.getSelfDate());  // 작성일자 설정
+        dto.setTitle(selfBoard.getSelfTitle());  // 제목 설정
+        dto.setCompany(selfBoard.getSelfCompany());  // 회사명 설정
+        dto.setPosition(selfBoard.getSelfPosition());  // 직무 설정
 
         List<String> questions = new ArrayList<>();
         List<String> answers = new ArrayList<>();
+
+        // 질문과 답변 설정
         for (SelfIntroduction intro : selfIntroductions) {
             questions.add(intro.getIntroQuestion());
             answers.add(intro.getIntroAnswer());
@@ -41,8 +43,8 @@ public class SelfIntroductionService {
     }
 
     public void saveSelfIntroduction(SelfIntroduction selfIntroduction) {
-            selfIntroductionRepository.save(selfIntroduction);
-        }
+        selfIntroductionRepository.save(selfIntroduction);
+    }
 
     @Transactional
     public void deleteSelfIntroduction(SelfBoard selfBoard) {
