@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -89,14 +90,27 @@ public class AIBoardController {
     @ResponseBody
     public ResponseEntity<SelfIntroductionDTO> loadSelfIntroduction(@PathVariable("idx") Long idx) {
         try {
+            // SelfBoard 조회
             SelfBoard selfBoard = selfBoardService.findById(idx);
             if (selfBoard == null) {
                 return ResponseEntity.notFound().build();
             }
 
+            // SelfIntroductionDTO 생성
             SelfIntroductionDTO dto = selfIntroductionService.getSelfIntroductions(selfBoard);
+
+            // IPRO_QUESTION 조회
+            List<Map<String, Object>> iproQuestions = questionService.getQuestionsBySelfIdx(idx);
+            if (iproQuestions != null && !iproQuestions.isEmpty()) {
+                List<String> questions = iproQuestions.stream()
+                        .map(q -> (String)q.get("IPRO_QUESTION"))
+                        .collect(Collectors.toList());
+                dto.setIproQuestions(questions);
+            }
+
             return ResponseEntity.ok(dto);
         } catch (Exception e) {
+            log.error("Error loading self introduction", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

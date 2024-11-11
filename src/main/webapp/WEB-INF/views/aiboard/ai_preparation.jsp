@@ -487,7 +487,7 @@
     let selfId = '';
 
     function loadSelfIntroduction(selfIdx) {
-        selfId = selfIdx; // selfId 저장
+        selfId = selfIdx;
         $.ajax({
             url: `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/` + selfIdx,
             method: 'GET',
@@ -499,8 +499,8 @@
                 const title = data.title;
                 const questions = data.questions;
                 const answers = data.answers;
+                const iproQuestions = data.iproQuestions; // IPRO_QUESTION 데이터
 
-                // position 저장
                 selectedPosition = position;
 
                 const resultDiv = document.getElementById('selectedSelfIntroduction');
@@ -509,23 +509,36 @@
                     '<span> / ' + position + '</span></div>' +
                     '<strong>예상질문</strong><div class="question-list">';
 
-                // 문항 수만큼 체크박스로 예상 질문 표시
-                const defaultQuestions = [
-                    "회사를 선택한 이유는 무엇인가요?",
-                    "직무와 관련된 경험을 설명해주세요.",
-                    "향후 커리어 계획은 무엇인가요?"
-                ];
+                // IPRO_QUESTION을 체크박스로 표시
+                if (iproQuestions && iproQuestions.length > 0) {
+                    iproQuestions.forEach((question, i) => {
+                        resultDiv.innerHTML += `
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="${question}"
+                                   id="question${i}" name="selectedQuestions">
+                            <label class="form-check-label" for="question${i}">
+                                ${i + 1}. ${question}
+                            </label>
+                        </div>`;
+                    });
+                } else {
+                    // 예상 질문이 없을 경우 기본 질문 표시
+                    const defaultQuestions = [
+                        "회사를 선택한 이유는 무엇인가요?",
+                        "직무와 관련된 경험을 설명해주세요.",
+                        "향후 커리어 계획은 무엇인가요?"
+                    ];
 
-                // 문항 수만큼 예상 질문 표시
-                for (let i = 0; i < questions.length; i++) {
-                    resultDiv.innerHTML += `
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="${defaultQuestions[i]}"
-                               id="question${i}" name="selectedQuestions">
-                        <label class="form-check-label" for="question${i}">
-                            ${i + 1}. ${defaultQuestions[i]}
-                        </label>
-                    </div>`;
+                    defaultQuestions.forEach((question, i) => {
+                        resultDiv.innerHTML += `
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="${question}"
+                                   id="question${i}" name="selectedQuestions">
+                            <label class="form-check-label" for="question${i}">
+                                ${i + 1}. ${question}
+                            </label>
+                        </div>`;
+                    });
                 }
 
                 resultDiv.innerHTML += '</div>';
