@@ -117,43 +117,25 @@ public class AIBoardController {
     public String aiMakeQuestion(@RequestParam(name = "selfIdx", required = true) Long selfIdx, Model model) {
         log.info("Starting interview question generation for selfIdx: {}", selfIdx);
         try {
-            // Python 실행 경로 설정
-            String pythonPath = "python";  // 또는 시스템 환경에 맞는 Python 경로
-            ProcessBuilder pb = new ProcessBuilder(
-                    pythonPath,
-                    PYTHON_SCRIPT_PATH,
-                    selfIdx.toString()
-            );
+            String command = String.format("cmd.exe /c \"cd /d C:/Users/USER/Desktop/실전프로젝트/back/IP_Project/Python && python interview_generator.py %d\"", selfIdx);
 
-            pb.redirectErrorStream(true);
-            Process process = pb.start();
+            // 명령어 로깅
+            log.info("Executing command: {}", command);
 
-            // 출력 읽기
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            StringBuilder output = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                log.info("Python output: {}", line);
-                output.append(line).append("\n");
+            Process process = Runtime.getRuntime().exec(command);
+
+            Thread.sleep(5000);
+
+            List<Map<String, Object>> questions = questionService.getQuestionsBySelfIdx(selfIdx);
+            if (questions != null && !questions.isEmpty()) {
+                model.addAttribute("questions", questions);
+                return "aiboard/ai_makequestion";
             }
 
-            int exitCode = process.waitFor();
-            log.info("Python script completed with exit code: {}", exitCode);
-
-            if (exitCode == 0) {
-                // DB에서 생성된 질문들 조회
-                List<Map<String, Object>> questions = questionService.getQuestionsBySelfIdx(selfIdx);
-                if (questions != null && !questions.isEmpty()) {
-                    model.addAttribute("questions", questions);
-                    return "aiboard/ai_makequestion";
-                }
-            }
-
-            log.error("Failed to generate questions. Output: {}", output);
             return "redirect:/aiboard/ai_custominfo";
 
         } catch (Exception e) {
-            log.error("Error generating interview questions", e);
+            log.error("Error in aiMakeQuestion", e);
             return "redirect:/aiboard/ai_custominfo";
         }
     }
@@ -164,7 +146,9 @@ public class AIBoardController {
     }
 
     @GetMapping("/ai_check")
-    public String aiCheck() { return "aiboard/ai_check";}
+    public String aiCheck() {
+        return "aiboard/ai_check";
+    }
 
 
     @GetMapping("/ai_preparation")
@@ -203,7 +187,7 @@ public class AIBoardController {
     @ResponseBody
     public ResponseEntity<Void> submitVideo(
             @PathVariable Long id,
-            @RequestParam("video") MultipartFile    file) {
+            @RequestParam("video") MultipartFile file) {
         interviewService.submitVideoResponse(id, file);
         return ResponseEntity.ok().build();
     }
@@ -255,6 +239,18 @@ public class AIBoardController {
             return ResponseEntity.ok(createdInterview);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/executeCommand")
+    public String executeCommand(@RequestParam Long selfIdx) {
+        try {
+            String command = String.format("cmd.exe /c start cmd.exe /k \"cd C:/Users/USER/Desktop/실전프로젝트/back/IP_project/python && python interview_generator.py %d\"", selfIdx);
+            Process process = Runtime.getRuntime().exec(command);
+            return "redirect:/aiboard/ai_custominfo";
+        } catch (Exception e) {
+            log.error("Error executing command", e);
+            return "redirect:/aiboard/ai_custominfo";
         }
     }
 }

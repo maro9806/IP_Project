@@ -75,9 +75,12 @@
         </div>
 
         <!-- 면접질문 생성하기 버튼 컨테이너 수정 -->
-        <button onclick="generateQuestions()" type="button" id="next" class="btn btn-primary">
-            면접질문 생성하기
-        </button>
+        <form id="questionForm" action="${pageContext.request.contextPath}/aiboard/ai_makequestion" method="GET">
+            <input type="hidden" id="selfIdxInput" name="selfIdx" value="">
+            <button onclick="generateQuestions()" type="button" id="next" class="btn btn-primary">
+                면접질문 생성하기
+            </button>
+        </form>
     </div>
 
     <!-- 불러오기 모달 창 -->
@@ -387,25 +390,25 @@
     };
 
     function loadSelfIntroduction(selfIdx) {
-    // 현재 선택된 self_idx를 localStorage에 저장할 때 문자열로 변환
-    localStorage.setItem('currentSelfIdx', selfIdx.toString());
+        // 현재 선택된 self_idx를 localStorage에 저장할 때 문자열로 변환
+        localStorage.setItem('currentSelfIdx', selfIdx.toString());
 
-    $.ajax({
-        url: 'http://localhost:8081/aiboard/loadSelfIntroduction/' + selfIdx,
-        method: 'GET',
-        dataType: 'json',
-        success: function (data) {
-            // 기존 코드는 그대로 유지
-            document.getElementById("select_company").value = data.company;
-            document.getElementById("select_position").value = data.position;
+        $.ajax({
+            url: 'http://localhost:8081/aiboard/loadSelfIntroduction/' + selfIdx,
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                // 기존 코드는 그대로 유지
+                document.getElementById("select_company").value = data.company;
+                document.getElementById("select_position").value = data.position;
 
-            const questionsAndAnswers = document.getElementById('QnAs');
-            questionsAndAnswers.innerHTML = '';
+                const questionsAndAnswers = document.getElementById('QnAs');
+                questionsAndAnswers.innerHTML = '';
 
-            const questionsLength = data.questions.length;
-            const answersLength = data.answers.length;
+                const questionsLength = data.questions.length;
+                const answersLength = data.answers.length;
 
-            for (let i = 0; i < Math.min(questionsLength, answersLength); i++) {
+                for (let i = 0; i < Math.min(questionsLength, answersLength); i++) {
                     const question = data.questions[i];
                     const answer = data.answers[i];
 
@@ -427,16 +430,16 @@
                 }
 
                 // 모달 닫기
-            loadModal.style.display = "none";
+                loadModal.style.display = "none";
 
-            // 디버깅용 출력
-            console.log("Stored selfIdx:", localStorage.getItem('currentSelfIdx'));
-        },
-        error: function (xhr, status, error) {
-            console.error('Error fetching self-introduction:', error);
-        }
-    });
-}
+                // 디버깅용 출력
+                console.log("Stored selfIdx:", localStorage.getItem('currentSelfIdx'));
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching self-introduction:', error);
+            }
+        });
+    }
 
 
     function generateQuestions() {
@@ -446,20 +449,11 @@
         return;
     }
 
-    // AJAX로 요청을 보내고 결과를 기다림
-    $.ajax({
-        url: '${pageContext.request.contextPath}/aiboard/ai_makequestion',
-        method: 'GET',
-        data: { selfIdx: selectedSelfIdx },
-        success: function(response) {
-            // 성공 시 페이지 이동
-            window.location.href = '${pageContext.request.contextPath}/aiboard/ai_makequestion?selfIdx=' + selectedSelfIdx;
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            alert('질문 생성 중 오류가 발생했습니다.');
-        }
-    });
+    // form의 hidden input에 selfIdx 설정
+    document.getElementById('selfIdxInput').value = selectedSelfIdx;
+    // form 제출
+    document.getElementById('questionForm').submit();
+}
 </script>
 
 <jsp:include page="../footer.jsp"/>
