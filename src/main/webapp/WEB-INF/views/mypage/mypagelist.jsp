@@ -62,10 +62,10 @@
                         <div class="content-box" >
                                 <span class="info-label">문항${i+1}</span>
                                 <input class="question-input" value="${selfIntroduction.questions[i]}"readonly/>
-                                <hr>
+                                
                             <textarea class="answer-input" readonly cols="150" rows="3">${selfIntroduction.answers[i]}</textarea>
                         </div>
-                            <hr>
+                            
                         </c:forEach>
                         <!-- Meta Information -->
                         <div class="meta-info">

@@ -13,6 +13,8 @@ body {
 /* Hero Section */
 .hero-section {
   height: 100vh;
+  background-image: url('./img/Mainback.png');
+  background-size: cover;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -35,8 +37,9 @@ body {
 }
 
 .start-button {
-  background-color: #74c7e7;
+  background-color: #31628b;
   color: white;
+  font-weight: bold;
   padding: 1rem 2rem;
   border: none;
   border-radius: 25px;
@@ -47,7 +50,7 @@ body {
 
 /* Chat Section */
 .chat-section {
-  padding: 10rem 0;
+  padding: 5rem 0;
   background-color: #1A1A1A;
   color: white;
   text-align: center;
@@ -283,7 +286,7 @@ body {
 /* Container 5 Styles */
 .container5 {
   padding: 80px 15% 150px;
-  background-color: #f9f9f9;
+  background: white;
 }
 
 /* Title Section */

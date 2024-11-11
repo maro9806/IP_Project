@@ -36,13 +36,6 @@
         <span>자기소개서 내역</span>
       </a>
     </li>
-
-    <li>
-      <a href="<c:url value='${pageContext.request.contextPath}/mypage/mypagevid'/>">
-        <i class="fas fa-microchip"></i>
-        <span>AI 면접 내역</span>
-      </a>
-    </li>
   </ul>
 
   <div class="sidebar-title">관심 기업</div>

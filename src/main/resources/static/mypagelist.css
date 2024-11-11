@@ -86,7 +86,7 @@ body {
     gap: 2rem;
     margin-bottom: 2rem;
     padding: 1rem;
-    background: #f9fafb;
+    background: #cccccc;
     border-radius: 12px;
 }
 
@@ -98,7 +98,7 @@ body {
 
 .info-label {
     font-weight: 500;
-    color: #666;
+    color: #454545;
     width: 35px;
 }
 
@@ -136,6 +136,8 @@ body {
 }
 
 .answer-input{
+    min-height: 200px;
+    width: 100%;
     border:none;
     background-color: inherit;
 }
@@ -231,11 +233,7 @@ body {
         gap: 1rem;
     }
 
-    .info-section {
-        display: flex; /* 수평 정렬을 위해 flexbox 사용 */
-        align-items: center; /* 세로 정렬 조정 */
-        gap: 1rem;
-    }
+
 
     .info-divider {
         display: none;

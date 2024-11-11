@@ -99,3 +99,52 @@
   width: 100%;
   margin: 0;
 }
+
+/*글쓰기 팝업*/
+.write-btn {
+  padding: 8px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.write-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.bi-pencil-square {
+  font-size: 1.1rem;
+}
+
+.modal-xl {
+  max-width: 80%;
+}
+
+.question-row {
+  border-top: 1px solid #dee2e6;
+  padding-top: 15px;
+}
+
+.add-question {
+  padding: 0.25rem 0.5rem;
+}
+
+.char-count {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #80bdff;
+}
+
+.btn-close:focus {
+  box-shadow: none;
+}
+
+.modal-body{
+  padding: 50px}
