@@ -11,11 +11,8 @@ body {
 /* Jumbotron styling */
 .jumbotron {
     background-image: url('/resources/static/img/cor-001.png') !important;
-    color: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    margin-left: 10%;
-    margin-right: 10%;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
 }
 
 .jumbotron h1 {
@@ -35,8 +32,21 @@ body {
     margin-bottom: 20px;
 }
 
+.content{
+    padding: 0 10% 0 10% !important;
+    display: flex;
+    flex-direction: column;
+}
 .col{
     height:300px !important;
+    border: 2px solid #e1e1e1;
+    border-radius: 6px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 카드 크기와 그림자에 애니메이션 적용 */
+}
+/* 카드 hover 효과 */
+.col:hover {
+    transform: scale(1.05); /* 카드 크기를 1.05배로 확대 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 진한 그림자 추가 */
 }
 
 /* Card grid */
@@ -62,7 +72,9 @@ body {
 
 .card-body {
     padding-bottom: 5px;
+    background-color: #f9faff;
 }
+
 
 .card-title {
     font-size: 1.3rem;
@@ -89,10 +101,11 @@ body {
 }
 
 /* Add padding/margin to card sections */
-.row-cols-1, .row-cols-md-5 {
-    padding: 20px;
-    margin: 0 0 40px 0;
-}
+/*.row-cols-1, .row-cols-md-5 {*/
+/*    padding: 20px;*/
+/*    margin: 0 0 40px 0;*/
+/*}*/
+
 .card-body img {
     border-radius: 5px; /* Adds slight rounding to the image */
 }

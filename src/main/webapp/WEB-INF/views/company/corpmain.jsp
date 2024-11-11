@@ -9,7 +9,8 @@
 <link rel="stylesheet" href="<c:url value='/resources/static/corpmain.css'/>">
 
 <jsp:include page="../navbar.jsp"/>
-<div class="jumbotron p-5 rounded">
+
+<div class="jumbotron rounded">
     <h1 class="display-4">기업 분석</h1>
     <p class="lead">AI가 분석해주는 SWOT · 최신 동향</p>
     <hr class="my-4">
@@ -17,13 +18,13 @@
         <input type="text" class="form-control" placeholder="기업명을 입력하세요" aria-label="Search" name="corp"
                id="corpInput" required
                value="${param.corp}"/>
-        <button class="btn btn-toolbar btn-dark" id="searchButton" type="button">Search</button>
+        <button class="btn btn-toolbar btn-dark" id="searchButton" type="button" onclick="searchCompany()">Search</button>
     </div>
 </div>
 
 <div class="main-content pt-0">
 
-    <div class="container mt-4">
+    <div class="content mt-5">
 
         <div class="row row-cols-1 row-cols-md-5 g-4">
             <c:forEach var="vo" items="${list}" varStatus="i">
@@ -45,5 +46,21 @@
         <hr>
     </div>
 </div>
+
+<script type="text/javascript">
+    function searchCompany() {
+        // 검색어 가져오기
+        const corpName = document.getElementById("corpInput").value;
+
+        // 검색어가 비어 있는지 확인
+        if (corpName.trim() === "") {
+            alert("기업명을 입력해 주세요.");
+            return;
+        }
+
+        // corp.jsp 페이지로 이동, 검색어를 파라미터로 전달
+        window.location.href = `<c:url value='${pageContext.request.contextPath}/company/search'/>?companyName=` + encodeURIComponent(corpName);
+    }
+</script>
 
 <%@ include file="../footer.jsp" %>

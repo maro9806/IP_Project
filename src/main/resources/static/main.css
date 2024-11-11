@@ -47,7 +47,7 @@ body {
 
 /* Chat Section */
 .chat-section {
-  padding: 5rem 0;
+  padding: 10rem 0;
   background-color: #1A1A1A;
   color: white;
   text-align: center;
@@ -283,7 +283,7 @@ body {
 /* Container 5 Styles */
 .container5 {
   padding: 80px 15% 150px;
-  background: white;
+  background-color: #f9f9f9;
 }
 
 /* Title Section */

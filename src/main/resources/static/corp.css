@@ -6,11 +6,8 @@
 /* Jumbotron styling */
 .jumbotron {
   background-image: url('/resources/static/img/cor-001.png') !important;
-  color: #fff;
-  border-radius: 10px;
-  padding: 30px;
-  margin-left: 10%;
-  margin-right: 10%;
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
 }
 
 .jumbotron h1 {
@@ -52,10 +49,6 @@
   background-color: #f2f2f2;
 }
 
-.news-table img {
-  width:210px;
-}
-
 /*기업 정보 Section*/
 
 
@@ -66,34 +59,79 @@
 
 /* SWOT CARD Styling */
 .swot-card {
-
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  min-height: 500px; /* 최소 높이 설정 */
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: auto; /* 고정 높이 제거 */
-  overflow: auto; /* 넘치는 내용을 숨김 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease; /* 부드러운 변환 효과 */
+  border: none;                     /* 테두리 제거 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 애니메이션 */
+  border-radius: 8px;               /* 둥근 모서리 */
+  padding: 20px 5px;                    /* 내부 여백 */
+  min-height: 400px; /* 최소 높이 설정 */
+  /*border-radius: 8px;*/
+  /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+  /*padding: 20px;*/
+  /*text-align: left;*/
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*justify-content: flex-start;*/
+  /*height: auto; !* 고정 높이 제거 *!*/
+  /*overflow: auto; !* 넘치는 내용을 숨김 *!*/
+  /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);*/
+  /*transition: transform 0.3s ease; !* 부드러운 변환 효과 *!*/
 }
+
+#S{
+  background-color: #cae1f9;
+}
+#W{
+  background-color: #ffcd6f;
+}
+#O{
+  background-color: #d9eb9f;
+}
+#T{
+  background-color: #ffd5d5;
+}
+
 .swot-card:hover {
-  transform: scale(1.05); /* 마우스를 올리면 1.05배 확대 */
+  transform: scale(1.05);           /* Hover 시 살짝 확대 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 강화 */
 }
-
 
 .swot-letter {
-  font-size: 5rem;
+  font-size: 3.5rem;
   font-weight: bold;
-  margin-bottom: 10px;
+  color: #ffffff;                   /* 문자 색상 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 80px;
+  margin: 0 auto 10px;
+  border-radius: 50%;               /* 원형 배경 */
 }
+
+/* 각 SWOT 요소에 맞는 색상 */
+.swot-letter-S { color: #5c6bb9; } /* Strengths - */
+.swot-letter-W { color: orange; } /* Weaknesses - 주황색 */
+.swot-letter-O { color: #539325; } /* Opportunities -  */
+.swot-letter-T { color: #cb2d3c; }
+
+/* 내용 텍스트 스타일 */
+.card-text {
+  color: #666666;
+  line-height: 1.6;                 /* 줄 간격 */
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.swot-card h1 {
+  background-color:#ffffff;
+}
+
 
 .swot-card h5 {
   font-size: 1.5rem;
-  margin-bottom: 10px;
+  margin-bottom: 35px;
+  color: #272727;
 }
 
 .swot-card ul {
@@ -103,41 +141,9 @@
 }
 
 .swot-card ul li {
-  margin-bottom: 8px;
+  font-size:1rem;
+  margin-bottom: 10px;
 }
-
-
-/* Text color for the letters (S, W, O, T) */
-.swot-letter-S {
-  color: #007bff; /* Strengths - Blue */
-}
-
-.swot-letter-W {
-  color: #fd7e14; /* Weaknesses - Orange */
-}
-
-.swot-letter-O {
-  color: #28a745; /* Opportunities - Green */
-}
-
-.swot-letter-T {
-  color: #dc3545; /* Threats - Red */
-}
-#S:hover{
-  background-image: url(/static/img/swotS.svg);
-}
-#W:hover{
-  background-image: url(/static/img/swotW.svg);
-}
-#O:hover{
-  background-image: url(/static/img/swotO.svg);
-}
-#T:hover{
-  background-image: url(/static/img/swotT.svg);
-}
-
-
-
 
 
 /*패널 부분*/
@@ -181,31 +187,29 @@
   width: 100%;
   background-color: #f8f9fa;
   border-collapse: collapse;
+  border: 1px solid #e5e5e5;
 }
 
 .news-table th,
 .news-table td {
-  border: 1px solid #dee2e6;
-  padding: 10px;
+  border: 0px;
+  padding: 20px;
   text-align: left;
+  border-bottom: 0.8rem solid white;
 }
 
 .news-table {
   width: 100%;
   border-collapse: collapse;
 }
-.news-table th, .news-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;  /* 가운데 정렬 */
-}
+
 .news-table th {
   background-color: #f2f2f2;
 }
 
 .news-table img {
-  width:150px;
-  height:150px;
+  width: 250px;
+  height: 150px;
 }
 
 #newsTableBody tr td a{
@@ -220,5 +224,6 @@
 #newsTableBody tr td a p:hover{
   color: #3b3ec5;
   font-weight: bold;
+  text-decoration: underline;
 }
 

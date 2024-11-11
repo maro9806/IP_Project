@@ -9,13 +9,14 @@
     <title>기업 분석</title>
     <link rel="stylesheet" href="<c:url value='/resources/static/navbar.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/static/corp.css'/>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>
-
-<div class="jumbotron p-5 rounded">
+<div  id="corpContent">
+<div class="jumbotron rounded">
     <h1 class="display-4">기업 분석</h1>
     <p class="lead">AI가 분석해주는 SWOT · 최신 동향</p>
     <hr class="my-4">
@@ -28,52 +29,54 @@
 </div>
 
 <div class="main-content pt-0">
-
-
     <!-- 기업 정보 Section -->
     <section class="container my-5">
         <%--        <h2>기업 정보</h2>--%>
-        <div class="card">
-            <div class="card-body">
+        <div class="card" style="min-width: 1300px;">
+            <div class="card-body" style="padding: 0 13px;">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-3 p-3" style="background-color: #f7f7f7;  overflow: hidden; border-radius: 5px;">
                         <a id="infoimg">
-                            <img src="<c:url value='/resources/static/img/${board.img}'/>" class="img-fluid">
+                            <img src="<c:url value='/resources/static/img/${board.img}'/>" class="img-fluid" style="min-height: 290px;">
                         </a>
+                        <!-- 좋아요 하트 버튼 추가 및 오른쪽 정렬 -->
+                        <div class="mt-3 text-end">
+                            <button class="btn btn-outline-danger" id="likeButton">
+                                <i class="bi bi-heart"></i> <!-- Bootstrap Icons의 하트 아이콘 사용 -->
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-9 p-4">
                         <table class="table">
                             <tbody>
                             <tr>
                                 <th>기업명:</th>
                                 <td>${board.companyName}</td>
+                            </tr>
+                            <tr>
                                 <th>기업 형태:</th>
                                 <td>${board.companyType}</td>
                             </tr>
                             <tr>
-                                <th>설립일:</th>
-                                <td>
-                                    ${fn:replace(board.companyHistory, "\\n", "<br>")}
-                                </td>
-
-
+<%--                                <th>설립일:</th>--%>
+<%--                                <td>--%>
+<%--                                    ${fn:replace(board.companyHistory, "\\n", "<br>")}--%>
+<%--                                </td>--%>
                                 <th>대표자:</th>
                                 <td>${board.companyCeo}</td>
                             </tr>
                             <tr>
-                                <th>주소:</th>
-                                <td>${board.companyAddress}</td>
                                 <th>사원 수:</th>
                                 <td>${board.companyEmployees}명</td>
                             </tr>
                             <tr>
+                                <th>주소:</th>
+                                <td>${board.companyAddress}</td>
+                            </tr>
+                            <tr style="border-bottom:white;">
                                 <th>인재상:</th>
                                 <td>
                                     ${fn:replace(board.companyContent, "\\n", "<br>")}
-                                </td>
-                                <th>업종:</th>
-                                <td>
-                                    ${fn:replace(board.companyHistory, "\\n", "<br>")}
                                 </td>
                             </tr>
                             </tbody>
@@ -90,11 +93,11 @@
             <!-- Strengths Card -->
             <div class="col-md-3 mb-4">
                 <div class="card swot-card" id="S">
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 15px 5px;">
                         <h1 class="swot-letter swot-letter-S">S</h1>
                         <h5 class="card-title">Strengths</h5>
                         <ul class="card-text">
-                            <li>${fn:replace(swot.strength, "\\n", "<br>")}</li>
+                            <li>${fn:replace(swot.strength, "\\n", "</li><li>")}</li>
                         </ul>
                     </div>
                 </div>
@@ -103,11 +106,11 @@
             <!-- Weaknesses Card -->
             <div class="col-md-3 mb-4">
                 <div class="card swot-card" id="W">
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 15px 5px;">
                         <h1 class="swot-letter swot-letter-W">W</h1>
                         <h5 class="card-title">Weaknesses</h5>
                         <ul class="card-text">
-                            ${fn:replace(swot.weakness, "\\n", "<br>")}
+                            <li>${fn:replace(swot.weakness, "\\n", "</li><li>")}</li>
                         </ul>
                     </div>
                 </div>
@@ -116,11 +119,11 @@
             <!-- Opportunities Card -->
             <div class="col-md-3 mb-4">
                 <div class="card swot-card" id="O">
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 15px 5px;">
                         <h1 class="swot-letter swot-letter-O">O</h1>
                         <h5 class="card-title">Opportunities</h5>
                         <ul class="card-text">
-                            ${fn:replace(swot.opportunity, "\\n", "<br>")}
+                            <li>${fn:replace(swot.opportunity, "\\n", "</li><li>")}</li>
                         </ul>
                     </div>
                 </div>
@@ -129,11 +132,11 @@
             <!-- Threats Card -->
             <div class="col-md-3 mb-4">
                 <div class="card swot-card" id="T">
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 15px 5px;">
                         <h1 class="swot-letter swot-letter-T">T</h1>
                         <h5 class="card-title">Threats</h5>
                         <ul class="card-text">
-                            ${fn:replace(swot.threat, "\\n", "<br>")}
+                            <li>${fn:replace(swot.threat, "\\n", "</li><li>")}</li>
                         </ul>
                     </div>
                 </div>
@@ -143,7 +146,7 @@
 
 
     <!-- 기업 최신 동향 Section -->
-    <section class="container d-flex flex-column my-5">
+    <section class="container d-flex flex-column my-5" style="gap:15px">
         <h4><strong>최신 동향 뉴스</strong></h4>
         <table class="news-table">
             <colgroup>
@@ -152,66 +155,50 @@
                 <col style="width: 10%;">
             </colgroup>
             <tbody id="newsTableBody">
-
+            <c:forEach items="${newsList}" var="news">
+            <tr>
+                <td><a href="${news.newsUrl}" target="_blank">
+                <img src="${news.newsImage}" alt="뉴스 이미지"></a></td>
+                <td style="text-align:left">
+                    <a href="${news.newsUrl}" target="_blank">
+                        <p>${news.newsTitle}</p></a>
+                    <span>${news.newsDescription}</span></td>
+                <td><c:out value="${fn:substring(news.newsDate, 0, 10)}" /></td>
+            </tr>
+            </c:forEach>
             </tbody>
         </table>
     </section>
 </div>
-
 <%@ include file="../footer.jsp" %>
+</div>
 
 <script>
     $(document).ready(function() {
-        // 페이지가 로드된 후 AJAX 요청을 직접 호출
-        const corpName = $('#corpInput').val();
-        if (corpName) {
-            fetchNews(corpName); // 기업명으로 뉴스 가져오기
-        }
-
         $('#searchButton').click(function() {
             const corpName = $('#corpInput').val();
             if (corpName) {
-                fetchNews(corpName); // 기업명으로 뉴스 가져오기
+                $.ajax({
+                    url: '/company/search', // Controller의 새로운 매핑 URL
+                    method: 'GET',
+                    data: { companyName: corpName },
+                    success: function(data) {
+                        // AJAX 응답으로 받은 내용을 페이지에 반영
+                        $('#corpContent').html(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('기업 조회 실패:', error);
+                    }
+                });
             } else {
                 alert('기업명을 입력하세요.');
             }
         });
+    });
 
-        // 뉴스 가져오는 함수
-        function fetchNews(corpName) {
-            $.ajax({
-                url: 'http://127.0.0.1:5000/news', // Flask API 엔드포인트
-                method: 'GET',
-                data: { corp: corpName },
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    // 이전의 테이블 내용을 지우기
-                    $('#newsTableBody').empty();
-
-                    // 데이터가 존재하면 테이블에 추가
-                    if (data && data.articles) {
-                        $.each(data.articles, function(index, article) {
-                            const row =
-                                '<tr> <td><a href="' + article.url + '" target="_blank">' +
-                                '<img src="' + article.image_url + '" alt="뉴스 이미지"></a></td>' +
-                                '<td style="text-align:left">' +
-                                '<a href="' + article.url + '" target="_blank">' +
-                                '<p>' + article.title + '</p></a>' +
-                                '<span>' + article.description + '</span></td>' +
-                                '<td>' + article.date + '</td></tr>';
-
-                            $('#newsTableBody').append(row);
-                        });
-                    } else {
-                        $('#newsTableBody').append('<tr><td colspan="4">No articles found.</td></tr>');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX 요청 실패 from Flask:', error);
-                }
-            });
-        }
+    document.getElementById("likeButton").addEventListener("click", function() {
+        alert("관심기업에 추가되었습니다!");
+        // 여기서 좋아요 수를 증가시키거나 서버로 요청을 보낼 수 있습니다.
     });
 </script>
 

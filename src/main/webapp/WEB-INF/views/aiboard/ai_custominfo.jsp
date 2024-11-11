@@ -15,13 +15,13 @@
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>
+<div class="jumbotron p-5 rounded">
+    <h1 class="display-4">AI 면접 준비</h1>
+    <p class="lead">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
+    <hr>
+</div>
 
 <div class="content">
-
-    <div class="banner mb-5">
-        <h3 class="title">AI 면접 코칭</h3>
-        <p class="p-title">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
-    </div>
 
     <h4 class="h-title">1. 자기소개서 선택하기</h4>
     <h5>자기소개서 불러오기 / 작성하기</h5>

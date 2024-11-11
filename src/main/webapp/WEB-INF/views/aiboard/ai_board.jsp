@@ -30,20 +30,20 @@
 
   <!-- 섹션 -->
   <h4 class="h-title">면접 진행 순서</h4>
-  <div class="progress" style="width:75%; height:150px; margin: 40px 40px 40px 100px;">
-    <div class="progress-bar stage" style="width:20%; margin-right:10px; border-color: #a6e3a1;">
+  <div class="progress" style="width:90%; height:150px; margin: 40px;">
+    <div class="progress-bar stage" style="width:20%; margin-right:30px; border-color: #a6e3a1;">
       <h5><b>1 Stage</b></h5> <h6>정보 입력</h6>
     </div>
-    <div class="progress-bar stage" style="width:20%; margin:0 10px; border-color: #a6e3a1;">
+    <div class="progress-bar stage" style="width:20%; margin:0 30px; border-color: #a6e3a1;">
       <h5><b>2 Stage</b></h5> <h6>질문 답변 및 피드백</h6>
     </div>
-    <div class="progress-bar stage" style="width:20%; margin:0 10px; border-color: #a6e3a1;">
+    <div class="progress-bar stage" style="width:20%; margin:0 30px; border-color: #a6e3a1;">
       <h5><b>3 Stage</b></h5> <h6> 답변 확인 및 저장</h6>
     </div>
-    <div class="progress-bar stage" style="width:20%; margin:0 10px; border-color: #75c9e9a3;">
+    <div class="progress-bar stage" style="width:20%; margin:0 30px; border-color: #75c9e9a3;">
       <h5><b>4 Stage</b></h5> <h6>영상 면접 응시</h6>
     </div>
-    <div class="progress-bar stage" style="width:20%; margin-left:10px; border-color: #75c9e9a3;">
+    <div class="progress-bar stage" style="width:20%; margin-left:30px; border-color: #75c9e9a3;">
       <h5><b>5 Stage</b></h5> <h6>면접 내역 확인</h6>
     </div>
   </div>

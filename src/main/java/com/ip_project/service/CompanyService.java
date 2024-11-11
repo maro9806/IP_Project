@@ -25,6 +25,9 @@ public class CompanyService {
         return company.orElse(null);
     }
 
+    public Company getByCompanyNameContaining(String companyName) {
+        return repository.findByCompanyNameContaining(companyName);
+    }
 
     public void register(Company company) {
         repository.save(repository.save(company));

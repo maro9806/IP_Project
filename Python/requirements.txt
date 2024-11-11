@@ -11,3 +11,4 @@ langchain-text-splitters
 langchain-chroma
 pinecone-notebooks
 python-dotenv
+oracledb

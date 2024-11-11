@@ -107,7 +107,7 @@ body {
     background-color: rgb(121 220 114);
     border:none;
     color: white;
-    height:250px;
+    height:280px !important;
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -119,7 +119,7 @@ body {
     background-color: rgb(117 201 233);
     border:none;
     color:white;
-    height:250px;
+    height:280px !important;
     font-family: 'Noto Sans KR', sans-serif;
 }
 

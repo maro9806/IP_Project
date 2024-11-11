@@ -22,7 +22,7 @@
 <div id="setupSection" class="main-content">
     <div class="camera-container">
         <div class="row justify-content-center position-relative">
-            <div class="card camera-card col-lg-8 d-flex flex-row">
+            <div class="card camera-card     col-lg-8 d-flex flex-row">
                 <!-- Left section: Video -->
                 <div class="video-section d-flex flex-column">
                     <h5><strong>면접 환경 설정</strong></h5>
