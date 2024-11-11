@@ -12,3 +12,7 @@ langchain-chroma
 pinecone-notebooks
 python-dotenv
 oracledb
+fastapi
+uvicorn
+pydantic
+
