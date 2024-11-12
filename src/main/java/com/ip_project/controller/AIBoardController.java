@@ -152,8 +152,22 @@ public class AIBoardController {
     }
 
     @GetMapping("/ai_question")
-    public String aiQuestion() {
-        return "aiboard/ai_question";
+    public String aiQuestion(@RequestParam(name="selfIdx", required = false) Long selfIdx, Model model) {
+        try {
+            // selfIdx가 있는 경우 해당 selfIdx의 질문을 가져옵니다.
+            if (selfIdx != null) {
+                List<Map<String, Object>> questions = questionService.getQuestionsBySelfIdx(selfIdx);
+                model.addAttribute("questions", questions);
+                model.addAttribute("selfIdx", selfIdx);
+            } else {
+                model.addAttribute("message", "selfIdx가 지정되지 않았습니다.");
+            }
+            return "aiboard/ai_question";
+        } catch (Exception e) {
+            log.error("Error loading questions for aiQuestion", e);
+            model.addAttribute("error", "오류가 발생했습니다.");
+            return "aiboard/ai_question";
+        }
     }
 
     @GetMapping("/ai_check")

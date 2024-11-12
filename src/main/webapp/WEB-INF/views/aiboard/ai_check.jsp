@@ -16,10 +16,9 @@
 <body>
 
 <jsp:include page="../navbar.jsp"/>
-<div class="jumbotron p-5 rounded">
+<div class="jumbotron">
     <h1 class="display-4">AI 면접 준비</h1>
     <p class="lead">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
-    <hr>
 </div>
 <div class="content">
     <h4 class="h-title">3. 질문 및 답변 확인하기</h4>
@@ -28,18 +27,21 @@
     <hr style="width:100%;">
 
     <!-- 질문 및 답변 테이블 -->
-    <div class="container d-flex flex-column align-items-center" style="gap:0">
-        <div class="table-container mb-5 ml-5">
+    <div class="container d-flex flex-column align-items-center mb-5">
+        <div class="table-container">
             <table class="text-center" style="width:1000px">
+                <colgroup>
+                    <col style="width: 15%;">
+                    <col style="width: 85%;">
+                </colgroup>
                 <thead>
                 <tr>
-                    <th colspan="3">면접 질문 및 답변</th>
+                    <th colspan="2">면접 질문 및 답변</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td rowspan="2"><strong>기업</strong></td>
-                    <td>질문1</td>
+                    <td rowspan="3"><strong>기업/직무</strong></td>
                     <td>
                         <button class="accordion">질문 1번 내용입니다.</button>
                         <div class="panel">
@@ -52,7 +54,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>질문2</td>
                     <td>
                         <button class="accordion">질문 2번 내용입니다.</button>
                         <div class="panel">
@@ -64,10 +65,7 @@
                         </div>
                     </td>
                 </tr>
-
                 <tr>
-                    <td rowspan="2"><strong>직무</strong></td>
-                    <td>질문3</td>
                     <td>
                         <button class="accordion">질문 3번 내용입니다.</button>
                         <div class="panel">
@@ -79,8 +77,9 @@
                         </div>
                     </td>
                 </tr>
+
                 <tr>
-                    <td>질문4</td>
+                    <td rowspan="3"><strong>자기소개서</strong></td>
                     <td>
                         <button class="accordion">질문 4번 내용입니다.</button>
                         <div class="panel">
@@ -93,8 +92,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <td rowspan="2"><strong>경험</strong></td>
-                    <td>질문5</td>
                     <td>
                         <button class="accordion">질문 5번 내용입니다.</button>
                         <div class="panel">
@@ -107,7 +104,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>질문6</td>
                     <td>
                         <button class="accordion">질문 6번 내용입니다.</button>
                         <div class="panel">

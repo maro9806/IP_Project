@@ -27,46 +27,48 @@
     <section class="container2">
         <div class="sidenav sn text-left">
             <div class="well">
-                <table style="width:130px;">
+                <table style="width:150px;">
+                    <colgroup>
+                        <col style="width:50%">
+                        <col style="width:50%">
+                    </colgroup>
                     <tr>
-                        <th> 기업</th>
+                        <th colspan="2"> 기업/직무</th>
                     </tr>
                     <tr>
-                        <td><a href="#">질문1</a></td>
-                        <td>작성 완료</td>
+                        <td><a href="#" onclick="showQuestion(0)">질문1</a></td>
+                        <td><span id="state1">미작성</span></td>
                     </tr>
                     <tr>
-                        <td><a href="#">질문2</a></td>
-                        <td>작성 완료</td>
-                    </tr>
-                </table>
-                <hr>
-                <table style="width:130px;">
-                    <tr>
-                        <th> 직무</th>
+                        <td><a href="#" onclick="showQuestion(1)">질문2</a></td>
+                        <td><span id="state2">미작성</span></td>
                     </tr>
                     <tr>
-                        <td><a href="#">질문3</a></td>
-                        <td>작성 완료</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">질문4</a></td>
-                        <td>작성 완료</td>
+                        <td><a href="#" onclick="showQuestion(2)">질문3</a></td>
+                        <td><span id="state3">미작성</span></td>
                     </tr>
                 </table>
                 <hr>
-                <table style="width:130px;">
+                <table style="width:150px;">
+                    <colgroup>
+                        <col style="width:50%">
+                        <col style="width:50%">
+                    </colgroup>
                     <tr>
-                        <th> 경험</th>
+                        <th colspan="2">자기소개서</th>
                     </tr>
                     <tr>
-                        <td><a href="#">질문5</a></td>
-                        <td>작성 완료</td>
+                        <td><a href="#" onclick="showQuestion(3)">질문4</a></td>
+                        <td><span id="state4">미작성</span></td>
                     </tr>
                     <tr>
-                        <td><a href="#">질문6</a></td>
-                        <td>미작성</td>
+                        <td><a href="#" onclick="showQuestion(4)">질문5</a></td>
+                        <td><span id="state5">미작성</span></td>
                     </tr>
+                    <tr>
+                    <td><a href="#" onclick="showQuestion(5)">질문6</a></td>
+                    <td><span id="state6">미작성</span></td>
+                </tr>
                 </table>
             </div>
         </div>
@@ -74,20 +76,22 @@
 
         <div class="box">
             <div class="well text-left" style="font-size: 20px;">
-                <p style="font-size:21px; font-weight:bold">질문1. 우리 회사에 지원하신 이유가 무엇입니까? </p>
+                <p  id="question-content" style="font-size:21px; font-weight:bold">${questions[0].IPRO_QUESTION} </p>
             </div>
 
             <div class="answer-box well text-left">
                 <form>
-                    <table>
-                        <div class="form-group">
-                            <textarea class="form-control" rows="10" id="answer" placeholder="답변을 입력하세요"></textarea>
-                            <div id="charCount">0자/1000자 (공백포함)</div> <!-- 글자 수를 표시할 영역 -->
-                        </div>
-
-                        <div class="buttons">
+                    <table style="width:100%">
+                        <tr class="form-group" >
+                            <td colspan="2"><textarea class="form-control" rows="9" id="answer" placeholder="답변을 입력하세요"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="charCount">0자/1000자(공백포함)</td>
+                        <td style="text-align:right;">
                             <button type="button" id="feedback-btn" class="btn btn-dark">AI 피드백 받기</button>
-                        </div>
+                        </td>
+                        </tr> <!-- 글자 수를 표시할 영역 -->
                     </table>
                 </form>
             </div>
@@ -168,8 +172,8 @@
 
     <div class="d-flex flex-column align-items-end" style="width:100%;">
         <div class="bottom-buttons">
-            <button type="submit" id="previous" class="btn btn-primary"> 이전 질문</button>
-            <button onclick="location.href='${pageContext.request.contextPath}/aiboard/ai_check'" type="submit" id="next"
+            <button onclick="previousQuestion()" type="submit" id="previous" class="btn btn-primary"> 이전 질문</button>
+            <button onclick="nextQuestion()" id="next"
                     class="btn btn-primary"> 다음 질문
             </button>
         </div>
@@ -178,16 +182,16 @@
             <div class="progress-bar bar" style="width:16.6%; margin-right:5px;">
                 Question 1
             </div>
-            <div class="progress-bar bar" style="width:16.6%; margin:0 5px;">
+            <div class="progress-bar bar" style="width:0%; margin:0 5px;">
                 Question 2
             </div>
-            <div class="progress-bar bar" style="width:16.6%; margin:0 5px;">
+            <div class="progress-bar bar" style="width:0%; margin:0 5px;">
                 Question 3
             </div>
-            <div class="progress-bar bar" style="width:16.6%; margin:0 5px;">
+            <div class="progress-bar bar" style="width:0%; margin:0 5px;">
                 Question 4
             </div>
-            <div class="progress-bar bar" style="width:16.6%; margin:0 5px;">
+            <div class="progress-bar bar" style="width:0%; margin:0 5px;">
                 Question 5
             </div>
             <div class="progress-bar bar" style="width:0; margin-left:5px;">
@@ -198,6 +202,137 @@
 
 </div>
 
+<script>
+    // 각 질문에 대한 답변을 저장할 객체
+    const answers = {};
+    // 각 질문의 상태를 저장할 배열 (0: 미작성, 1: 작성중, 2: 작성 완료)
+    const questionStates = [0, 0, 0, 0, 0, 0];
+
+    // 질문 배열
+    const questions = [
+        <c:forEach var="question" items="${questions}">
+        "${question.IPRO_QUESTION}"<c:if test="${!fn:contains(question, 'last')}">,</c:if>
+        </c:forEach>
+    ];
+
+    // 현재 질문 인덱스
+    let currentIndex = 0;
+
+    // 페이지 초기화 시 첫 번째 질문 표시
+    document.addEventListener("DOMContentLoaded", () => {
+        showQuestion(currentIndex);
+
+    });
+
+    // 질문 표시 함수
+    function showQuestion(index) {
+        currentIndex = index;
+        document.getElementById("question-content").textContent = '질문'+ (index+1) + '. ' + questions[currentIndex];
+        document.getElementById("answer").value = answers[currentIndex] || ''; // 이전에 작성한 답변이 있으면 불러오기
+
+        // progress bar 업데이트
+        updateProgressBar();
+
+        // 사이드바 상태 업데이트
+        updateSidebar();
+
+        // 마지막 질문일 경우 '답변 확인하기' 버튼으로 변경
+        if (currentIndex === questions.length - 1) {
+            document.getElementById("next").textContent = "답변 완료";
+        } else {
+            document.getElementById("next").textContent = "다음 질문";
+        }
+    }
+
+    // progress bar 업데이트 함수
+    function updateProgressBar() {
+        const progressBarElements = document.getElementsByClassName('progress-bar');
+
+        for (let i = 0; i < progressBarElements.length; i++) {
+            if (i < currentIndex) {
+                progressBarElements[i].style.width = '16.6%'; // 완료된 질문은 일정 비율
+            } else if (i === currentIndex) {
+                progressBarElements[i].style.width = `16.6%`; //
+            } else {
+                progressBarElements[i].style.width = '0%'; // 아직 완료되지 않은 질문은 0%
+            }
+        }
+    }
+
+    // 사이드바 상태 업데이트 함수
+    function updateSidebar() {
+        const stateTexts = ["미작성", "작성중", "작성 완료"];
+
+        questionStates.forEach((state, index) => {
+            const stateElement = document.getElementById("state" + (index + 1)); // id 값으로 상태 표시 요소 선택
+            stateElement.textContent = stateTexts[state]; // 상태 텍스트 업데이트
+
+        });
+    }
+
+    // 답변을 저장하고 상태 업데이트
+    document.getElementById("answer").addEventListener("input", function() {
+        answers[currentIndex] = this.value; // 현재 질문에 대한 답변 저장
+
+        // 답변이 입력되면 '작성중' 상태로 변경
+        if (this.value.trim()) {
+            questionStates[currentIndex] = 1; // 작성중
+        } else {
+            questionStates[currentIndex] = 0; // 미작성
+        }
+
+        // 사이드바 상태 업데이트
+        updateSidebar();
+
+    });
+
+    // 이전 질문 버튼 클릭 시
+    function previousQuestion() {
+        // // 현재 답변을 작성 완료로 처리
+        // if (answers[currentIndex]?.trim()) {
+        //     questionStates[currentIndex] = 2; // 작성 완료 상태로 변경
+        // }
+
+        if (currentIndex > 0) {
+            currentIndex--;
+            showQuestion(currentIndex);
+        } else {
+            // 첫 번째 질문일 경우 알림 메시지 표시
+            alert("이전 질문이 없습니다.");
+
+        }
+    }
+
+    // 다음 질문 버튼 클릭 시
+    function nextQuestion() {
+        // 미작성 상태일 경우, 확인 메시지 띄우기
+        if (!answers[currentIndex]?.trim()) {
+            const confirmation = confirm("미작성된 채로 다음으로 넘어가시겠습니까?");
+            if (!confirmation) {
+                return; // 사용자가 '취소'를 선택하면 넘어가지 않음
+            }
+        }
+
+        // 현재 답변을 작성 완료로 처리
+        if (answers[currentIndex]?.trim()) {
+            questionStates[currentIndex] = 2; // 작성 완료 상태로 변경
+        }
+
+        if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            showQuestion(currentIndex);
+        }else{
+            goToCheckPage();
+            // 첫 번째 질문일 경우 질문 확인하기 페이지로 돌아감
+        }
+    }
+    // 답변 확인하기 페이지로 이동하는 함수
+    function goToCheckPage() {
+        location.href = "<%= request.getContextPath() %>/aiboard/ai_check?${pram.selfIdx}";
+    }
+
+
+</script>
 
 <!-- HTML -->
 <%@ include file="../footer.jsp" %>

@@ -67,6 +67,7 @@ body {
     display: block;
 }
 
+
 /* Set gray background color and 100% height */
 .sidenav {
     padding: 30px;
@@ -93,6 +94,10 @@ body {
     color: #31628b;
 }
 
+.sidenav td{
+    padding:7px 0;
+}
+
 /* On small screens, set height to 'auto' for sidenav and grid */
 @media screen and (max-width: 767px) {
     .sidenav {
@@ -107,7 +112,7 @@ body {
     justify-content: flex-start;
     width:100%;
     gap:15%;
-    margin:30px;
+    margin:30px 0;
 }
 
 .container2.centered {
@@ -119,7 +124,7 @@ body {
 }
 
 #answer{
-    margin:35px 0;
+    margin:25px 0;
 }
 
 .box2{
@@ -136,10 +141,6 @@ body {
     display: flex;
     justify-content: space-between;
     width: 100%;
-}
-
-.answer-box{
-    margin:30px 0;
 }
 
 

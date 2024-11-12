@@ -85,7 +85,7 @@
                     class="btn btn-secondary">
                 질문 다시 생성하기
             </button>
-            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_question'"
+            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_question?selfIdx=${param.selfIdx}'"
                     type="submit" id="next"
                     class="btn btn-primary">
                 면접 답변 시작하기
