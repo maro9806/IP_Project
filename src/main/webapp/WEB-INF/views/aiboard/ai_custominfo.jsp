@@ -11,15 +11,14 @@
     <title>1stage</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/stage.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/aiboard/ai_custominfo.css">
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>
 
-<div class="jumbotron p-5 rounded">
-    <h1 class="display-4">AI 면접 준비</h1>
+<div class="jumbotron">
+    <h1>AI 면접 준비</h1>
     <p class="lead">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
-    <hr>
 </div>
 
 <div class="content">
@@ -29,8 +28,8 @@
     <h5>자기소개서 불러오기 / 작성하기</h5>
     <hr style="width:100%;">
 
-    <div class="container d-flex flex-column align-items-center mt-0" style="width:70%;">
-        <div style="width:100%; padding-left:5%;">
+    <div class="container d-flex flex-column align-items-center mt-0" style="width:90%;">
+        <div style="width:100%;">
             <div class="question-block">
                 <table style="width:100%;">
                     <colgroup>

@@ -12,6 +12,45 @@ sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='repla
 
 load_dotenv()
 
+# #def get_db_connection():
+#     try:
+#         # 디버그 정보 출력
+#         print("=== 연결 디버그 정보 ===")
+#         oracle_client_path = r"C:\Users\USER\Oracle\instantclient_23_6"
+#         print(f"Oracle Client 경로: {oracle_client_path}")
+#         print(f"환경변수 확인:")
+#         print(f"DB_HOST: {os.getenv('DB_HOST')}")
+#         print(f"DB_PORT: {os.getenv('DB_PORT')}")
+#         print(f"DB_SERVICE: {os.getenv('DB_SERVICE')}")
+#         print(f"DB_USER: {os.getenv('DB_USER')}")
+#         print(f"ORACLE_HOME: {os.environ.get('ORACLE_HOME')}")
+#         print(f"TNS_ADMIN: {os.environ.get('TNS_ADMIN')}")
+#
+#         # Oracle 클라이언트 초기화
+#         try:
+#             oracledb.init_oracle_client(lib_dir=oracle_client_path)
+#         except Exception as init_error:
+#             print(f"Oracle 클라이언트 초기화 오류: {str(init_error)}")
+#             raise
+#
+#         # 연결 시도
+#         dsn = f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_SERVICE')}"
+#         print(f"연결 문자열: {dsn}")
+#
+#         connection = oracledb.connect(
+#             user=os.getenv('DB_USER'),
+#             password=os.getenv('DB_PASSWORD'),
+#             dsn=dsn
+#         )
+#         print("DB 연결 성공")
+#         return connection
+#     except Exception as e:
+#         print(f"DB 연결 오류 상세:")
+#         print(f"오류 타입: {type(e)}")
+#         print(f"오류 메시지: {str(e)}")
+#         raise
+
+
 def get_db_connection():
     try:
         # 기본 Oracle 클라이언트 초기화

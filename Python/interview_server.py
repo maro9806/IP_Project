@@ -7,6 +7,9 @@ import os
 
 app = FastAPI()
 
+#sys.stdin.reconfigure(encoding='utf-8')
+#sys.stdout.reconfigure(encoding='utf-8')
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:8081"],

@@ -6,11 +6,11 @@
 <%@ include file="../header.jsp" %>
 
 <title>기업 분석 메인</title>
-<link rel="stylesheet" href="<c:url value='/resources/static/corpmain.css'/>">
+<link rel="stylesheet" href="<c:url value='/resources/static/company/corpmain.css'/>">
 
 <jsp:include page="../navbar.jsp"/>
 
-<div class="jumbotron rounded">
+<div class="jumbotron">
     <h1 class="display-4">기업 분석</h1>
     <p class="lead">AI가 분석해주는 SWOT · 최신 동향</p>
     <hr class="my-4">

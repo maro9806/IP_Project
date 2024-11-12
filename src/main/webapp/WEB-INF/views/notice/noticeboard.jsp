@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <link rel="stylesheet" href="<c:url value='/resources/static/noticeboard.css'/>">
+  <link rel="stylesheet" href="<c:url value='/resources/static/notice/noticeboard.css'/>">
     <title>Title</title>
   <%@ include file="../header.jsp" %>
 </head>

@@ -10,7 +10,7 @@
     <%@ include file="../header.jsp" %>
     <title>My Page</title>
 
-    <link rel="stylesheet" href="<c:url value='/resources/static/mypagelist.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/static/mypage/mypagelist.css'/>">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>

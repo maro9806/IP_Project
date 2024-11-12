@@ -13,12 +13,44 @@ body {
     background-position: center; /* 배경 이미지가 가운데에 위치하도록 설정 */
     background-repeat: no-repeat; /* 이미지 반복을 막음 */
     color: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    margin-left: 10%;
-    margin-right: 10%;
+    /*border-radius: 10px;*/
+    padding: 2.5rem 9.5rem;
+    /*margin-left: 10%;*/
+    /*margin-right: 10%;*/
     margin-top:70px;
 }
+.jumbotron h1 {
+    font-weight:500;
+    font-family: 'Noto Sans KR';
+}
+.jumbotron p {
+    font-size: 1.2rem;
+    font-family: 'Noto Sans KR';
+}
+
+.content {
+    padding:50px 10% 0 10%;
+    display:flex;
+    flex-direction: column;
+    align-items:flex-start;
+    font-family:'Noto Sans KR';
+}
+
+.title{
+    font-weight: bold;
+    text-align:center;
+    margin-top:20px;
+    font-family:'Noto Sans KR';
+    /* position:relative;
+    bottom:150px; */
+}
+
+.h-title{
+    font-weight: bold;
+    text-align:left;
+    font-family:'Noto Sans KR';
+}
+
 
 /* box2 기본적으로 숨기기 */
 .box2 {
@@ -52,13 +84,13 @@ body {
 }
 
 .sidenav a:hover {
-    color: #4f4f94;
+    color:  #31628b;
     font-weight:bold;
     text-decoration:underline;
 }
 
 .sidenav table th{
-    color:#4f4f94;
+    color: #31628b;
 }
 
 /* On small screens, set height to 'auto' for sidenav and grid */
@@ -129,6 +161,7 @@ body {
 .accordion.active {
     background-color: #ccc;
 }
+
 /* 아코디언 패널 (숨겨진 내용) */
 .panel {
     padding: 0 10px;
@@ -138,3 +171,31 @@ body {
     transition: max-height 0.3s ease-out;
 }
 
+.progress.w-100.mb-5{
+    height:18px;
+}
+.progress .progress-bar.bar {
+    text-align:center;
+    height: 100%; /* 프로그레스 바 높이 설정 */
+}
+
+.progress .progress-bar.bar{
+    background-color:  #31628b;
+}
+
+.progress .progress-bar.stage{
+    background-color: rgb(255 255 255);
+    border-radius:5%;
+    color: #605a5a;
+    border: 3px solid #cfcfcf;
+}
+
+#next{
+    background-color: #31628b;
+    border-color: #31628b;
+}
+
+#previous{
+    background-color: #31628b;
+    border-color: #31628b;
+}

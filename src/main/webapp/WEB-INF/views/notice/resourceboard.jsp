@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/acceptanceboard.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/notice/acceptanceboard.css">
     <title>합격 후기 작성</title>
     <%@ include file="../header.jsp" %>
 </head>

@@ -13,55 +13,45 @@ body {
     background-position: center; /* 배경 이미지가 가운데에 위치하도록 설정 */
     background-repeat: no-repeat; /* 이미지 반복을 막음 */
     color: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    margin-left: 10%;
-    margin-right: 10%;
+    /*border-radius: 10px;*/
+    padding: 2.5rem 9.5rem;
+    /*margin-left: 10%;*/
+    /*margin-right: 10%;*/
     margin-top:70px;
 }
+
 .jumbotron h1 {
     font-weight:500;
+    font-family: 'Noto Sans KR';
 }
-/* box2 기본적으로 숨기기 */
-.box2 {
-    /* opacity: 0; /* 처음에 숨김 */
-    /* max-height: 0; 처음에 높이를 0으로 설정 */
-    /* overflow: hidden; 넘치는 내용 숨기기 */
-    /* transition: max-height 0.5s ease, opacity 0.5s ease;  */
-    display: none;
-    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+.jumbotron p {
+    font-size: 1.2rem;
+    font-family: 'Noto Sans KR';
 }
 
-/* box2가 활성화된 상태 */
-.box2.show {
-    display: block;
+.content {
+    padding:50px 10% 0 10%;
+    display:flex;
+    flex-direction: column;
+    align-items:flex-start;
+    font-family:'Noto Sans KR';
 }
 
-/* Set gray background color and 100% height */
-.sidenav {
-    padding: 30px;
-    background-color: #ffffff;
-    width: fit-content;
-    border-radius: 5px;
-    border: 1px solid #dadada;
-    height: fit-content;
+.title{
+    font-weight: bold;
+    text-align:center;
+    margin-top:20px;
+    font-family:'Noto Sans KR';
+    /* position:relative;
+    bottom:150px; */
 }
 
-.sidenav a{
-    color: black;
-    font-weight:bold;
-    text-decoration:none;
+.h-title{
+    font-weight: bold;
+    text-align:left;
+    font-family:'Noto Sans KR';
 }
 
-.sidenav a:hover {
-    color: #4f4f94;
-    font-weight:bold;
-    text-decoration:underline;
-}
-
-.sidenav table th{
-    color:#4f4f94;
-}
 
 .table-container {
     background-color: white;
@@ -168,3 +158,39 @@ th {
     transition: max-height 0.3s ease-out;
 }
 
+
+
+.table-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    width:fit-content;
+}
+
+table {
+    width: 50%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border-bottom: 1px solid #ddd;
+    text-align:center;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #313132;
+    color: white;
+}
+
+#next{
+    background-color: #31628b;
+    border-color: #31628b;
+}

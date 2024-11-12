@@ -11,8 +11,12 @@ body {
 /* Jumbotron styling */
 .jumbotron {
     background-image: url('/resources/static/img/cor-001.png') !important;
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
+    margin-top:70px;
+    background-size: cover; /* 배경 이미지가 요소를 꽉 채우도록 설정 */
+    background-position: center; /* 배경 이미지가 가운데에 위치하도록 설정 */
+    background-repeat: no-repeat; /* 이미지 반복을 막음 */
+    color: #fff;
+    padding: 1.5rem 9.5rem;
 }
 
 .jumbotron h1 {

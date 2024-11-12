@@ -9,8 +9,8 @@
 <head>
     <%@ include file="../header.jsp" %>
     <title>My Page</title>
-    <link rel="stylesheet" href="<c:url value='/resources/static/mypagebar.css'/>">
-    <link rel="stylesheet" href="<c:url value='/resources/static/mypageint.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/static/mypage/mypagebar.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/static/mypage/mypageint.css'/>">
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>

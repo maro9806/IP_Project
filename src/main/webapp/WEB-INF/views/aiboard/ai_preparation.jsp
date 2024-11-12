@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/ai_preparation.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/aiboard/ai_preparation.css">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -494,8 +494,7 @@
                 const resultDiv = document.getElementById('selectedSelfIntroduction');
                 resultDiv.innerHTML = '<strong>자기소개서</strong>' +
                     '<div class="form-control mb-3"><span>' + company + '</span>' +
-                    '<span> / ' + position + '</span></div>' +
-                    '<strong>예상질문</strong>';
+                    '<span> / ' + position + '</span></div>'
 
                 // 질문 테이블 생성
                 const tableDiv = document.createElement('div');

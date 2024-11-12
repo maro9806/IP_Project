@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/join.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/member/join.css">
 </head>
 <body>
 <jsp:include page="../navbar.jsp" />

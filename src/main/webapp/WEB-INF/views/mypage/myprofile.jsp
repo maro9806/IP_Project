@@ -9,7 +9,7 @@
 <head>
    <%@ include file="../header.jsp" %>
    <title>My Page</title>
-   <link rel="stylesheet" href="<c:url value='/resources/static/myprofile.css'/>">
+   <link rel="stylesheet" href="<c:url value='/resources/static/mypage/myprofile.css'/>">
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>

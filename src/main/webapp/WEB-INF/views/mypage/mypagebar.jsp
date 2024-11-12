@@ -10,7 +10,7 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="<c:url value='/resources/static/mypagebar.css'/>">
+  <link rel="stylesheet" href="<c:url value='/resources/static/mypage/mypagebar.css'/>">
 </head>
 <body>
 <!-- Sidebar -->

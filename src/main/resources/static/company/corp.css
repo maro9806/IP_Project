@@ -6,8 +6,12 @@
 /* Jumbotron styling */
 .jumbotron {
   background-image: url('/resources/static/img/cor-001.png') !important;
-  padding-left: 3rem !important;
-  padding-right: 3rem !important;
+  background-size: cover; /* 배경 이미지가 요소를 꽉 채우도록 설정 */
+  background-position: center; /* 배경 이미지가 가운데에 위치하도록 설정 */
+  background-repeat: no-repeat; /* 이미지 반복을 막음 */
+  color: #fff;
+  padding: 1.5rem 9.5rem;
+  margin-top:70px;
 }
 
 .jumbotron h1 {
@@ -59,7 +63,6 @@
 
 /* SWOT CARD Styling */
 .swot-card {
-  border: none;                     /* 테두리 제거 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 애니메이션 */
   border-radius: 8px;               /* 둥근 모서리 */
@@ -108,7 +111,9 @@
   margin: 0 auto 10px;
   border-radius: 50%;               /* 원형 배경 */
 }
-
+.card-body h5{
+  font-weight: bold;
+}
 /* 각 SWOT 요소에 맞는 색상 */
 .swot-letter-S { color: #65a9f9; } /* Strengths - */
 .swot-letter-W { color: #ffc11b; } /* Weaknesses - 주황색 */

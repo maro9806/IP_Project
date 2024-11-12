@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -7,16 +8,17 @@
 
 <head>
     <title>기업 분석</title>
-    <link rel="stylesheet" href="<c:url value='/resources/static/navbar.css'/>">
-    <link rel="stylesheet" href="<c:url value='/resources/static/corp.css'/>">
+
+    <link rel="stylesheet" href="<c:url value='/resources/static/company/corp.css'/>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>
+
 <div  id="corpContent">
-<div class="jumbotron rounded">
+<div class="jumbotron">
     <h1 class="display-4">기업 분석</h1>
     <p class="lead">AI가 분석해주는 SWOT · 최신 동향</p>
     <hr class="my-4">

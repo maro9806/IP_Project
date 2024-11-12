@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/review_write.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/review_board/review_write.css">
     <title>면접 후기 작성</title>
     <%@ include file="../header.jsp" %>
 </head>

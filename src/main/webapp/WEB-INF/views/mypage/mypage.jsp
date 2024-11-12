@@ -9,7 +9,7 @@
 <head>
     <%@ include file="../header.jsp" %>
     <title>My Page</title>
-    <link rel="stylesheet" href="<c:url value='/resources/static/mypagemain.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/static/mypage/mypagemain.css'/>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
