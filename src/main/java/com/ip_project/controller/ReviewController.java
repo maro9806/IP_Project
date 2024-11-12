@@ -66,7 +66,7 @@ public class ReviewController {
 
 
     @GetMapping("/review_view/{idx}")
-    public String reviewView(Model model, @PathVariable Long idx) {
+    public String reviewView(Model model, @PathVariable("idx") Long idx) {
         service.findById(idx, model);
         return "review_board/review_view";
     }
