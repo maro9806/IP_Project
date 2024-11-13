@@ -29,7 +29,7 @@
 						<h5>면접 환경 설정</h5>
 						<p><sec:authentication property="principal.member.name"/>님 영상 면접을 진행할 자기소개서와 질문을 선택해주세요.</p>
 					</div>
-					<div class="video-container">
+					<div class="video-container bv">
 						<!-- Video placeholder -->
 					</div>
 					<div id="setupVideoError-1" class="video-error" style="display: none;">
