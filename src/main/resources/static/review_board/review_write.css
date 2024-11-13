@@ -83,7 +83,7 @@ body {
 
 .input-field:focus {
     outline: none;
-    border-color: #4F46E5;
+    border-color: #31628b;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
@@ -110,9 +110,9 @@ body {
 }
 
 .toggle-btn.active {
-    background: #4F46E5;
+    background: #31628b;
     color: white;
-    border-color: #4F46E5;
+    border-color: #31628b;
 }
 
 .content-textarea {
@@ -128,7 +128,7 @@ body {
 
 .content-textarea:focus {
     outline: none;
-    border-color: #4F46E5;
+    border-color: #31628b;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
@@ -170,33 +170,33 @@ body {
     padding: 1.5rem 2rem;
     border-top: 1px solid #E5E7EB;
 }
-
 .btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+	padding: 0.75rem 1.5rem;
+	border-radius: 6px;
+	font-size: 1rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s;
 }
 
-.btn-cancel {
-    background: white;
-    border: 1px solid #D1D5DB;
-    color: #374151;
+/* Remove the space between classes */
+.btn.btn-cancel {
+	border: 1px solid #1e3b53;
+	color: black;
 }
 
-.btn-cancel:hover {
-    background: #F3F4F6;
-    border-color: #4B5563;
+.btn.btn-cancel:hover {
+	background: #1e3b53;
+	border-color: #4B5563;
+	color: white;
 }
 
-.btn-submit {
-    background: #4F46E5;
-    border: none;
-    color: white;
+.btn.btn-submit {
+	border: 1px solid #1e3b53;
+	color: black;
 }
 
-.btn-submit:hover {
-    background: #4338CA;
+.btn.btn-submit:hover {
+	background: #1e3b53;
+	color: white;
 }

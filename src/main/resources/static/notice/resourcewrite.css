@@ -65,7 +65,7 @@
 
 .input-field:focus {
     outline: none;
-    border-color: #4F46E5;
+    border-color: #31628b;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
@@ -76,7 +76,7 @@
 .file-label {
     display: inline-block;
     padding: 0.75rem 1.5rem;
-    background: #4F46E5;
+    background: #31628b;
     color: white;
     border-radius: 6px;
     cursor: pointer;
@@ -135,7 +135,7 @@
 }
 
 .btn-submit {
-    background: #4F46E5;
+    background: #31628b;
     border: none;
     color: white;
 }

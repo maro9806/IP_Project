@@ -1,6 +1,6 @@
 /* interview-view.css */
 :root {
-    --primary-color: #3aa275;
+    --primary-color: #31628b;
     --background-color: #f8fafc;
     --card-background: #ffffff;
     --text-primary: #1a1a1a;
@@ -106,7 +106,7 @@ body {
 }
 
 .edit-button:hover {
-    background-color: #246055;
+    background-color: #1e3b53;
 }
 
 .delete-button {
@@ -271,6 +271,49 @@ body {
 
 .modal-confirm:hover {
     background-color: #b91c1c;
+}
+.format-toggle {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 20px;
+	padding: 0 var(--spacing-unit);
+}
+
+.toggle-btn {
+	margin-top: 10px;
+	padding: 8px 16px;
+	border: 1px solid #e5e7eb;
+	background-color: white;
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	transition: all 0.2s;
+	font-size: 0.875rem;
+}
+
+.toggle-btn.active {
+	background-color: var(--primary-color);
+	color: white;
+	border-color: var(--primary-color);
+}
+
+#free-format, #qa-format {
+	display: none;
+}
+
+#free-format.active, #qa-format.active {
+	display: block;
+}
+
+.dummy-warning {
+	background-color: #fff3cd;
+	color: #856404;
+	padding: 10px;
+	margin: 10px var(--spacing-unit);
+	border-radius: var(--border-radius);
+	font-size: 0.875rem;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
 /* Responsive Styles */

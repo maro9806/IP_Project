@@ -16,13 +16,14 @@ public class GoogleCloudConfig {
     @Value("${gcp.project.id}")
     private String projectId;
 
-    @Value("${gcp.bucket.name}")
-    private String bucketName;
+    @Value("${gcp.credentials.location}")
+    private String credentialsPath;  // 추가
 
     @Bean
     public Storage googleCloudStorage() throws IOException {
+        // credentialsPath 설정 사용
         GoogleCredentials credentials = GoogleCredentials.fromStream(
-                new ClassPathResource("gcp-credentials.json").getInputStream()
+                new ClassPathResource(credentialsPath.replace("classpath:", "")).getInputStream()
         );
 
         return StorageOptions.newBuilder()

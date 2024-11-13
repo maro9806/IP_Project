@@ -16,14 +16,14 @@
 
 <body>
 <jsp:include page="../navbar.jsp"/>
-<main class="main-content">
-    <section class="hero-section">
-        <div class="hero-content">
-            <h1>기업 면접 후기 & 리뷰</h1>
-            <p class="hero-subtitle">앞으로 근무할 기업은 어떤 모습일까 궁금하시죠?</p>
-            <p class="hero-subtitle">현직 선배님들의 기업 리뷰와 미리 알아보는 면접 후기</p>
-        </div>
-    </section>
+<main class="main-content" style="margin-top: 0;">
+	<div class="jumbotron">
+			<h1>기업 면접 후기 & 리뷰</h1>
+			<p>앞으로 근무할 기업은 어떤 모습일까 궁금하시죠?</p>
+			<hr>
+			<p>현직 선배님들의 기업 리뷰와 미리 알아보는 면접 후기</p>
+		</div>
+
 
     <div class="container d-flex flex-column" style="gap:0">
         <!-- Search Section -->

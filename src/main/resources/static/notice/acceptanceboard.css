@@ -21,7 +21,7 @@
 }
 
 .write-btn {
-    background: #4F46E5;
+    background: #31628b;
     color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 6px;
@@ -90,7 +90,7 @@
 }
 
 .title-cell a:hover {
-    color: #4F46E5;
+    color: #31628b;
 }
 
 .company-badge {
@@ -120,14 +120,14 @@
     padding: 0.5rem 1rem;
     border: 1px solid #dee2e6;
     border-radius: 4px;
-    color: #4F46E5;
+    color: #31628b;
     text-decoration: none;
 }
 
 .page-link.active {
-    background: #4F46E5;
+    background: #31628b;
     color: white;
-    border-color: #4F46E5;
+    border-color: #31628b;
 }
 
 .page-link:hover:not(.active) {
@@ -150,7 +150,7 @@
 
 .search-btn {
     padding: 0.75rem 1.5rem;
-    background: #4F46E5;
+    background: #31628b;
     color: white;
     border: none;
     border-radius: 6px;

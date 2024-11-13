@@ -43,81 +43,28 @@ body {
     padding: 0 1.5rem;
 }
 
-/* Hero Section */
-.hero-section {
-    position: relative;
-    width: 1368px;
-    margin: 0 auto;
-    padding: 48px 32px;
-    box-sizing: border-box;
-    border-radius: 16px;
-    font-family: "Noto Sans KR", sans-serif;
-    font-size: 16px;
+/* jumbotron */
+.jumbotron {
+    background-image: url('/resources/static/img/ai-banner12.png') !important;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    color: #fff;
+    /*border-radius: 10px;*/
+    padding: 2.5rem 9.5rem;
+    /*margin-left: 10%;*/
+    /*margin-right: 10%;*/
+    margin-top:70px;
 }
 
-/* Overlay */
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: linear-gradient(135deg, #057f78 0%, #9ce975 100%);
-    border-radius: 16px;
-}
-
-.hero-content {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    color: white;
-    z-index: 1;
-}
-
-.hero-content h1 {
+.jumbotron h1 {
     font-size: 2.5rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
+    font-family: 'Noto Sans KR';
 }
 
-.hero-subtitle {
-    opacity: 0.9;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1400px) {
-    .hero-section {
-        width: 100%;
-        margin: 0;
-        border-radius: 0;
-    }
-
-    .hero-section::before {
-        border-radius: 0;
-    }
-}
-
-@media (max-width: 768px) {
-    .hero-section {
-        height: auto;
-        min-height: 240px;
-        padding: 32px 16px;
-    }
-
-    .hero-content h1 {
-        font-size: 2rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1rem;
-    }
+.jumbotron p {
+    font-size: 1.2rem;
+    font-family: 'Noto Sans KR';
 }
 
 /* Search Section */
@@ -160,7 +107,7 @@ body {
     flex: 1;
     min-width: 650px;
     padding: 0.75rem;
-    border: 1px solid #9ce975;
+    border: 1px solid #31628b;
     border-radius: 8px;
     font-size: 0.95rem;
 }
@@ -171,7 +118,7 @@ body {
 }
 
 .btn-primary {
-    background: #3aa376;
+    background: #31628b;
     color: white;
     padding: 0.75rem 1.5rem;
     border: none;
@@ -181,7 +128,7 @@ body {
 }
 
 .btn-primary:hover {
-    background: #057f78;
+    background: #1e3b53;
 }
 
 .btn-secondary {
@@ -215,7 +162,7 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: #3aa376;
+    background: #31628b;
     color: white;
     padding: 0.75rem 1.5rem;
     border: none;
@@ -225,9 +172,7 @@ body {
     float: right;
 }
 
-.btn-write:hover {
-    transform: translateY(-2px);
-}
+
 
 /* Table Styles */
 .reviews-table {
@@ -280,7 +225,7 @@ tr:hover {
 }
 
 .review-card:hover {
-    border-color: #3aa376;
+    border-color: #31628b;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }

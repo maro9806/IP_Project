@@ -18,6 +18,10 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
         <div class="container1">
+	        <div class="brand-section">
+		        <img src="<c:url value='/resources/static/img/white.PNG'/>" alt="lgLogo" class="lglogo">
+		        <h1 class="login-title">AI 면접의 첫 걸음</h1>
+	        </div>
             <div class="form-group">
                 <label for="id">아이디</label>
             </div>
@@ -29,7 +33,7 @@
                        oninput="checkIdInput()"
                        pattern="^[a-zA-Z0-9]{4,20}$"
                        title="4~20자의 영문, 숫자만 사용 가능합니다">
-                <button type="button" class="id-check-btn" id="check-btn" style="display: none;">중복확인</button>
+                <button type="button" class="id-check-btn" id="check-btn">중복확인</button>
                 <span id="id-message" class="message"></span>
             </div>
 
@@ -52,9 +56,11 @@
             </div>
         </div>
 
-        <hr>
-
         <div class="container2">
+	        <div class="brand-section">
+		        <img src="<c:url value='/resources/static/img/white.PNG'/>" alt="lgLogo" class="lglogo">
+		        <h1 class="login-title">AI 면접의 첫 걸음</h1>
+	        </div>
             <div class="form-group">
                 <label for="name">이름</label>
                 <input type="text" id="name" name="name"
@@ -84,12 +90,146 @@
             </div>
         </div>
 
-        <hr class="hr2">
         <button type="submit" class="signup-btn" disabled>회원가입</button>
     </form>
 </div>
 
 <script>
+    // Initial setup
+    document.addEventListener('DOMContentLoaded', function() {
+        const container1 = document.querySelector('.container1');
+        const container2 = document.querySelector('.container2');
+        const signupBtn = document.querySelector('.signup-btn');
+
+        // Hide container2 and signup button initially
+        container2.style.display = 'none';
+        signupBtn.style.display = 'none';
+
+        // Add 'Next' button after container1
+        const nextButton = document.createElement('button');
+        nextButton.type = 'button';
+        nextButton.className = 'next-btn';
+        nextButton.textContent = '다음';
+        nextButton.disabled = true;
+
+        container1.insertAdjacentElement('afterend', nextButton);
+
+        // Container 1 validation function
+        function validateContainer1() {
+            const id = document.getElementById('id');
+            const pw = document.getElementById('pw');
+            const confirmPw = document.getElementById('confirm-pw');
+
+            const idMessage = document.getElementById('id-message');
+            const pwMessage = document.getElementById('pw-message');
+            const confirmPwMessage = document.getElementById('confirm-pw-message');
+
+            const isIdValid = idMessage.style.color === 'green';
+            const isPwValid = pwMessage.style.color === 'green';
+            const isConfirmPwValid = confirmPwMessage.style.color === 'green';
+
+            return isIdValid && isPwValid && isConfirmPwValid && isIdChecked;
+        }
+
+        // Update next button state
+        function updateNextButton() {
+            nextButton.disabled = !validateContainer1();
+        }
+
+        // Add event listeners to container1 inputs
+        document.getElementById('id').addEventListener('input', updateNextButton);
+        document.getElementById('pw').addEventListener('input', updateNextButton);
+        document.getElementById('confirm-pw').addEventListener('input', updateNextButton);
+
+        // Update next button when ID check is completed
+        const originalFetch = window.fetch;
+        window.fetch = function() {
+            return originalFetch.apply(this, arguments)
+                .then(response => {
+                    response.clone().json().then(() => {
+                        setTimeout(updateNextButton, 100);
+                    });
+                    return response;
+                });
+        };
+
+        // Next button click handler
+        nextButton.addEventListener('click', function() {
+            if (validateContainer1()) {
+                // Slide animation
+                container1.style.transition = 'transform 0.5s, opacity 0.5s';
+                container1.style.transform = 'translateX(-50px)';
+                container1.style.opacity = '0';
+
+                setTimeout(function() {
+                    container1.style.display = 'none';
+                    nextButton.style.display = 'none';
+
+                    container2.style.display = 'block';
+                    container2.style.transform = 'translateX(50px)';
+                    container2.style.opacity = '0';
+
+                    signupBtn.style.display = 'block';
+
+                    requestAnimationFrame(function() {
+                        container2.style.transition = 'transform 0.5s, opacity 0.5s';
+                        container2.style.transform = 'translateX(0)';
+                        container2.style.opacity = '1';
+                    });
+                }, 500);
+            }
+        });
+
+        // Back to container1 when clicking browser's back button
+        window.addEventListener('popstate', function() {
+            if (container2.style.display === 'block') {
+                showContainer1();
+            }
+        });
+
+        // Add event listeners for container2 validation
+        const container2Inputs = container2.querySelectorAll('input');
+        container2Inputs.forEach(function(input) {
+            input.addEventListener('input', updateSubmitButton);
+        });
+    });
+
+    // Modify the existing updateSubmitButton function
+    function updateSubmitButton() {
+        const submitBtn = document.querySelector('.signup-btn');
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+
+        const phoneRegex = /^01[0-9]{8,9}$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        const isValid =
+            name.length > 0 &&
+            phoneRegex.test(phone) &&
+            emailRegex.test(email);
+
+        submitBtn.disabled = !isValid;
+    }
+
+    // Add a function to show container1 (for back button)
+    function showContainer1() {
+        const container1 = document.querySelector('.container1');
+        const container2 = document.querySelector('.container2');
+        const nextButton = document.querySelector('.next-btn');
+        const signupBtn = document.querySelector('.signup-btn');
+
+        container2.style.display = 'none';
+        signupBtn.style.display = 'none';
+
+        container1.style.display = 'block';
+        nextButton.style.display = 'block';
+
+        container1.style.transform = 'translateX(0)';
+        container1.style.opacity = '1';
+    }
+
+
     let isIdChecked = false;
 
     function checkIdInput() {
@@ -250,7 +390,5 @@
     window.addEventListener('load', updateSubmitButton);
 </script>
 
-
-<%@ include file="../footer.jsp" %>
 </body>
 </html>
