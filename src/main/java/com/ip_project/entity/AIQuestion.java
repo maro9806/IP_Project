@@ -16,7 +16,10 @@ public class AIQuestion {
     private String content;
     private Integer orderNumber;
     private String answer;
-    private String questionType; // COMPANY, JOB, EXPERIENCE
+    private String questionType;
+
+    @Column(name = "VIDEO_URL", length = 500)  // 추가
+    private String videoUrl;                    // 추가
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "interview_id")

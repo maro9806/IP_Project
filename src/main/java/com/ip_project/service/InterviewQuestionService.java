@@ -13,7 +13,7 @@ public class InterviewQuestionService {
     private final JdbcTemplate jdbcTemplate;
 
     public List<Map<String, Object>> getQuestionsBySelfIdx(Long selfIdx) {
-        String sql = "SELECT IPRO_IDX, IPRO_QUESTION FROM INTERVIEW_PRO WHERE SELF_IDX = ? ORDER BY IPRO_IDX";
+        String sql = "SELECT IPRO_IDX, IPRO_QUESTION, IPRO_TYPE FROM INTERVIEW_PRO WHERE SELF_IDX = ? ORDER BY IPRO_IDX";
         return jdbcTemplate.queryForList(sql, selfIdx);
     }
 }

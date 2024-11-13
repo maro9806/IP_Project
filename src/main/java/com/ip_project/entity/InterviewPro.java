@@ -25,6 +25,9 @@ public class InterviewPro {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column(name = "IPRO_TYPE")
+    private String iproType; //직무 or 인성
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "INTERVIEW_IDX", referencedColumnName = "INTERVIEW_IDX")
     private InterviewBoard interviewBoard;

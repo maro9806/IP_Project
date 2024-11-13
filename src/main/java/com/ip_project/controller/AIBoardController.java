@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import com.ip_project.service.VideoStorageService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -40,6 +41,8 @@ public class AIBoardController {
     private final VirtualService virtualService;
     private final InterviewQuestionService questionService;
     private final RestTemplate restTemplate;
+    private final VideoStorageService videoStorageService;
+
 
     private static final String FASTAPI_URL = "http://127.0.0.1:8000/generate-interview";
 
@@ -203,9 +206,19 @@ public class AIBoardController {
 
     @PostMapping("/api/interview/{id}/video")
     @ResponseBody
-    public ResponseEntity<Void> submitVideo(@PathVariable Long id, @RequestParam("video") MultipartFile file) {
-        interviewService.submitVideoResponse(id, file);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Map<String, String>> submitVideo(
+            @PathVariable Long id,
+            @RequestParam("video") MultipartFile file,
+            @RequestParam("questionNumber") Integer questionNumber) {
+        try {
+            interviewService.submitVideoResponse(id, file, questionNumber);
+            String videoUrl = interviewService.getVideoUrl(id, questionNumber);
+            return ResponseEntity.ok(Map.of("url", videoUrl));
+        } catch (Exception e) {
+            log.error("Error uploading video", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed to upload video"));
+        }
     }
 
     @PostMapping("/api/virtual/interview")

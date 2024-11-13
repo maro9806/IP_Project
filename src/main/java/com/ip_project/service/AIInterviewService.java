@@ -8,6 +8,7 @@ import com.ip_project.mapper.AIInterviewMapper;
 import com.ip_project.repository.AIInterviewRepository;
 import com.ip_project.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AIInterviewService {
     private final AIInterviewRepository interviewRepository;
     private final AIInterviewMapper interviewMapper;
-    private final AIVideoStorageService videoStorageService;
+    private final VideoStorageService videoStorageService; // 새로운 GCS 서비스
     private final JdbcTemplate jdbcTemplate;
 
 
@@ -40,23 +42,50 @@ public class AIInterviewService {
     }
 
     @Transactional
-    public void submitVideoResponse(Long interviewId, MultipartFile file) {
+    public void submitVideoResponse(Long interviewId, MultipartFile file, Integer questionNumber) {
         AIInterview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new EntityNotFoundException("Interview not found with id: " + interviewId));
 
-        String videoUrl = videoStorageService.store(file);
-        interview.setUrl(videoUrl);
-        interview.setVideoStatus("SUBMITTED");  // String으로 직접 설정
-        interview.setVideoSize(file.getSize());
-        interview.setVideoFormat(file.getContentType());
-        interview.setVideoDuration(0L);
+        try {
+            // GCS에 비디오 저장
+            String videoUrl = videoStorageService.storeVideo(file, interviewId, questionNumber);
+
+            // AI_INTERVIEW 테이블의 URL 업데이트
+            String updateSql = "UPDATE AI_INTERVIEW " +
+                    "SET AI_URL = ?, " +
+                    "VIDEO_STATUS = ?, " +
+                    "VIDEO_SIZE = ?, " +
+                    "VIDEO_FORMAT = ? " +
+                    "WHERE AI_IDX = ?";
+
+            jdbcTemplate.update(updateSql,
+                    videoUrl,
+                    "SUBMITTED",
+                    file.getSize(),
+                    file.getContentType(),
+                    interviewId);
+
+            log.info("Successfully uploaded video for interview {}", interviewId);
+
+        } catch (Exception e) {
+            log.error("Failed to upload video for interview {}", interviewId, e);
+            throw new RuntimeException("Failed to upload video", e);
+        }
     }
 
     @Transactional(readOnly = true)
-    public AIInterviewDTO getInterview(Long id) {
-        AIInterview interview = interviewRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Interview not found with id: " + id));
-        return interviewMapper.toDto(interview);
+    public String getVideoUrl(Long interviewId, Integer questionNumber) {
+        String sql = "SELECT AI_URL FROM AI_INTERVIEW WHERE AI_IDX = TO_NUMBER(?)";
+
+        try {
+            return jdbcTemplate.queryForObject(sql,
+                    String.class,
+                    String.valueOf(interviewId)
+            );
+        } catch (Exception e) {
+            log.error("Failed to get video URL for interview {} question {}", interviewId, questionNumber, e);
+            return null;
+        }
     }
 
     @Transactional(readOnly = true)

@@ -12,45 +12,6 @@ sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='repla
 
 load_dotenv()
 
-# #def get_db_connection():
-#     try:
-#         # 디버그 정보 출력
-#         print("=== 연결 디버그 정보 ===")
-#         oracle_client_path = r"C:\Users\USER\Oracle\instantclient_23_6"
-#         print(f"Oracle Client 경로: {oracle_client_path}")
-#         print(f"환경변수 확인:")
-#         print(f"DB_HOST: {os.getenv('DB_HOST')}")
-#         print(f"DB_PORT: {os.getenv('DB_PORT')}")
-#         print(f"DB_SERVICE: {os.getenv('DB_SERVICE')}")
-#         print(f"DB_USER: {os.getenv('DB_USER')}")
-#         print(f"ORACLE_HOME: {os.environ.get('ORACLE_HOME')}")
-#         print(f"TNS_ADMIN: {os.environ.get('TNS_ADMIN')}")
-#
-#         # Oracle 클라이언트 초기화
-#         try:
-#             oracledb.init_oracle_client(lib_dir=oracle_client_path)
-#         except Exception as init_error:
-#             print(f"Oracle 클라이언트 초기화 오류: {str(init_error)}")
-#             raise
-#
-#         # 연결 시도
-#         dsn = f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_SERVICE')}"
-#         print(f"연결 문자열: {dsn}")
-#
-#         connection = oracledb.connect(
-#             user=os.getenv('DB_USER'),
-#             password=os.getenv('DB_PASSWORD'),
-#             dsn=dsn
-#         )
-#         print("DB 연결 성공")
-#         return connection
-#     except Exception as e:
-#         print(f"DB 연결 오류 상세:")
-#         print(f"오류 타입: {type(e)}")
-#         print(f"오류 메시지: {str(e)}")
-#         raise
-
-
 def get_db_connection():
     try:
         # 기본 Oracle 클라이언트 초기화
@@ -108,18 +69,20 @@ def generate_and_save_questions(self_idx, company_name, job_position, intro_text
             job_questions = job_future.result()
             personality_questions = personality_future.result()
 
+        # 질문 리스트를 분리하고 정리
         all_questions = []
+
         if isinstance(job_questions, str):
-            all_questions.extend([q.strip() for q in job_questions.split('\n') if q.strip()])
+            job_questions_list = [q.strip() for q in job_questions.split('\n') if q.strip()]
         else:
-            all_questions.extend(job_questions)
+            job_questions_list = job_questions
 
         if isinstance(personality_questions, str):
-            all_questions.extend([q.strip() for q in personality_questions.split('\n') if q.strip()])
+            personality_questions_list = [q.strip() for q in personality_questions.split('\n') if q.strip()]
         else:
-            all_questions.extend(personality_questions)
+            personality_questions_list = personality_questions
 
-        print(f"생성된 질문 수: {len(all_questions)}")
+        print(f"생성된 직무 질문 수: {len(job_questions_list)}, 인성 질문 수: {len(personality_questions_list)}")
 
         # 질문 저장
         connection = get_db_connection()
@@ -129,10 +92,18 @@ def generate_and_save_questions(self_idx, company_name, job_position, intro_text
                 cursor.execute("DELETE FROM INTERVIEW_PRO WHERE SELF_IDX = :1", [self_idx])
 
                 print("새 질문 저장 중...")
-                for i, question in enumerate(all_questions, 1):
+                # 직무 질문 저장
+                for question in job_questions_list:
                     cursor.execute("""
-                        INSERT INTO INTERVIEW_PRO (IPRO_IDX, IPRO_QUESTION, SELF_IDX)
-                        VALUES ((SELECT NVL(MAX(IPRO_IDX), 0) + 1 FROM INTERVIEW_PRO), :1, :2)
+                        INSERT INTO INTERVIEW_PRO (IPRO_IDX, IPRO_QUESTION, IPRO_TYPE, SELF_IDX)
+                        VALUES ((SELECT NVL(MAX(IPRO_IDX), 0) + 1 FROM INTERVIEW_PRO), :1, 'position', :2)
+                    """, [question, self_idx])
+
+                # 인성 질문 저장
+                for question in personality_questions_list:
+                    cursor.execute("""
+                        INSERT INTO INTERVIEW_PRO (IPRO_IDX, IPRO_QUESTION, IPRO_TYPE, SELF_IDX)
+                        VALUES ((SELECT NVL(MAX(IPRO_IDX), 0) + 1 FROM INTERVIEW_PRO), :1, 'personal', :2)
                     """, [question, self_idx])
 
                 connection.commit()
@@ -143,6 +114,7 @@ def generate_and_save_questions(self_idx, company_name, job_position, intro_text
     except Exception as e:
         print(f"질문 생성/저장 오류: {str(e)}")
         raise
+
 
 def main(self_idx):
     try:

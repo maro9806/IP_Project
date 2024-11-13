@@ -28,7 +28,7 @@
 
 <!-- Chat Section -->
 <section class="chat-section">
-    <h2>이런 고민을 하고 계시다면<br>지금 IP:PRO와 함께해 보세요!
+    <h2>이런 고민을 하고 계시다면<br>지금 IPro와 함께해 보세요!
     </h2>
     <div class="chat-bubbles">
         <div class="chat-bubble left">"면접 준비는 해야 하는데 어디서부터 시작해야 할지 모르겠어요."</div>
@@ -45,7 +45,7 @@
             <h2 class="main-heading">
                 기업 직무 경험 <br>
                 세가지 종류의 예상 면접 질문 제공 <br>
-                IPRO의 피드백을 바탕으로 면접준비를 함께 해 보세요!
+                IPro의 피드백을 바탕으로 면접준비를 함께 해 보세요!
             </h2>
             <p class="sub-text">
                 다양한 기업 정보를 가지고 있는 AI피드백으로<br>
@@ -60,7 +60,7 @@
             </div>
             <div class="feature-text">
                 <span class="feature-tag">다양한 피드백 & 프로그램</span>
-                <h3>IPRO에서 준비한<br>분야별, 업종별 다양한 피드백과<br>프로그램을 살펴보세요!</h3>
+                <h3>IPro에서 준비한<br>분야별, 업종별 다양한 피드백과<br>프로그램을 살펴보세요!</h3>
             </div>
         </div>
     </div>
@@ -72,7 +72,7 @@
     <!-- Title Section -->
     <div class="title-section">
         <h2 class="main-title">최고의 면접을 위한</h2>
-        <h2 class="main-title">가장 똑똑한 방법, IP:PRO</h2>
+        <h2 class="main-title">가장 똑똑한 방법, IPro</h2>
         <div class="underline"></div>
     </div>
 
