@@ -76,7 +76,7 @@
 
         <div class="box">
             <div class="well text-left" style="font-size: 20px;">
-                <p  id="question-content" style="font-size:21px; font-weight:bold">${questions[0].IPRO_QUESTION} </p>
+                <span  id="question-content" style="font-size:20px; font-weight:bold">${questions[0].IPRO_QUESTION} </span>
             </div>
 
             <div class="answer-box well text-left">
@@ -104,7 +104,7 @@
             </div>
 
             <div class="answer-box well text-left">
-                <button class="accordion" style="background-color: #242222; color: white;">답변 피드백</button>
+                <div class="feedback-header">답변 피드백</div>
                 <div class="panel" style="max-height: 500px; background-color: white; border: 1px solid #dedede;">
                     <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
                 </div>
@@ -125,33 +125,12 @@
                 var feedbackBox = document.querySelector('.box2');
                 var container = document.querySelector('.container2'); // container를 여기서 정의
 
-                feedbackBox.classList.toggle('show'); // 'show' 클래스 추가/제거로 전환
-
-                // box2가 보일 때 'centered' 클래스를 추가하고, 숨길 때 제거
-                if (feedbackBox.classList.contains('show')) {
-                    container.classList.add('centered'); // box2가 보이면 centered 클래스를 추가
-                } else {
-                    container.classList.remove('centered'); // box2가 숨겨지면 centered 클래스를 제거
+                // 항상 보이게만 하고 숨기지는 않음
+                if (!feedbackBox.classList.contains('show')) {
+                    feedbackBox.classList.add('show');
+                    container.classList.add('centered');
                 }
             });
-
-            // 모든 아코디언 버튼을 선택
-            var acc = document.getElementsByClassName("accordion");
-
-            for (var i = 0; i < acc.length; i++) {
-                acc[i].addEventListener("click", function () {
-                    // 현재 버튼 활성화 토글
-                    this.classList.toggle("active");
-
-                    // 패널을 찾고 토글 처리
-                    var panel = this.nextElementSibling;
-                    if (panel.style.maxHeight) {
-                        panel.style.maxHeight = null; // 접기
-                    } else {
-                        panel.style.maxHeight = panel.scrollHeight + "px"; // 펼치기
-                    }
-                });
-            }
 
             // textarea와 글자 수 표시하는 div 요소
             const answer = document.getElementById("answer");
@@ -231,17 +210,26 @@
     // 질문 표시 함수
     function showQuestion(index) {
         currentIndex = index;
-        document.getElementById("question-content").textContent = '질문'+ (index+1) + '. ' + questions[currentIndex].question;
+        // 질문 번호와 내용을 줄바꿈과 함께 표시
+        document.getElementById("question-content").innerHTML = '<span class="q-title">질문 ' + (index + 1) + '</span><br>' + questions[currentIndex].question;
         document.getElementById("answer").value = answers[currentIndex] || ''; // 이전에 작성한 답변이 있으면 불러오기
 
-    // 피드백을 해당 질문에 맞게 표시
+        const feedbackBox = document.querySelector('.box2');
+        const container = document.querySelector('.container2');
         const feedbackPanel = document.querySelector('.panel');
+
+        // 해당 질문에 대한 피드백이 있는지 확인
         if (feedbacks[currentIndex]) {
+            // 피드백이 있으면 box2를 보이게 하고 피드백 내용 표시
+            feedbackBox.classList.add('show');
+            container.classList.add('centered');
             feedbackPanel.innerHTML = "<div class='feedback-content'> <div class='feedback-text'>" + feedbacks[currentIndex] + "</div> </div>";
         } else {
-            feedbackPanel.innerHTML = "<p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>";
+            // 피드백이 없으면 box2를 숨기고 기본 메시지 표시
+            feedbackBox.classList.remove('show');
+            container.classList.remove('centered');
+            feedbackPanel.innerHTML = "<p>이곳에 피드백이 표시됩니다. 잠시만 기다려주세요.</p>";
         }
-
         // progress bar 업데이트
         updateProgressBar();
 
@@ -254,6 +242,7 @@
         } else {
             document.getElementById("next").textContent = "다음 질문";
         }
+
     }
 
     // progress bar 업데이트 함수
@@ -314,6 +303,7 @@
 
         }
     }
+
 
     // 다음 질문 버튼 클릭 시
     function nextQuestion() {
@@ -380,25 +370,35 @@
                 feedbacks[currentIndex] = response;  // 현재 질문에 대한 피드백 저장
 
 
-        // 응답받은 피드백을 'AI 피드백' 영역에 표시
-        const feedbackPanel = document.querySelector('.panel');
-        const formattedResponse = response
-            .split('\n')
-            .map(line => line.trim())
-            .join('<br>');
+                // 응답받은 피드백을 'AI 피드백' 영역에 표시
+                const feedbackPanel = document.querySelector('.panel');
+                const formattedResponse = response
+                    .split('\n')
+                    .map(line => line.trim())
+                    .join('<br>');
 
-        feedbackPanel.innerHTML =
-            "<div class='feedback-content'> <div class='feedback-text' style='white-space: pre-line; line-height: 1.6;'>" + formattedResponse + "</div></div>";
-            },
+                feedbackPanel.innerHTML =
+                    "<div class='feedback-content'> <div class='feedback-text' style='white-space: pre-line; line-height: 1.6;'>" + formattedResponse + "</div></div>";
+                // 'box2'를 부드럽게 나타내기
+                // 'box2'를 부드럽게 나타내기
+                var feedbackBox = document.querySelector('.box2');
+                var container = document.querySelector('.container2'); // container를 여기서 정의
+
+                // box2가 이미 보이고 있다면 추가로 숨기지 않도록 조건 추가
+                if (!feedbackBox.classList.contains('show')) {
+                    feedbackBox.classList.add('show');  // 'show' 클래스 추가로 box2 보이게
+                    container.classList.add('centered'); // box2가 보이면 centered 클래스를 추가
+                }
+                    },
             error: function(xhr, status, error) {
-                // 오류 발생 시 처리
-                console.error("피드백 받기 실패:" + error);
-                console.error("상태 코드:", xhr.status);
-                console.error("응답 텍스트:", xhr.responseText);
-                alert("AI 피드백 요청에 실패했습니다.");
-            }
-        });
-    });
+                        // 오류 발생 시 처리
+                        console.error("피드백 받기 실패:" + error);
+                        console.error("상태 코드:", xhr.status);
+                        console.error("응답 텍스트:", xhr.responseText);
+                        alert("AI 피드백 요청에 실패했습니다.");
+                    }
+                });
+            });
 </script>
 
 
