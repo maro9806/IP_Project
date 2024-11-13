@@ -48,10 +48,10 @@ def get_personality_questions(user_introduction):
 
     return generate_ai_message(qa_chain, query)
 
-def get_answer_feedback(question, answer, job_position=None, is_job_question=False):
+def get_answer_feedback(question, answer, job_position=None, ipro_type=None):
     llm = get_llm()
 
-    if is_job_question and job_position:
+    if ipro_type == 'position':
         prompt = f"""다음은 {job_position} 직무 면접 질문과 답변입니다:
 
 질문: {question}
@@ -105,10 +105,13 @@ def get_answer_feedback(question, answer, job_position=None, is_job_question=Fal
 
 [구체적인 제안]
 - 개선을 위한 실질적인 조언을 제공하세요.
+- 올바른 답변으로 수정하세요.
 - **잘못된 정보가 없는 경우 이 섹션에서 불필요한 언급은 생략하세요.**
+
 """
 
     response = llm.invoke(prompt)
+
     return response.content
 
 

@@ -10,8 +10,8 @@ import com.ip_project.repository.MemberRepository;
 import com.ip_project.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,14 +19,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import com.ip_project.service.VideoStorageService;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import java.util.Collections;
 
 @Slf4j
 @Controller
@@ -45,6 +46,7 @@ public class AIBoardController {
 
 
     private static final String FASTAPI_URL = "http://127.0.0.1:8000/generate-interview";
+    private static final String FASTAPI_URL2 = "http://127.0.0.1:8000/feedback-interview";
 
     @GetMapping("/ai_board")
     public String aiBoard() {
@@ -151,6 +153,68 @@ public class AIBoardController {
             log.error("Error in aiMakeQuestion for selfIdx: {}", selfIdx, e);
             model.addAttribute("error", "오류가 발생했습니다.");
             return "redirect:/aiboard/ai_custominfo";
+        }
+    }
+
+    @PostMapping("/ai_feedback")
+    @ResponseBody
+    public ResponseEntity<String> aiFeedback(@RequestBody Map<String, Object> requestBody) {
+        try {
+            String question = (String) requestBody.get("question");
+            String answer = (String) requestBody.get("answer");
+            Long selfIdx = Long.valueOf(requestBody.get("self_idx").toString());
+            String isJobQuestion = (String) requestBody.get("isJobQuestion");
+
+            // HTTP 헤더 설정 수정
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);  // UTF-8 명시적 설정
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON_UTF8));
+
+            // RestTemplate 설정 추가 (Bean 설정으로 이동하는 것을 권장)
+            restTemplate.getMessageConverters()
+                    .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
+            // FastAPI 서버로 요청을 보낼 데이터 구성
+            Map<String, Object> feedbackRequest = new HashMap<>();
+            feedbackRequest.put("question", question);
+            feedbackRequest.put("answer", answer);
+            feedbackRequest.put("self_idx", selfIdx);
+            feedbackRequest.put("isJobQuestion", isJobQuestion);
+
+            // HttpEntity 객체 생성
+            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(feedbackRequest, headers);
+
+            // exchange() 대신 postForEntity() 사용
+            ResponseEntity<Map> response = restTemplate.postForEntity(
+                    FASTAPI_URL2,
+                    new HttpEntity<>(feedbackRequest, headers),
+                    Map.class
+            );
+
+            // 응답 로깅
+            log.debug("Request Headers: " + headers);
+            log.debug("Request Body: " + feedbackRequest);
+            log.debug("Response Status: " + response.getStatusCode());
+            log.debug("Response Headers: " + response.getHeaders());
+            log.debug("Response Body: " + response.getBody());
+
+            // 응답 상태 확인
+            if (response.getStatusCode() != HttpStatus.OK) {
+                log.error("FastAPI 응답 상태 코드: " + response.getStatusCode());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+
+            Map<String, Object> responseBody = response.getBody();
+            if (responseBody == null) {
+                log.error("FastAPI 응답 본문이 null입니다.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+
+            String feedback = (String) responseBody.get("feedback");
+            return ResponseEntity.ok(feedback);
+        } catch (Exception e) {
+            log.error("피드백 처리 오류", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

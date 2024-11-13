@@ -108,14 +108,13 @@
                 <div class="panel" style="max-height: 500px; background-color: white; border: 1px solid #dedede;">
                     <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
                 </div>
-
-                <button class="accordion" style="background-color: #242222; color: white;">피드백 적용 답변</button>
-                <div class="panel" style="max-height: 500px; background-color: white; border: 1px solid #dedede;">
-                    <p>다른 내용을 여기에 표시할 수 있습니다. 여러 개의 아코디언을 만들 수 있습니다.</p>
-                    <div class="buttons">
-                        <button class="btn btn-warning" style="margin:10px;">AI 피드백 적용</button>
-                    </div>
-                </div>
+<%--                <button class="accordion" style="background-color: #242222; color: white;">피드백 적용 답변</button>--%>
+<%--                <div class="panel" style="max-height: 500px; background-color: white; border: 1px solid #dedede;">--%>
+<%--                    <p>다른 내용을 여기에 표시할 수 있습니다. 여러 개의 아코디언을 만들 수 있습니다.</p>--%>
+<%--                    <div class="buttons">--%>
+<%--                        <button class="btn btn-warning" style="margin:10px;">AI 피드백 적용</button>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
             </div>
         </div>
 
@@ -208,12 +207,17 @@
     // 각 질문의 상태를 저장할 배열 (0: 미작성, 1: 작성중, 2: 작성 완료)
     const questionStates = [0, 0, 0, 0, 0, 0];
 
-    // 질문 배열
+    // 서버에서 전달된 questions 데이터를 JavaScript 배열로 변환
     const questions = [
         <c:forEach var="question" items="${questions}">
-        "${question.IPRO_QUESTION}"<c:if test="${!fn:contains(question, 'last')}">,</c:if>
+        {
+            "question": "${question.IPRO_QUESTION}",
+            "type": "${question.IPRO_TYPE}"
+        }
+        <c:if test="${!fn:contains(question, 'last')}">,</c:if>
         </c:forEach>
     ];
+
 
     // 현재 질문 인덱스
     let currentIndex = 0;
@@ -227,8 +231,16 @@
     // 질문 표시 함수
     function showQuestion(index) {
         currentIndex = index;
-        document.getElementById("question-content").textContent = '질문'+ (index+1) + '. ' + questions[currentIndex];
+        document.getElementById("question-content").textContent = '질문'+ (index+1) + '. ' + questions[currentIndex].question;
         document.getElementById("answer").value = answers[currentIndex] || ''; // 이전에 작성한 답변이 있으면 불러오기
+
+    // 피드백을 해당 질문에 맞게 표시
+        const feedbackPanel = document.querySelector('.panel');
+        if (feedbacks[currentIndex]) {
+            feedbackPanel.innerHTML = "<div class='feedback-content'> <div class='feedback-text'>" + feedbacks[currentIndex] + "</div> </div>";
+        } else {
+            feedbackPanel.innerHTML = "<p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>";
+        }
 
         // progress bar 업데이트
         updateProgressBar();
@@ -332,7 +344,64 @@
     }
 
 
+
+    // 각 질문에 대한 피드백을 저장할 객체
+    const feedbacks = {};
+    // AI 피드백 받기 버튼 클릭 시 ------------------------------------------------------------------
+    document.getElementById('feedback-btn').addEventListener('click', function () {
+        // 작성된 답변과 selfIdx 값 추출
+        const fullQuestion = document.getElementById('question-content').textContent;
+        const question = fullQuestion.replace(/^질문\d+\.\s*/, '');
+        const answer = document.getElementById('answer').value;
+        const selfIdx = "${param.selfIdx}";  // JSP에서 selfIdx 값 추출 (컨트롤러에서 전달된 값)
+        const isJobQuestion = questions[currentIndex].type; // 직무 질문 여부
+
+        // 답변이 비어있는지 확인
+        if (!answer.trim()) {
+            alert("답변을 작성해주세요.");
+            return;
+        }
+
+        // ajax 요청 보내기
+        $.ajax({
+            type: "POST",  // 요청 방식
+            url: "/aiboard/ai_feedback",  // 컨트롤러의 엔드포인트
+            contentType: "application/json",
+            data: JSON.stringify({
+                question: question,
+                answer: answer,
+                self_idx: selfIdx,  // selfIdx 값도 함께 보내기
+                isJobQuestion: isJobQuestion  // 기업/직무 여부
+            }),
+            success: function(response) {
+                // 서버에서 응답이 성공적으로 오면 처리
+                console.log("피드백 받기 성공:", response);
+                // 피드백을 'feedbacks' 객체에 저장
+                feedbacks[currentIndex] = response;  // 현재 질문에 대한 피드백 저장
+
+
+        // 응답받은 피드백을 'AI 피드백' 영역에 표시
+        const feedbackPanel = document.querySelector('.panel');
+        const formattedResponse = response
+            .split('\n')
+            .map(line => line.trim())
+            .join('<br>');
+
+        feedbackPanel.innerHTML =
+            "<div class='feedback-content'> <div class='feedback-text' style='white-space: pre-line; line-height: 1.6;'>" + formattedResponse + "</div></div>";
+            },
+            error: function(xhr, status, error) {
+                // 오류 발생 시 처리
+                console.error("피드백 받기 실패:" + error);
+                console.error("상태 코드:", xhr.status);
+                console.error("응답 텍스트:", xhr.responseText);
+                alert("AI 피드백 요청에 실패했습니다.");
+            }
+        });
+    });
 </script>
+
+
 
 <!-- HTML -->
 <%@ include file="../footer.jsp" %>

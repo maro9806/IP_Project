@@ -478,7 +478,7 @@
             if (loadingIndicator) {
                 loadingIndicator.remove();
             }
-        }, 2000);
+        }, 20000);
     }
 }
 </script>
