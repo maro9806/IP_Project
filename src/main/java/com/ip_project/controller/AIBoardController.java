@@ -43,6 +43,7 @@ public class AIBoardController {
     private final InterviewQuestionService questionService;
     private final RestTemplate restTemplate;
     private final VideoStorageService videoStorageService;
+    private final AnswerService answerService;
 
 
     private static final String FASTAPI_URL = "http://127.0.0.1:8000/generate-interview";
@@ -304,6 +305,20 @@ public class AIBoardController {
             return ResponseEntity.ok(createdInterview);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/getAnswer")
+    public ResponseEntity<Map<String, String>> getAnswer(
+            @RequestParam("selfIdx") Long selfIdx,
+            @RequestParam("questionNumber") Integer questionNumber) {
+        try {
+            String answer = answerService.getAnswer(selfIdx, questionNumber);
+            return ResponseEntity.ok(Map.of("answer", answer != null ? answer : "답변이 아직 없습니다."));
+        } catch (Exception e) {
+            log.error("답변 조회 실패", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "답변을 불러오는데 실패했습니다."));
         }
     }
 }
