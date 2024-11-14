@@ -27,7 +27,7 @@
 
     <div class="container d-flex flex-column" style="gap:0">
         <!-- Search Section -->
-        <section class="search-section">
+        <section class="search-section mt-4">
             <form action="${pageContext.request.contextPath}/review_board/search" method="get" class="search-form">
                 <div class="search-group">
                     <select name="orderBy" class="search-select">
@@ -87,9 +87,12 @@
                                             <h5>[${board.period}] ${board.reviewTitle}</h5>
                                         </div>
                                         <div class="corpreviewtext2">
-                                            <p><strong>"면접은 어디에서, 몇 시에 보셨습니까?"</strong></p>
-                                            <p>강남 본사에서 오후 2시에 면접을 보았습니다. 지하철 2호선 강남역에서 도보 5분 거리에 위치해 있었고, </p>
-                                            <p>면접 시작 30분 전에 도착하여 대기실에서 담당자분께서 안내해 주셨습니다.</p>
+                                            <p><strong>"면접 분위기나 진행방식은 어떠했습니까?"</strong></p>
+                                            <p>${board.atmosphere}</p>
+                                            <p><strong>"면접에서 좋았던 점이나 아쉬웠던 점은 무엇입니까??"</strong></p>
+                                            <p>${board.sorrow}</p>
+                                            <p><strong>"면접 합격 팁이나 조언이 있다면?"</strong></p>
+                                            <p>${board.advice}</p>
                                         </div>
                                     </div>
                                     <span class="review-count">${board.formattedReviewDate}</span>

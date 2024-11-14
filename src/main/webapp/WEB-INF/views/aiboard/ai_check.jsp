@@ -18,6 +18,7 @@
 <jsp:include page="../navbar.jsp"/>
 <div class="jumbotron">
     <h1 class="display-4">AI 면접 준비</h1>
+    <hr>
     <p class="lead">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
 </div>
 <div class="content">

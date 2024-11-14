@@ -22,7 +22,7 @@
     <div class="hero-content">
         <h1>기업과 나를 잇는 면접 코칭 AI <br>면접 질문 준비부터 실전 면접 연습까지</h1>
         <p>최고의 면접을 위한<br>가장 똑똑한 방법, IPro</p>
-        <button class="start-button">지금 시작해보세요!</button>
+        <button onclick="location.href='${pageContext.request.contextPath}/aiboard/ai_board'" class="start-button">지금 시작해보세요!</button>
     </div>
 </section>
 
