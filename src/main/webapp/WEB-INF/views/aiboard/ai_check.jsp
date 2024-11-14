@@ -47,13 +47,13 @@
                     <td rowspan="3"><strong>기업/직무</strong></td>
                     <td><span class="tag" style="background-color: <c:out value="${not empty questions[0].IPRO_ANSWER ? '#28a745' : '#494949'}"/>;">
                         <c:choose>
-                        <c:when test="${not empty questions[0].IPRO_ANSWER}">
-                            답변완료
-                        </c:when>
-                        <c:otherwise>
-                            미답변
-                        </c:otherwise>
-                    </c:choose></span></td>
+                            <c:when test="${not empty questions[0].IPRO_ANSWER}">
+                                답변완료
+                            </c:when>
+                            <c:otherwise>
+                                미답변
+                            </c:otherwise>
+                        </c:choose></span></td>
                     <td>
                         <button class="accordion">${questions[0].IPRO_QUESTION}</button>
                         <div class="panel">
@@ -93,7 +93,7 @@
                     <td>
                         <button class="accordion">${questions[2].IPRO_QUESTION}</button>
                         <div class="panel">
-                            <p>${questions[2].IPRO.ANSWER}</p>
+                            <p>${questions[2].IPRO_ANSWER}</p>
                         </div>
                     </td>
                 </tr>
@@ -113,7 +113,7 @@
                     <td>
                         <button class="accordion">${questions[3].IPRO_QUESTION}</button>
                         <div class="panel">
-                            <p>${questions[3].IPRO.ANSWER}</p>
+                            <p>${questions[3].IPRO_ANSWER}</p>
                         </div>
                     </td>
                 </tr>
@@ -131,7 +131,7 @@
                     <td>
                         <button class="accordion">${questions[4].IPRO_QUESTION}</button>
                         <div class="panel">
-                            <p>${questions[4].IPRO.ANSWER}</p>
+                            <p>${questions[4].IPRO_ANSWER}</p>
 
                         </div>
                     </td>
@@ -150,7 +150,7 @@
                     <td>
                         <button class="accordion">${questions[5].IPRO_QUESTION}</button>
                         <div class="panel">
-                            <p>${questions[5].IPRO.ANSWER}</p>
+                            <p>${questions[5].IPRO_ANSWER}</p>
                         </div>
                     </td>
                 </tr>
@@ -190,8 +190,8 @@
         </c:forEach>
     ];
 
-    // 모든 아코디언 버튼을 선택
-    var acc = document.getElementsByClassName("accordion");
+    // 아코디언 버튼을 선택하여 답변 여부에 따라 활성화/비활성화 설정
+    const acc = document.getElementsByClassName("accordion");
 
     for (let i = 0; i < acc.length; i++) {
         const answerStatus = questions[i].answer;
@@ -200,17 +200,19 @@
         if (!answerStatus) {
             // 미답변 상태: 아코디언 비활성화 및 색상 설정
             acc[i].disabled = true;
-            acc[i].style.color = "#494949";
         } else {
             // 답변 완료 상태: 아코디언 활성화 및 색상 설정
             acc[i].addEventListener("click", function () {
                 this.classList.toggle("active");
                 const panel = this.nextElementSibling;
-                panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + "px";
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;  // 축소
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";  // 확장
+                }
             });
         }
     }
-</script>
 </script>
 
 
