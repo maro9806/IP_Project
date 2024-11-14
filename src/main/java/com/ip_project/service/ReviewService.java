@@ -1,7 +1,6 @@
 package com.ip_project.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.ip_project.dto.ReviewDTO;
 import com.ip_project.entity.IntroQuestion;
@@ -88,7 +87,12 @@ public class ReviewService {
     public void findById(Long idx, Model model) {
         Review dto = reviewRepository.findById(idx)
                 .orElseThrow(() -> new RuntimeException("Review not found")); // 없으면 예외 처리
-        model.addAttribute("reviewDto", dto); // Optional을 벗겨내고 Review 객체만 추가
+
+        // 연관된 IntroQuestions 조회
+        List<IntroQuestion> introQuestions = introQuestionRepository.findByReview(dto);
+
+        model.addAttribute("reviewDto", dto); // Review 데이터 추가
+        model.addAttribute("introQuestions", introQuestions); // IntroQuestions 데이터 추가
     }
 
     public Review get(Long idx) {
@@ -98,10 +102,6 @@ public class ReviewService {
 
     public void register(Review vo) {
         reviewRepository.save(vo);
-    }
-
-    public void remove(Long idx) {
-        reviewRepository.deleteById(idx);
     }
 
     public int getTotalCount() {
@@ -123,10 +123,6 @@ public class ReviewService {
 
         return reviewRepository.findByPage(startRow, endRow);
     }
-
-
-
-
 
 
 

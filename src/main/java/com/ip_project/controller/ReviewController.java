@@ -88,16 +88,5 @@ public class ReviewController {
         return "redirect:list";
     }
 
-    @PostMapping("/remove")
-    public String remove(@RequestParam Long idx) {
-        service.remove(idx);
-        return "redirect:list";
-    }
-
-
-
-
-
-
 
 }
