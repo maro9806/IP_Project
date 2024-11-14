@@ -164,7 +164,7 @@ body {
 
 /* 아코디언 패널 (숨겨진 내용) */
 .panel {
-    padding: 20px;
+    padding: 0 10px;
     background-color: #d0d0d042;
     max-height:0;
     overflow: hidden;

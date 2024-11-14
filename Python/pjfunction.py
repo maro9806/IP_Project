@@ -100,7 +100,7 @@ def get_answer_feedback(question, answer, job_position=None, ipro_type=None):
 
 [개선점]
 - 답변이 반말로 작성된 경우, "반말 사용은 피해야 합니다."라고 언급하세요.
-- 보완이 필요한 부분들을 나열하세요.
+- 보완이 필요한 부분들을 간단히 나열하세요.
 - **잘못된 지식이 있는 경우에만 이를 지적하고 수정된 정보를 제공하세요.**
 
 [구체적인 제안]
@@ -108,13 +108,8 @@ def get_answer_feedback(question, answer, job_position=None, ipro_type=None):
 - 올바른 답변으로 수정하세요.
 - **잘못된 정보가 없는 경우 이 섹션에서 불필요한 언급은 생략하세요.**
 
-"""
+모든 답변은 **300자 이내**로 출력해주고 장점, 개선점 내용은 2개만 출력해. 대주제마다 꼭 문단을 구분해서 답변해줘 """
 
     response = llm.invoke(prompt)
 
     return response.content
-
-
-
-
-
