@@ -29,7 +29,6 @@ body {
   max-width: 1200px;
   min-height: 700px;
   display: flex;
-  gap: 2rem;
 }
 
 /* Column Layout */
@@ -131,7 +130,7 @@ body {
 /* Forms and Controls */
 .form-section {
   background: #ffffff;
-  padding: 1.5rem;
+  padding: 0.5em 1.5rem;
   border-radius: 12px;
   height: 100%;
   display: flex;
@@ -164,24 +163,26 @@ body {
 }
 
 .btn-load {
-  background: #2c3e50;
+  background: #020202;
   color: white;
   padding: 0.75rem 1.5rem;
 }
 
 .btn-load:hover {
-  background: #34495e;
+  background: #474747;
+  color:white;
 }
 
 .btn-start {
-  background: #4C6EF5;
+  background: #568cef;
   color: white;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   margin-top: 1rem;
 }
 
 .btn-start:hover {
   background: #364FC7;
+  color:white;
 }
 
 /* Recording Controls */

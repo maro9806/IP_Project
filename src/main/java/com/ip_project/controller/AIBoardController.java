@@ -1,11 +1,9 @@
 package com.ip_project.controller;
 
 import com.ip_project.dto.AIInterviewDTO;
+import com.ip_project.dto.InterviewProDTO;
 import com.ip_project.dto.SelfIntroductionDTO;
-import com.ip_project.entity.AIInterviewStatus;
-import com.ip_project.entity.Member;
-import com.ip_project.entity.SelfBoard;
-import com.ip_project.entity.SelfIntroduction;
+import com.ip_project.entity.*;
 import com.ip_project.repository.MemberRepository;
 import com.ip_project.service.*;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.Collections;
 
@@ -43,11 +40,33 @@ public class AIBoardController {
     private final InterviewQuestionService questionService;
     private final RestTemplate restTemplate;
     private final VideoStorageService videoStorageService;
-    private final AnswerService answerService;
 
 
     private static final String FASTAPI_URL = "http://127.0.0.1:8000/generate-interview";
     private static final String FASTAPI_URL2 = "http://127.0.0.1:8000/feedback-interview";
+
+    // 새로 추가된 답변 저장 메소드
+    @PostMapping("/save_answer")
+    public ResponseEntity<String> saveAnswer(@RequestBody InterviewProDTO interviewProDTO) {
+        Long iproIdx = interviewProDTO.getIproIdx();
+        String iproAnswer = interviewProDTO.getIproAnswer();
+
+        if (iproIdx == null || iproAnswer == null || iproAnswer.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Invalid iproIdx or iproAnswer");
+        }
+
+        try {
+            int rowsAffected = questionService.saveAnswer(iproIdx, iproAnswer);
+            if (rowsAffected > 0) {
+                return ResponseEntity.ok("답변을 저장하였습니다");
+            } else {
+                return ResponseEntity.status(500).body("Failed to save answer");
+            }
+        } catch (Exception e) {
+            // 로깅을 추가하는 것이 좋습니다.
+            return ResponseEntity.status(500).body("An error occurred while saving the answer");
+        }
+    }
 
     @GetMapping("/ai_board")
     public String aiBoard() {
@@ -239,8 +258,22 @@ public class AIBoardController {
     }
 
     @GetMapping("/ai_check")
-    public String aiCheck() {
-        return "aiboard/ai_check";
+    public String aiCheck(@RequestParam(name="selfIdx", required = false) Long selfIdx, Model model) {
+        try {
+            if (selfIdx != null) {
+                List<Map<String, Object>> questions = questionService.getQuestionsBySelfIdx(selfIdx);
+                System.out.println("Loaded questions: " + questions); // 임시로 콘솔에 출력
+                model.addAttribute("questions", questions);
+                model.addAttribute("selfIdx", selfIdx);
+            } else {
+                model.addAttribute("message", "selfIdx가 지정되지 않았습니다.");
+            }
+            return "aiboard/ai_check";
+        } catch (Exception e) {
+            e.printStackTrace(); // 예외 스택 트레이스 출력
+            model.addAttribute("error", "오류가 발생했습니다.");
+            return "aiboard/ai_check";
+        }
     }
 
     @GetMapping("/ai_preparation")
@@ -305,20 +338,6 @@ public class AIBoardController {
             return ResponseEntity.ok(createdInterview);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GetMapping("/getAnswer")
-    public ResponseEntity<Map<String, String>> getAnswer(
-            @RequestParam("selfIdx") Long selfIdx,
-            @RequestParam("questionNumber") Integer questionNumber) {
-        try {
-            String answer = answerService.getAnswer(selfIdx, questionNumber);
-            return ResponseEntity.ok(Map.of("answer", answer != null ? answer : "답변이 아직 없습니다."));
-        } catch (Exception e) {
-            log.error("답변 조회 실패", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "답변을 불러오는데 실패했습니다."));
         }
     }
 }

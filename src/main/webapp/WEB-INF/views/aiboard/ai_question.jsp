@@ -16,6 +16,7 @@
 <jsp:include page="../navbar.jsp"/>
 <div class="jumbotron">
     <h1>AI 면접 준비</h1>
+    <p class="lead">나에게 맞는 면접 질문부터 실전 연습까지</p>
     <hr>
     <p class="lead">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
 </div>
@@ -90,7 +91,10 @@
                         <tr>
                             <td id="charCount">0자/1000자(공백포함)</td>
                         <td style="text-align:right;">
+                            <div class="buttons">
+                            <button type="button" id="save-answer" class="btn btn-dark">답변 저장하기</button>
                             <button type="button" id="feedback-btn" class="btn btn-dark">AI 피드백 받기</button>
+                            </div>
                         </td>
                         </tr> <!-- 글자 수를 표시할 영역 -->
                     </table>
@@ -98,6 +102,7 @@
             </div>
 
         </div>
+
 
         <div class="box2">
             <div class="well text-left" style="font-size: 20px;">
@@ -133,18 +138,40 @@
                 }
             });
 
+            function updateQuestionState(index, state) {
+                questionStates[index] = state; // 0: 미작성, 1: 작성 중, 2: 작성 완료
+                const stateElement = document.getElementById("state" + (index + 1));
+                if (stateElement) {
+                    stateElement.textContent = state === 2 ? "작성 완료" : "미작성";
+                }
+            }
+
             // textarea와 글자 수 표시하는 div 요소
             const answer = document.getElementById("answer");
             const charCount = document.getElementById("charCount");
+
+            // 답변 저장 버튼의 활성화 여부 관리
+            const saveButton = document.getElementById("save-answer");
 
             // textarea의 입력 이벤트를 감지하여 글자 수 계산
             answer.addEventListener("input", function () {
                 const currentLength = answer.value ? answer.value.length : 0; // 현재 입력된 글자 수 (null 체크)
                 const maxLength = answer.getAttribute("maxlength") || 1000; // 최대 글자 수 가져오기 (기본값 1000)
                 charCount.textContent = currentLength + '자/' + maxLength + '자';
+
+                // 글자 수가 있을 때만 저장 버튼 활성화
+                saveButton.disabled = currentLength === 0;
+
+                // 작성 중 상태로 업데이트
+                if (currentLength > 0) {
+                    updateQuestionState(currentIndex, 1);
+                }
             });
 
-
+            // 답변 저장 시 상태를 '작성 완료'로 업데이트
+            saveButton.addEventListener("click", function () {
+                updateQuestionState(currentIndex, 2);
+            });
         </script>
 
     </section>
@@ -191,6 +218,7 @@
     const questions = [
         <c:forEach var="question" items="${questions}">
         {
+            "idx":"${question.IPRO_IDX}",
             "question": "${question.IPRO_QUESTION}",
             "type": "${question.IPRO_TYPE}"
         }
@@ -205,6 +233,10 @@
     // 페이지 초기화 시 첫 번째 질문 표시
     document.addEventListener("DOMContentLoaded", () => {
         showQuestion(currentIndex);
+        const feedbackBox = document.querySelector('.box2');
+        if (feedbackBox) {
+            feedbackBox.classList.remove('show');
+        }
 
     });
 
@@ -214,22 +246,27 @@
         // 질문 번호와 내용을 줄바꿈과 함께 표시
         document.getElementById("question-content").innerHTML = '<span class="q-title">질문 ' + (index + 1) + '</span><br>' + questions[currentIndex].question;
         document.getElementById("answer").value = answers[currentIndex] || ''; // 이전에 작성한 답변이 있으면 불러오기
+        const answer = document.getElementById("answer");
+        const saveButton = document.getElementById("save-answer");
 
         const feedbackBox = document.querySelector('.box2');
         const container = document.querySelector('.container2');
         const feedbackPanel = document.querySelector('.panel');
 
-        // 해당 질문에 대한 피드백이 있는지 확인
+        // 답변 로드 후 버튼 상태 업데이트
+        saveButton.disabled = !answer.value.trim();
+
+        // box2 숨기기
+        feedbackBox.classList.remove('show');
+        container.classList.remove('centered');
+        feedbackPanel.innerHTML = "<p>이곳에 피드백이 표시됩니다. 잠시만 기다려주세요.</p>";
+
+
+        // 해당 질문에 대한 피드백이 있는 경우에만 표시
         if (feedbacks[currentIndex]) {
-            // 피드백이 있으면 box2를 보이게 하고 피드백 내용 표시
             feedbackBox.classList.add('show');
             container.classList.add('centered');
             feedbackPanel.innerHTML = "<div class='feedback-content'> <div class='feedback-text'>" + feedbacks[currentIndex] + "</div> </div>";
-        } else {
-            // 피드백이 없으면 box2를 숨기고 기본 메시지 표시
-            feedbackBox.classList.remove('show');
-            container.classList.remove('centered');
-            feedbackPanel.innerHTML = "<p>이곳에 피드백이 표시됩니다. 잠시만 기다려주세요.</p>";
         }
         // progress bar 업데이트
         updateProgressBar();
@@ -237,11 +274,14 @@
         // 사이드바 상태 업데이트
         updateSidebar();
 
-        // 마지막 질문일 경우 '답변 확인하기' 버튼으로 변경
+        // 마지막 질문일 경우 '답변 완료' 버튼으로 변경하고 이벤트 핸들러도 변경
+        const nextButton = document.getElementById("next");
         if (currentIndex === questions.length - 1) {
-            document.getElementById("next").textContent = "답변 완료";
+            nextButton.textContent = "답변 완료";
+            nextButton.onclick = goToCheckPage;  // 답변 확인 페이지로 이동하는 함수 연결
         } else {
-            document.getElementById("next").textContent = "다음 질문";
+            nextButton.textContent = "다음 질문";
+            nextButton.onclick = nextQuestion;   // 다음 질문으로 이동하는 함수 연결
         }
 
     }
@@ -317,9 +357,9 @@
         }
 
         // 현재 답변을 작성 완료로 처리
-        if (answers[currentIndex]?.trim()) {
-            questionStates[currentIndex] = 2; // 작성 완료 상태로 변경
-        }
+        // if (answers[currentIndex]?.trim()) {
+        //     questionStates[currentIndex] = 2; // 작성 완료 상태로 변경
+        // }
 
         if (currentIndex < questions.length - 1) {
             currentIndex++;
@@ -331,7 +371,7 @@
     }
     // 답변 확인하기 페이지로 이동하는 함수
     function goToCheckPage() {
-        location.href = "<%= request.getContextPath() %>/aiboard/ai_check?${pram.selfIdx}";
+        location.href = "<%= request.getContextPath() %>/aiboard/ai_check?selfIdx=${param.selfIdx}";
     }
 
 
@@ -340,18 +380,25 @@
     const feedbacks = {};
     // AI 피드백 받기 버튼 클릭 시 ------------------------------------------------------------------
     document.getElementById('feedback-btn').addEventListener('click', function () {
-        // 작성된 답변과 selfIdx 값 추출
-        const fullQuestion = document.getElementById('question-content').textContent;
-        const question = fullQuestion.replace(/^질문\d+\.\s*/, '');
         const answer = document.getElementById('answer').value;
-        const selfIdx = "${param.selfIdx}";  // JSP에서 selfIdx 값 추출 (컨트롤러에서 전달된 값)
-        const isJobQuestion = questions[currentIndex].type; // 직무 질문 여부
+        const feedbackBox = document.querySelector('.box2'); // 피드백 박스
+        const container = document.querySelector('.container2'); // 피드백 컨테이너
 
         // 답변이 비어있는지 확인
         if (!answer.trim()) {
             alert("답변을 작성해주세요.");
-            return;
+
+            // 답변을 작성하지 않은 상태에서 box2를 숨기기
+            feedbackBox.classList.remove('show'); // box2 숨기기
+            container.classList.remove('centered'); // box2 위치 조정 제거
+            return; // 피드백 요청을 중지
         }
+
+        // 작성된 답변과 selfIdx 값 추출
+        const fullQuestion = document.getElementById('question-content').textContent;
+        const question = fullQuestion.replace(/^질문\d+\.\s*/, '');
+        const selfIdx = "${param.selfIdx}";  // JSP에서 selfIdx 값 추출 (컨트롤러에서 전달된 값)
+        const isJobQuestion = questions[currentIndex].type; // 직무 질문 여부
 
         // ajax 요청 보내기
         $.ajax({
@@ -370,7 +417,6 @@
                 // 피드백을 'feedbacks' 객체에 저장
                 feedbacks[currentIndex] = response;  // 현재 질문에 대한 피드백 저장
 
-
                 // 응답받은 피드백을 'AI 피드백' 영역에 표시
                 const feedbackPanel = document.querySelector('.panel');
                 const formattedResponse = response
@@ -380,17 +426,11 @@
 
                 feedbackPanel.innerHTML =
                     "<div class='feedback-content'> <div class='feedback-text' style='white-space: pre-line; line-height: 1.6;'>" + formattedResponse + "</div></div>";
-                // 'box2'를 부드럽게 나타내기
-                // 'box2'를 부드럽게 나타내기
-                var feedbackBox = document.querySelector('.box2');
-                var container = document.querySelector('.container2'); // container를 여기서 정의
 
-                // box2가 이미 보이고 있다면 추가로 숨기지 않도록 조건 추가
-                if (!feedbackBox.classList.contains('show')) {
-                    feedbackBox.classList.add('show');  // 'show' 클래스 추가로 box2 보이게
-                    container.classList.add('centered'); // box2가 보이면 centered 클래스를 추가
-                }
-                    },
+
+                feedbackBox.classList.add('show');
+                container.classList.add('centered');
+            },
             error: function(xhr, status, error) {
                         // 오류 발생 시 처리
                         console.error("피드백 받기 실패:" + error);
@@ -400,7 +440,43 @@
                     }
                 });
             });
+
+    document.getElementById('save-answer').addEventListener('click', function () {
+        // 현재 질문의 iproIdx와 사용자가 입력한 답변을 가져오기
+        const currentQuestion = questions[currentIndex];
+        const iproIdx = currentQuestion.idx;
+        const answer = document.getElementById('answer').value.trim();
+
+        if (!answer) {
+            alert("답변을 입력해주세요.");
+            return;
+        }
+
+        // AJAX 요청 보내기 (Fetch API 사용)
+        fetch("<%= request.getContextPath() %>/aiboard/save_answer", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                iproIdx: iproIdx,
+                iproAnswer: answer
+            })
+        })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // 사용자에게 저장 결과 알림
+                // 상태 업데이트 (작성 완료 상태로 변경)
+                questionStates[currentIndex] = 2;
+                updateSidebar();
+            })
+            .catch(error => {
+                console.error("Error saving answer:", error);
+                alert("답변 저장에 실패했습니다.");
+            });
+    });
 </script>
+
 
 
 

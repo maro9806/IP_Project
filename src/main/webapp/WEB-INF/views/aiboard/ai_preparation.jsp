@@ -116,7 +116,20 @@
 						<h6 class="mb-0"><strong>답변 기록</strong></h6>
 					</div>
 					<div class="transcript-list">
-						<!-- 동적으로 생성될 내용 -->
+						<div class="transcript-list">
+							<div class="transcript-item" data-listener-added="false">
+								<p class="transcript-question">Q1. 1번 질문</p>
+								<p class="transcript-answer">질문 답변</p>
+							</div>
+							<div class="transcript-item">
+								<p class="transcript-question">Q2. 2번 질문</p>
+								<p class="transcript-answer">질문 답변</p>
+							</div>
+							<div class="transcript-item">
+								<p class="transcript-question">Q3.3번 질문</p>
+								<p class="transcript-answer">질문 답변</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -168,6 +181,16 @@
 </div>
 
 <script>
+
+	window.addEventListener('DOMContentLoaded', (event) => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const selfIdx = urlParams.get('selfIdx');
+
+		if (selfIdx) {
+			loadSelfIntroduction(selfIdx);
+		}
+	});
+
 	let currentInterviewId = null;
 	let mediaRecorder;
 	let recordedChunks = [];
@@ -686,92 +709,38 @@
 
 	function updateTranscriptList(selectedQuestions) {
 		const transcriptList = document.querySelector('.transcript-list');
-		const tableHtml = '<div class="transcript-list">' +
+		const tableHtml = '<div class="table-responsive"><table class="table"><tbody>' +
 				selectedQuestions.map((question, index) =>
-						'<div class="transcript-item" data-question-number="' + (index + 1) + '" data-listener-added="false">' +
+						'<tr class="transcript-item" data-question-number="' + (index + 1) + '" data-listener-added="false">' +
+						'<td>' +
 						'<p class="transcript-question">Q' + (index + 1) + '. ' + question.content + '</p>' +
-						'<p class="transcript-answer" style="display: none;">답변 로딩중...</p>' +
-						'</div>'
+						'<p class="transcript-answer">' + (dummyAnswers[index + 1] || '') + '</p>' +
+						'</td>' +
+						'</tr>'
 				).join('') +
-				'</div>';
+				'</tbody></table></div>';
 
 		transcriptList.innerHTML = tableHtml;
 		setupTranscriptItemListeners();
 	}
 
-
 	function setupTranscriptItemListeners() {
 		const transcriptItems = document.querySelectorAll('.transcript-item');
 
 		transcriptItems.forEach(item => {
-			if (item.getAttribute('data-listener-added') !== 'true') {
-				item.addEventListener('click', async function() {
-					// 현재 질문 업데이트
-					const questionNumber = this.getAttribute('data-question-number');
-					const questionContent = this.querySelector('.transcript-question').textContent.split('. ')[1];
+			item.addEventListener('click', function() {
 
-					// 면접 질문 섹션 업데이트
-					const questionHeader = document.querySelector('.question-header');
-					questionHeader.innerHTML = `
-                    <h5>면접 질문</h5>
-                    <div class="current-question">
-                        <p class="question-number"><strong>Question ${questionNumber}</strong></p>
-                        <p class="question-content">${questionContent}</p>
-                    </div>`;
-
-					// 아코디언 토글
-					transcriptItems.forEach(otherItem => {
-						if (otherItem !== item) {
-							otherItem.classList.remove('expanded');
-							const otherAnswer = otherItem.querySelector('.transcript-answer');
-							if (otherAnswer) {
-								otherAnswer.style.display = 'none';
-							}
-						}
-					});
-
-					// 현재 아이템 토글 및 답변 가져오기
-					const answer = this.querySelector('.transcript-answer');
-					if (answer) {
-						if (item.classList.contains('expanded')) {
-							item.classList.remove('expanded');
-							answer.style.display = 'none';
-						} else {
-							item.classList.add('expanded');
-							answer.style.display = 'block';
-
-							// DB에서 답변 가져오기
-							try {
-								const response = await fetch(`/aiboard/getAnswer?selfIdx=${selfId}&questionNumber=${questionNumber}`, {
-									method: 'GET',
-									headers: {
-										'Content-Type': 'application/json'
-									}
-								});
-
-								if (!response.ok) {
-									throw new Error('답변을 가져오는데 실패했습니다.');
-								}
-
-								const data = await response.json();
-								if (data && data.answer) {
-									answer.innerHTML = data.answer;
-								} else {
-									answer.innerHTML = "아직 답변이 없습니다.";
-								}
-							} catch (error) {
-								console.error('답변 로딩 오류:', error);
-								answer.innerHTML = "답변을 불러오는데 실패했습니다.";
-							}
-						}
+				transcriptItems.forEach(otherItem => {
+					if (otherItem !== item) {
+						otherItem.classList.remove('expanded');
 					}
 				});
 
-				item.setAttribute('data-listener-added', 'true');
-			}
+				// Toggle expanded class on clicked item
+				item.classList.toggle('expanded');
+			});
 		});
 	}
-
 	document.addEventListener('DOMContentLoaded', setupTranscriptItemListeners);
 
 
@@ -973,7 +942,6 @@
 		document.getElementById('endingSection').classList.remove('hidden');
 		document.body.style.overflow = "hidden";
 	}
-
 
 </script>
 

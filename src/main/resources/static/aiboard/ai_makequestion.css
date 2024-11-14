@@ -165,6 +165,10 @@ th {
 .accordion.active {
     background-color: #ccc;
 }
+.accordion:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
 /* 아코디언 패널 (숨겨진 내용) */
 .panel {
     padding: 0 10px;
@@ -205,7 +209,19 @@ th {
     color: white;
 }
 
+.tag{
+    display:flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 20px;
+    padding: 5px;
+    font-size: 12px;
+}
+
 #next{
     background-color: #31628b;
     border-color: #31628b;
 }
+

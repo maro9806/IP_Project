@@ -18,6 +18,7 @@
 <jsp:include page="../navbar.jsp"/>
 <div class="jumbotron">
     <h1 class="display-4">AI 면접 준비</h1>
+    <p class="lead">나에게 맞는 면접 질문부터 실전 연습까지</p>
     <hr>
     <p class="lead">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
 </div>
@@ -32,87 +33,124 @@
         <div class="table-container">
             <table class="text-center" style="width:1000px">
                 <colgroup>
-                    <col style="width: 15%;">
-                    <col style="width: 85%;">
+                    <col style="width: 10%;">
+                    <col style="width: 10%;">
+                    <col style="width: 80%;">
                 </colgroup>
                 <thead>
                 <tr>
-                    <th colspan="2">면접 질문 및 답변</th>
+                    <th colspan="3">면접 질문 및 답변</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td rowspan="3"><strong>기업/직무</strong></td>
+                    <td><span class="tag" style="background-color: <c:out value="${not empty questions[0].IPRO_ANSWER ? '#28a745' : '#494949'}"/>;">
+                        <c:choose>
+                        <c:when test="${not empty questions[0].IPRO_ANSWER}">
+                            답변완료
+                        </c:when>
+                        <c:otherwise>
+                            미답변
+                        </c:otherwise>
+                    </c:choose></span></td>
                     <td>
-                        <button class="accordion">질문 1번 내용입니다.</button>
+                        <button class="accordion">${questions[0].IPRO_QUESTION}</button>
                         <div class="panel">
-                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                            <div class="d-flex justify-content-end" style="gap:10px;">
-                                <button class="btn btn-danger">삭제</button>
-                                <button class="btn btn-warning">수정</button>
-                            </div>
+                            <p>${questions[0].IPRO_ANSWER}</p>
                         </div>
                     </td>
                 </tr>
                 <tr>
+                    <td><span class="tag" style="background-color: <c:out value="${not empty questions[1].IPRO_ANSWER ? '#28a745' : '#494949'}"/>;">
+                                           <c:choose>
+                                               <c:when test="${not empty questions[1].IPRO_ANSWER}">
+                                                   답변완료
+                                               </c:when>
+                                               <c:otherwise>
+                                                   미답변
+                                               </c:otherwise>
+                                           </c:choose>
+                    </span></td>
                     <td>
-                        <button class="accordion">질문 2번 내용입니다.</button>
+                        <button class="accordion">${questions[1].IPRO_QUESTION}</button>
                         <div class="panel">
-                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                            <div class="d-flex justify-content-end" style="gap:10px;">
-                                <button class="btn btn-danger">삭제</button>
-                                <button class="btn btn-warning">수정</button>
-                            </div>
+                            <p>${questions[1].IPRO_ANSWER}</p>
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr style="border-bottom:1px solid #edebeb">
+                    <td><span class="tag"  style="background-color: <c:out value="${not empty questions[2].IPRO_ANSWER ? '#28a745' : '#494949'}"/>;">
+                                           <c:choose>
+                                               <c:when test="${not empty questions[2].IPRO_ANSWER}">
+                                                   답변완료
+                                               </c:when>
+                                               <c:otherwise>
+                                                   미답변
+                                               </c:otherwise>
+                                           </c:choose>
+                    </span></td>
                     <td>
-                        <button class="accordion">질문 3번 내용입니다.</button>
+                        <button class="accordion">${questions[2].IPRO_QUESTION}</button>
                         <div class="panel">
-                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                            <div class="d-flex justify-content-end" style="gap:10px;">
-                                <button class="btn btn-danger">삭제</button>
-                                <button class="btn btn-warning">수정</button>
-                            </div>
+                            <p>${questions[2].IPRO.ANSWER}</p>
                         </div>
                     </td>
                 </tr>
 
                 <tr>
                     <td rowspan="3"><strong>자기소개서</strong></td>
+                    <td><span class="tag"  style="background-color: <c:out value="${not empty questions[3].IPRO_ANSWER ? '#28a745' : '#494949'}"/>;">
+                                           <c:choose>
+                                               <c:when test="${not empty questions[3].IPRO_ANSWER}">
+                                                   답변완료
+                                               </c:when>
+                                               <c:otherwise>
+                                                   미답변
+                                               </c:otherwise>
+                                           </c:choose>
+                    </span></td>
                     <td>
-                        <button class="accordion">질문 4번 내용입니다.</button>
+                        <button class="accordion">${questions[3].IPRO_QUESTION}</button>
                         <div class="panel">
-                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                            <div class="d-flex justify-content-end" style="gap:10px;">
-                                <button class="btn btn-danger">삭제</button>
-                                <button class="btn btn-warning">수정</button>
-                            </div>
+                            <p>${questions[3].IPRO.ANSWER}</p>
                         </div>
                     </td>
                 </tr>
                 <tr>
+                    <td><span class="tag"  style="background-color: <c:out value="${not empty questions[4].IPRO_ANSWER ? '#28a745' : '#494949'}"/>;">
+                          <c:choose>
+                              <c:when test="${not empty questions[4].IPRO_ANSWER}">
+                                  답변완료
+                              </c:when>
+                              <c:otherwise>
+                                  미답변
+                              </c:otherwise>
+                          </c:choose>
+                    </span></td>
                     <td>
-                        <button class="accordion">질문 5번 내용입니다.</button>
+                        <button class="accordion">${questions[4].IPRO_QUESTION}</button>
                         <div class="panel">
-                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                            <div class="d-flex justify-content-end" style="gap:10px;">
-                                <button class="btn btn-danger">삭제</button>
-                                <button class="btn btn-warning">수정</button>
-                            </div>
+                            <p>${questions[4].IPRO.ANSWER}</p>
+
                         </div>
                     </td>
                 </tr>
                 <tr>
+                    <td><span class="tag" style="background-color: <c:out value="${not empty questions[5].IPRO_ANSWER ? '#28a745' : '#494949'}"/>;">
+                          <c:choose>
+                              <c:when test="${not empty questions[5].IPRO_ANSWER}">
+                                  답변완료
+                              </c:when>
+                              <c:otherwise>
+                                  미답변
+                              </c:otherwise>
+                          </c:choose>
+                    </span></td>
                     <td>
-                        <button class="accordion">질문 6번 내용입니다.</button>
+                        <button class="accordion">${questions[5].IPRO_QUESTION}</button>
                         <div class="panel">
-                            <p>이곳에 표시될 내용입니다. 클릭 시 이 내용이 보이거나 숨겨집니다.</p>
-                            <div class="d-flex justify-content-end" style="gap:10px;">
-                                <button class="btn btn-danger">삭제</button>
-                                <button class="btn btn-warning">수정</button>
-                            </div>
+                            <p>${questions[5].IPRO.ANSWER}</p>
                         </div>
                     </td>
                 </tr>
@@ -124,7 +162,7 @@
             <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_board'" type="button" class="btn btn-secondary">
                 처음으로 돌아가기
             </button>
-            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_preparation'"
+            <button onclick="location.href='<%= request.getContextPath() %>/aiboard/ai_preparation?selfIdx=${param.selfIdx}'"
                     type="submit" id="next"
                     class="btn btn-primary">
                 영상면접 보러가기
@@ -140,23 +178,39 @@
 
 
 <script>
+    const questions = [
+        <c:forEach var="question" items="${questions}" varStatus="status">
+        {
+            "idx": "${question['IPRO_IDX']}",
+            "question": "${question['IPRO_QUESTION']}",
+            "type": "${question['IPRO_TYPE']}",
+            "answer": "${question['IPRO_ANSWER']}"
+        }
+        <c:if test="${!status.last}">,</c:if>
+        </c:forEach>
+    ];
+
     // 모든 아코디언 버튼을 선택
     var acc = document.getElementsByClassName("accordion");
 
-    for (var i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function () {
-            // 현재 버튼 활성화 토글
-            this.classList.toggle("active");
+    for (let i = 0; i < acc.length; i++) {
+        const answerStatus = questions[i].answer;
 
-            // 패널을 찾고 토글 처리
-            var panel = this.nextElementSibling;
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null; // 접기
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px"; // 펼치기
-            }
-        });
+        // 답변 여부에 따라 아코디언 기능 활성화 여부 설정
+        if (!answerStatus) {
+            // 미답변 상태: 아코디언 비활성화 및 색상 설정
+            acc[i].disabled = true;
+            acc[i].style.color = "#494949";
+        } else {
+            // 답변 완료 상태: 아코디언 활성화 및 색상 설정
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                const panel = this.nextElementSibling;
+                panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + "px";
+            });
+        }
     }
+</script>
 </script>
 
 
