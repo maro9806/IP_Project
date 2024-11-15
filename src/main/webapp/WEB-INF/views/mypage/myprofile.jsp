@@ -249,22 +249,36 @@
                   <h4 class="mb-3">희망 취업지역</h4>
                   <div class="row g-3">
                      <div class="col-md-3">
-                        <select class="form-select">
+                        <select id="regionSelect" class="form-select">
                            <option value="">시/도 선택</option>
-                           <option value="seoul">서울특별시</option>
-                           <option value="gyeonggi">경기도</option>
-                           <option value="incheon">인천광역시</option>
-                           <!-- Add more options as needed -->
+                           <option value="서울특별시">서울특별시</option>
+                           <option value="인천광역시">인천광역시</option>
+                           <option value="광주광역시">광주광역시</option>
+                           <option value="부산광역시">부산광역시</option>
+                           <option value="울산광역시">울산광역시</option>
+                           <option value="대전광역시">대전광역시</option>
+                           <option value="대구광역시">대구광역시</option>
+                           <option value="경기도">경기도</option>
+                           <option value="강원도">강원도</option>
+                           <option value="경상남도">경상남도</option>
+                           <option value="경상북도">경상북도</option>
+                           <option value="충청남도">충청남도</option>
+                           <option value="충청북도">충청북도</option>
+                           <option value="전라남도">전라남도</option>
+                           <option value="전라북도">전라북도</option>
+                           <option value="제주특별자치도">제주특별자치도</option>
+                           <option value="세종특별자치시">세종특별자치시</option>
                         </select>
                      </div>
                      <div class="col-md-3">
-                        <select class="form-select">
+                        <select id="districtSelect" class="form-select">
                            <option value="">구/군 선택</option>
-                           <!-- This will be populated based on the first select -->
+                           <!-- 시/도 선택 시 여기에 구/군이 동적으로 추가됩니다 -->
                         </select>
                      </div>
                   </div>
                </div>
+
 
                <!-- Desired Salary Section -->
                <div class="mb-2">
@@ -317,262 +331,374 @@
    </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize elements
-        const selectedTechStack = document.getElementById('selectedTechStack');
-        const techButtons = document.querySelectorAll('.tech-btn');
-        const techCategories = document.querySelector('.tech-categories');
-        const addCustomTechBtn = document.getElementById('addCustomTechBtn');
-        const customTechInput = document.getElementById('customTechInput');
-        const newTechInput = document.getElementById('newTechInput');
-        const submitCustomTech = document.getElementById('submitCustomTech');
-        const cancelCustomTech = document.getElementById('cancelCustomTech');
-        const editBtn = document.getElementById('editBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const saveBtn = document.getElementById('saveBtn');
+   //지역 변수 선언
+   const regions = {
+      "서울특별시": [
+         "강남구", "강동구", "강북구", "강서구", "관악구",
+         "광진구", "구로구", "금천구", "노원구", "도봉구",
+         "동대문구", "동작구", "마포구", "서대문구", "서초구",
+         "성동구", "성북구", "송파구", "양천구", "영등포구",
+         "용산구", "은평구", "종로구", "중구", "중랑구"
+      ],
+      "인천광역시": [
+         "강화군", "계양구", "남동구", "동구", "미추홀구",
+         "부평구", "서구", "연수구", "중구"
+      ],
+      "광주광역시": [
+         "광산구", "남구", "동구", "북구", "서구"
+      ],
+      "부산광역시": [
+         "강서구", "금정구", "남구", "동구", "동래구",
+         "부산진구", "북구", "사상구", "사하구", "서구",
+         "수영구", "연제구", "영도구", "중구", "해운대구"
+      ],
+      "울산광역시": [
+         "남구", "동구", "북구", "중구", "울주군"
+      ],
+      "대전광역시": [
+         "대덕구", "동구", "중구", "유성구", "서구"
+      ],
+      "대구광역시": [
+         "남구", "달서구", "달성군", "동구", "북구",
+         "서구", "수성구", "중구"
+      ],
+      "경기도": [
+         "고양시 덕양구", "고양시 일산동구", "고양시 일산서구",
+         "과천시", "광명시", "광주시", "구리시", "군포시",
+         "김포시", "남양주시", "동두천시", "부천시", "성남시 수정구",
+         "성남시 중원구", "성남시 분당구", "수원시 장안구", "수원시 권선구",
+         "수원시 팔달구", "수원시 영통구", "시흥시", "안산시 단원구",
+         "안산시 상록구", "안성시", "안양시 동안구", "안양시 만안구",
+         "양주시", "양평군", "여주시", "연천군", "오산시", "용인시 기흥구",
+         "용인시 수지구", "용인시 처인구", "의왕시", "의정부시", "이천시",
+         "파주시", "평택시", "포천시", "하남시", "화성시"
+      ],
+      "강원도": [
+         "강릉시", "동해시", "태백시", "속초시", "삼척시",
+         "홍천군", "횡성군", "영월군", "평창군", "정선군",
+         "철원군", "화천군", "양구군", "인제군", "고성군",
+         "양양군"
+      ],
+      "경상남도": [
+         "거제시", "양산시", "진주시", "창원시 마산합포구",
+         "창원시 마산회원구", "창원시 성산구", "창원시 의창구",
+         "창원시 진해구", "통영시", "사천시", "김해시", "밀양시",
+         "함안군", "거창군", "합천군", "창녕군", "남해군",
+         "하동군", "산청군", "의령군", "함양군"
+      ],
+      "경상북도": [
+         "경주시", "포항시 남구", "포항시 북구", "안동시",
+         "김천시", "구미시", "영주시", "영천시", "상주시",
+         "문경시", "경산시", "군위군", "의성군", "청도군",
+         "청송군", "영덕군", "영양군", "예천군", "봉화군",
+         "울진군", "울릉군"
+      ],
+      "충청남도": [
+         "천안시 동남구", "천안시 서북구", "공주시", "보령시",
+         "아산시", "서산시", "논산시", "계룡시", "당진시",
+         "금산군", "부여군", "서천군", "청양군", "홍성군",
+         "예산군", "태안군"
+      ],
+      "충청북도": [
+         "청주시 상당구", "청주시 서원구", "청주시 흥덕구",
+         "충주시", "제천시", "보은군", "옥천군", "영동군",
+         "증평군", "진천군", "괴산군", "음성군", "단양군"
+      ],
+      "전라남도": [
+         "목포시", "여수시", "순천시", "나주시", "광양시",
+         "담양군", "곡성군", "구례군", "고흥군", "보성군",
+         "화순군", "장흥군", "강진군", "해남군", "영암군",
+         "무안군", "함평군", "영광군", "장성군", "완도군",
+         "진도군", "신안군"
+      ],
+      "전라북도": [
+         "전주시 완산구", "전주시 덕진구", "군산시", "익산시",
+         "정읍시", "남원시", "김제시", "완주군", "진안군",
+         "무주군", "장수군", "임실군", "순창군", "고창군",
+         "부안군"
+      ],
+      "제주특별자치도": [
+         "제주시", "서귀포시", "남제주군", "북제주군"
+      ],
+      "세종특별자치시": [
+         "세종특별자치시"
+      ]
+   };
 
-        let selectedTechs = new Set();
-        let educationCounter = 0;
-        let careerCounter = 0;
+   // 시/도 선택 시 구/군 선택 박스 업데이트 함수
+   document.getElementById('regionSelect').addEventListener('change', function() {
+      const selectedRegion = this.value;
+      const districtSelect = document.getElementById('districtSelect');
 
-        // Initially hide cancel and save buttons
-        if (cancelBtn) cancelBtn.style.display = 'none';
-        if (saveBtn) saveBtn.style.display = 'none';
+      // 구/군 선택 박스 초기화
+      districtSelect.innerHTML = '<option value="">구/군 선택</option>';
 
-        // Education section
-        document.getElementById('addEducation')?.addEventListener('click', function() {
-            educationCounter++;
-            const newEducation =
-                '<div class="education-entry mb-3" id="education-' + educationCounter + '">' +
-                '<div class="row g-3">' +
-                '<div class="col-md-3">' +
-                '<label class="form-label">학교명</label>' +
-                '<input type="text" class="form-control" placeholder="학교명을 입력하세요">' +
-                '</div>' +
-                '<div class="col-md-3">' +
-                '<label class="form-label">전공</label>' +
-                '<input type="text" class="form-control" placeholder="전공을 입력하세요">' +
-                '</div>' +
-                '<div class="col-md-3">' +
-                '<label class="form-label">졸업상태</label>' +
-                '<select class="form-select">' +
-                '<option value="">선택하세요</option>' +
-                '<option value="graduated">졸업</option>' +
-                '<option value="attending">재학중</option>' +
-                '<option value="leave">휴학</option>' +
-                '<option value="dropout">중퇴</option>' +
-                '</select>' +
-                '</div>' +
-                '<div class="col-md-3 d-flex align-items-end">' +
-                '<button type="button" class="btn btn-outline-danger" onclick="removeSection(\'education-' + educationCounter + '\')">' +
-                '삭제' +
-                '</button>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
-            const educationContainer = document.getElementById('educationContainer');
-            educationContainer.insertAdjacentHTML('beforeend', newEducation);
-        });
+      if(selectedRegion && regions[selectedRegion]) {
+         regions[selectedRegion].forEach(function(district) {
+            const option = document.createElement('option');
+            option.value = district;
+            option.textContent = district;
+            districtSelect.appendChild(option);
+         });
+      }
+   });
 
-        // Career section
-        document.getElementById('addCareer')?.addEventListener('click', function() {
-            careerCounter++;
-            const newCareer =
-                '<div class="career-entry mb-3" id="career-' + careerCounter + '">' +
-                '<div class="row g-3">' +
-                '<div class="col-md-3">' +
-                '<label class="form-label">회사명</label>' +
-                '<input type="text" class="form-control" placeholder="회사명을 입력하세요">' +
-                '</div>' +
-                '<div class="col-md-3">' +
-                '<label class="form-label">직무</label>' +
-                '<input type="text" class="form-control" placeholder="직무를 입력하세요">' +
-                '</div>' +
-                '<div class="col-md-3">' +
-                '<label class="form-label">근무기간</label>' +
-                '<div class="input-group">' +
-                '<input type="number" class="form-control" placeholder="년">' +
-                '<input type="number" class="form-control" placeholder="개월">' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-md-3 d-flex align-items-end">' +
-                '<button type="button" class="btn btn-outline-danger" onclick="removeSection(\'career-' + careerCounter + '\')">' +
-                '삭제' +
-                '</button>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
-            const careerContainer = document.getElementById('careerContainer');
-            careerContainer.insertAdjacentHTML('beforeend', newCareer);
-        });
+   document.addEventListener('DOMContentLoaded', function() {
+      // Initialize elements
+      const selectedTechStack = document.getElementById('selectedTechStack');
+      const techButtons = document.querySelectorAll('.tech-btn');
+      const techCategories = document.querySelector('.tech-categories');
+      const addCustomTechBtn = document.getElementById('addCustomTechBtn');
+      const customTechInput = document.getElementById('customTechInput');
+      const newTechInput = document.getElementById('newTechInput');
+      const submitCustomTech = document.getElementById('submitCustomTech');
+      const cancelCustomTech = document.getElementById('cancelCustomTech');
+      const editBtn = document.getElementById('editBtn');
+      const cancelBtn = document.getElementById('cancelBtn');
+      const saveBtn = document.getElementById('saveBtn');
 
-        // Tech stack functions
-        function addTechStack(tech) {
-            if (selectedTechs.has(tech)) return;
+      let selectedTechs = new Set();
+      let educationCounter = 0;
+      let careerCounter = 0;
 
-            const tag = document.createElement('div');
-            tag.className = 'tech-tag';
-            tag.innerHTML =
-                '<span class="tech-name">' +
-                tech +
-                '</span>' +
-                '<button type="button" class="delete-tech" aria-label="Remove ' + tech + '">×</button>';
+      // Initially hide cancel and save buttons
+      if (cancelBtn) cancelBtn.style.display = 'none';
+      if (saveBtn) saveBtn.style.display = 'none';
 
-            tag.querySelector('.delete-tech').addEventListener('click', () => {
-                selectedTechs.delete(tech);
-                tag.remove();
-                updateButtonStates();
-            });
+      // Education section
+      document.getElementById('addEducation')?.addEventListener('click', function() {
+         educationCounter++;
+         const newEducation =
+                 '<div class="education-entry mb-3" id="education-' + educationCounter + '">' +
+                 '<div class="row g-3">' +
+                 '<div class="col-md-3">' +
+                 '<label class="form-label">학교명</label>' +
+                 '<input type="text" class="form-control" placeholder="학교명을 입력하세요">' +
+                 '</div>' +
+                 '<div class="col-md-3">' +
+                 '<label class="form-label">전공</label>' +
+                 '<input type="text" class="form-control" placeholder="전공을 입력하세요">' +
+                 '</div>' +
+                 '<div class="col-md-3">' +
+                 '<label class="form-label">졸업상태</label>' +
+                 '<select class="form-select">' +
+                 '<option value="">선택하세요</option>' +
+                 '<option value="graduated">졸업</option>' +
+                 '<option value="attending">재학중</option>' +
+                 '<option value="leave">휴학</option>' +
+                 '<option value="dropout">중퇴</option>' +
+                 '</select>' +
+                 '</div>' +
+                 '<div class="col-md-3 d-flex align-items-end">' +
+                 '<button type="button" class="btn btn-outline-danger" onclick="removeSection(\'education-' + educationCounter + '\')">' +
+                 '삭제' +
+                 '</button>' +
+                 '</div>' +
+                 '</div>' +
+                 '</div>';
+         const educationContainer = document.getElementById('educationContainer');
+         educationContainer.insertAdjacentHTML('beforeend', newEducation);
+      });
 
-            selectedTechStack.appendChild(tag);
-            selectedTechs.add(tech);
+      // Career section
+      document.getElementById('addCareer')?.addEventListener('click', function() {
+         careerCounter++;
+         const newCareer =
+                 '<div class="career-entry mb-3" id="career-' + careerCounter + '">' +
+                 '<div class="row g-3">' +
+                 '<div class="col-md-3">' +
+                 '<label class="form-label">회사명</label>' +
+                 '<input type="text" class="form-control" placeholder="회사명을 입력하세요">' +
+                 '</div>' +
+                 '<div class="col-md-3">' +
+                 '<label class="form-label">직무</label>' +
+                 '<input type="text" class="form-control" placeholder="직무를 입력하세요">' +
+                 '</div>' +
+                 '<div class="col-md-3">' +
+                 '<label class="form-label">근무기간</label>' +
+                 '<div class="input-group">' +
+                 '<input type="number" class="form-control" placeholder="년">' +
+                 '<input type="number" class="form-control" placeholder="개월">' +
+                 '</div>' +
+                 '</div>' +
+                 '<div class="col-md-3 d-flex align-items-end">' +
+                 '<button type="button" class="btn btn-outline-danger" onclick="removeSection(\'career-' + careerCounter + '\')">' +
+                 '삭제' +
+                 '</button>' +
+                 '</div>' +
+                 '</div>' +
+                 '</div>';
+         const careerContainer = document.getElementById('careerContainer');
+         careerContainer.insertAdjacentHTML('beforeend', newCareer);
+      });
+
+      // Tech stack functions
+      function addTechStack(tech) {
+         if (selectedTechs.has(tech)) return;
+
+         const tag = document.createElement('div');
+         tag.className = 'tech-tag';
+         tag.innerHTML =
+                 '<span class="tech-name">' +
+                 tech +
+                 '</span>' +
+                 '<button type="button" class="delete-tech" aria-label="Remove ' + tech + '">×</button>';
+
+         tag.querySelector('.delete-tech').addEventListener('click', () => {
+            selectedTechs.delete(tech);
+            tag.remove();
             updateButtonStates();
-        }
+         });
 
-        function updateButtonStates() {
-            techButtons.forEach(button => {
-                const tech = button.dataset.tech;
-                if (selectedTechs.has(tech)) {
-                    button.disabled = true;
-                    button.classList.add('selected');
-                } else {
-                    button.disabled = false;
-                    button.classList.remove('selected');
-                }
-            });
-        }
+         selectedTechStack.appendChild(tag);
+         selectedTechs.add(tech);
+         updateButtonStates();
+      }
 
-        // Tech button click handlers
-        techButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const tech = this.getAttribute('data-tech');
-                if (!selectedTechs.has(tech)) {
-                    addTechStack(tech);
-                }
-            });
-        });
-
-        // Custom tech input handlers
-        if (addCustomTechBtn) {
-            addCustomTechBtn.addEventListener('click', function() {
-                customTechInput.style.display = 'block';
-                newTechInput.focus();
-                addCustomTechBtn.style.display = 'none';
-            });
-        }
-
-        function addCustomTechnology() {
-            const techName = newTechInput.value.trim();
-            if (techName && !selectedTechs.has(techName)) {
-                addTechStack(techName);
-                hideCustomTechInput();
+      function updateButtonStates() {
+         techButtons.forEach(button => {
+            const tech = button.dataset.tech;
+            if (selectedTechs.has(tech)) {
+               button.disabled = true;
+               button.classList.add('selected');
+            } else {
+               button.disabled = false;
+               button.classList.remove('selected');
             }
-        }
+         });
+      }
 
-        function hideCustomTechInput() {
+      // Tech button click handlers
+      techButtons.forEach(button => {
+         button.addEventListener('click', function() {
+            const tech = this.getAttribute('data-tech');
+            if (!selectedTechs.has(tech)) {
+               addTechStack(tech);
+            }
+         });
+      });
+
+      // Custom tech input handlers
+      if (addCustomTechBtn) {
+         addCustomTechBtn.addEventListener('click', function() {
+            customTechInput.style.display = 'block';
+            newTechInput.focus();
+            addCustomTechBtn.style.display = 'none';
+         });
+      }
+
+      function addCustomTechnology() {
+         const techName = newTechInput.value.trim();
+         if (techName && !selectedTechs.has(techName)) {
+            addTechStack(techName);
+            hideCustomTechInput();
+         }
+      }
+
+      function hideCustomTechInput() {
+         if (customTechInput) customTechInput.style.display = 'none';
+         if (addCustomTechBtn) addCustomTechBtn.style.display = 'inline-block';
+         if (newTechInput) newTechInput.value = '';
+      }
+
+      if (submitCustomTech) {
+         submitCustomTech.addEventListener('click', addCustomTechnology);
+      }
+
+      if (cancelCustomTech) {
+         cancelCustomTech.addEventListener('click', hideCustomTechInput);
+      }
+
+      if (newTechInput) {
+         newTechInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+               e.preventDefault();
+               addCustomTechnology();
+            }
+         });
+      }
+
+      // Form state management
+      function setFieldsReadOnly(readonly) {
+         // Handle input fields and selects
+         document.querySelectorAll('input, select, textarea').forEach(element => {
+            element.readOnly = readonly;
+            if (element.tagName.toLowerCase() === 'select') {
+               element.disabled = readonly;
+            }
+         });
+
+         // Handle checkbox inputs separately
+         document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.disabled = readonly;
+         });
+
+         // Handle tech categories visibility
+         if (readonly) {
+            techCategories.classList.remove('show');
+         } else {
+            techCategories.classList.add('show');
+         }
+
+         // Handle buttons visibility
+         document.querySelectorAll('.btn-outline-primary, .btn-outline-danger').forEach(btn => {
+            btn.style.display = readonly ? 'none' : 'inline-block';
+         });
+
+         // Tech buttons and delete buttons
+         techButtons.forEach(button => {
+            button.disabled = readonly;
+         });
+
+         document.querySelectorAll('.delete-tech').forEach(button => {
+            button.style.display = readonly ? 'none' : 'inline-block';
+         });
+
+         // Custom tech input
+         if (readonly) {
+            if (addCustomTechBtn) addCustomTechBtn.style.display = 'none';
             if (customTechInput) customTechInput.style.display = 'none';
+         } else {
             if (addCustomTechBtn) addCustomTechBtn.style.display = 'inline-block';
-            if (newTechInput) newTechInput.value = '';
-        }
+         }
+      }
 
-        if (submitCustomTech) {
-            submitCustomTech.addEventListener('click', addCustomTechnology);
-        }
+      // Initialize form in readonly state
+      setFieldsReadOnly(true);
 
-        if (cancelCustomTech) {
-            cancelCustomTech.addEventListener('click', hideCustomTechInput);
-        }
+      // Edit button handler
+      editBtn?.addEventListener('click', function() {
+         if (cancelBtn) cancelBtn.style.display = 'block';
+         if (saveBtn) saveBtn.style.display = 'block';
+         if (editBtn) editBtn.style.display = 'none';
+         setFieldsReadOnly(false);
+      });
 
-        if (newTechInput) {
-            newTechInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    addCustomTechnology();
-                }
-            });
-        }
+      // Cancel button handler
+      cancelBtn?.addEventListener('click', function() {
+         if (cancelBtn) cancelBtn.style.display = 'none';
+         if (saveBtn) saveBtn.style.display = 'none';
+         if (editBtn) editBtn.style.display = 'block';
+         setFieldsReadOnly(true);
+      });
 
-        // Form state management
-        function setFieldsReadOnly(readonly) {
-            // Handle input fields and selects
-            document.querySelectorAll('input, select, textarea').forEach(element => {
-                element.readOnly = readonly;
-                if (element.tagName.toLowerCase() === 'select') {
-                    element.disabled = readonly;
-                }
-            });
+      // Save button handler
+      saveBtn?.addEventListener('click', function() {
+         if (cancelBtn) cancelBtn.style.display = 'none';
+         if (saveBtn) saveBtn.style.display = 'none';
+         if (editBtn) editBtn.style.display = 'block';
+         setFieldsReadOnly(true);
+         alert('저장되었습니다!');
+      });
+   });
 
-            // Handle checkbox inputs separately
-            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                checkbox.disabled = readonly;
-            });
-
-            // Handle tech categories visibility
-            if (readonly) {
-                techCategories.classList.remove('show');
-            } else {
-                techCategories.classList.add('show');
-            }
-
-            // Handle buttons visibility
-            document.querySelectorAll('.btn-outline-primary, .btn-outline-danger').forEach(btn => {
-                btn.style.display = readonly ? 'none' : 'inline-block';
-            });
-
-            // Tech buttons and delete buttons
-            techButtons.forEach(button => {
-                button.disabled = readonly;
-            });
-
-            document.querySelectorAll('.delete-tech').forEach(button => {
-                button.style.display = readonly ? 'none' : 'inline-block';
-            });
-
-            // Custom tech input
-            if (readonly) {
-                if (addCustomTechBtn) addCustomTechBtn.style.display = 'none';
-                if (customTechInput) customTechInput.style.display = 'none';
-            } else {
-                if (addCustomTechBtn) addCustomTechBtn.style.display = 'inline-block';
-            }
-        }
-
-        // Initialize form in readonly state
-        setFieldsReadOnly(true);
-
-        // Edit button handler
-        editBtn?.addEventListener('click', function() {
-            if (cancelBtn) cancelBtn.style.display = 'block';
-            if (saveBtn) saveBtn.style.display = 'block';
-            if (editBtn) editBtn.style.display = 'none';
-            setFieldsReadOnly(false);
-        });
-
-        // Cancel button handler
-        cancelBtn?.addEventListener('click', function() {
-            if (cancelBtn) cancelBtn.style.display = 'none';
-            if (saveBtn) saveBtn.style.display = 'none';
-            if (editBtn) editBtn.style.display = 'block';
-            setFieldsReadOnly(true);
-        });
-
-        // Save button handler
-        saveBtn?.addEventListener('click', function() {
-            if (cancelBtn) cancelBtn.style.display = 'none';
-            if (saveBtn) saveBtn.style.display = 'none';
-            if (editBtn) editBtn.style.display = 'block';
-            setFieldsReadOnly(true);
-            alert('저장되었습니다!');
-        });
-    });
-
-    // Global function for removing sections
-    function removeSection(id) {
-        const section = document.getElementById(id);
-        if (section) {
-            section.remove();
-        }
-    }
+   // Global function for removing sections
+   function removeSection(id) {
+      const section = document.getElementById(id);
+      if (section) {
+         section.remove();
+      }
+   }
 </script>
 
 </body>
