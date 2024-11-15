@@ -82,9 +82,9 @@ public class Review {
     private Member member;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<IntroQuestion> questions = new ArrayList<>();
+    private List<ReviewWrite> questions = new ArrayList<>();
 
-    public void addQuestion(IntroQuestion question) {
+    public void addQuestion(ReviewWrite question) {
         this.questions.add(question);
         question.setReview(this);
     }

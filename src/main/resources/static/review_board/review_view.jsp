@@ -113,7 +113,7 @@
 
 		<!-- 질문-답변 섹션 -->
 		<div id="qa-format" class="question-container">
-			<c:forEach var="intro" items="${introQuestions}">
+			<c:forEach var="intro" items="${reviewWrites}">
 				<div class="question-block">
 					<div class="question">
 						<span class="question-number">1</span>

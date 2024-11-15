@@ -3,7 +3,7 @@ package com.ip_project.service;
 import java.util.List;
 
 import com.ip_project.dto.ReviewDTO;
-import com.ip_project.entity.IntroQuestion;
+import com.ip_project.entity.ReviewWrite;
 import com.ip_project.repository.IntroQuestionRepository;
 import com.ip_project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +50,7 @@ public class ReviewService {
 
 
         for (ReviewDTO.IntroQuestionDTO questionDTO : reviewDTO.getQuestions()) {
-            IntroQuestion question = new IntroQuestion();
+            ReviewWrite question = new ReviewWrite();
             question.setIntroQuestion(questionDTO.getQuestion());
             question.setIntroAnswer(questionDTO.getAnswer());
             question.setReview(review);
@@ -89,10 +89,10 @@ public class ReviewService {
                 .orElseThrow(() -> new RuntimeException("Review not found")); // 없으면 예외 처리
 
         // 연관된 IntroQuestions 조회
-        List<IntroQuestion> introQuestions = introQuestionRepository.findByReview(dto);
+        List<ReviewWrite> reviewWrites = introQuestionRepository.findByReview(dto);
 
         model.addAttribute("reviewDto", dto); // Review 데이터 추가
-        model.addAttribute("introQuestions", introQuestions); // IntroQuestions 데이터 추가
+        model.addAttribute("introQuestions", reviewWrites); // IntroQuestions 데이터 추가
     }
 
     public Review get(Long idx) {
