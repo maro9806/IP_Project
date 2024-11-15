@@ -18,6 +18,7 @@
 
 <div class="jumbotron">
     <h1>AI 면접 준비</h1>
+    <p class="lead">나에게 맞는 면접 질문 준비부터 실전 면접 연습까지</p>
     <hr>
     <p class="lead">나의 자기소개서를 기반으로 지원 기업 맞춤 면접 준비를 도와줘요</p>
 </div>
