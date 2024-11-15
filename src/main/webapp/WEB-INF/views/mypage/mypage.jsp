@@ -41,8 +41,8 @@
                             <div class="status-number">2</div>
                         </div>
                         <div class="status-item">
-                            <div>지원현황</div>
-                            <div class="status-number">4</div>
+                            <div>작성한 면접 후기</div>
+                            <div class="status-number">${fn:length(reviews)}</div>
                         </div>
                     </div>
 

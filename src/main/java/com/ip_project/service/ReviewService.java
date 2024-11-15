@@ -6,6 +6,7 @@ import com.ip_project.dto.ReviewDTO;
 import com.ip_project.entity.ReviewWrite;
 import com.ip_project.repository.IntroQuestionRepository;
 import com.ip_project.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,6 +124,15 @@ public class ReviewService {
 
         return reviewRepository.findByPage(startRow, endRow);
     }
+
+    @Transactional
+    public void deleteReview(Long idx) {
+        Review review = reviewRepository.findById(idx)
+                .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + idx));
+        reviewRepository.delete(review);
+    }
+
+
 
 
 

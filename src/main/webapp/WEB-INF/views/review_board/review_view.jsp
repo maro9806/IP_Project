@@ -160,7 +160,9 @@
 		</div>
 		<div class="modal-actions">
 			<button onclick="hideDeleteConfirm()" class="modal-button modal-cancel">취소</button>
-			<button onclick="deletePost()" class="modal-button modal-confirm">삭제</button>
+			<button onclick="location.href='${pageContext.request.contextPath}/review_board/remove/${reviewDto.reviewIdx}'" class="modal-button">
+				삭제
+			</button>
 		</div>
 	</div>
 </div>

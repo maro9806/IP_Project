@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ip_project.entity.Review;
 import com.ip_project.service.ReviewService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -86,6 +87,18 @@ public class ReviewController {
     public String register(@ModelAttribute Review vo) {
         service.register(vo);
         return "redirect:list";
+    }
+
+    @GetMapping("/remove/{idx}")
+    public String removeReview(@PathVariable("idx") Long idx, RedirectAttributes redirectAttributes) {
+        try {
+            service.deleteReview(idx);
+            redirectAttributes.addFlashAttribute("message", "리뷰가 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "리뷰 삭제 중 오류가 발생했습니다.");
+            return "redirect:/error/500";
+        }
+        return "redirect:/review_board/review_list"; // 삭제 후 리뷰 리스트 페이지로 리다이렉트
     }
 
 
