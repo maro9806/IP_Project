@@ -11,6 +11,9 @@
     <title>My Page</title>
     <link rel="stylesheet" href="<c:url value='/resources/static/mypage/mypagebar.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/static/mypage/mypageint.css'/>">
+    <!-- CSRF 토큰 메타 태그 추가 -->
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
 <body>
 <jsp:include page="../navbar.jsp"/>
@@ -29,7 +32,7 @@
                     <i class="bi bi-pencil-square me-1"></i> 글쓰기
                 </button>
 
-                <!--Writing Form popup -->
+                <!-- Writing Form popup -->
                 <div class="modal fade" id="selfIntroModal" tabindex="-1" aria-labelledby="selfIntroModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
@@ -38,11 +41,11 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="selfIntroForm">
+                                <form id="selfIntroForm" action="${pageContext.request.contextPath}/mypage/saveIntroduction" method="post" onsubmit="return validateForm()">
                                     <div class="mb-3">
                                         <label for="selfTitle" class="form-label"><b>자기소개서 작성하기</b></label>
                                         <input type="text" class="form-control" id="selfTitle" name="title"
-                                               placeholder="자기소개서 제목을 작성하세요.">
+                                               placeholder="자기소개서 제목을 작성하세요."/>
                                     </div>
 
                                     <div class="row mb-3">
@@ -90,7 +93,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                                <button type="button" class="btn btn-primary" onclick="submitForm()">저장하기</button>
+                                <button type="submit" form="selfIntroForm" class="btn btn-primary">저장하기</button>
                             </div>
                         </div>
                     </div>
@@ -187,172 +190,157 @@
             </div>
         </div>
     </div>
-        <script>
-            // Job roles mapping
-            const jobRoles = {
-                'Nexon': ['백엔드 개발자', '프론트엔드 개발자', '게임 개발자', 'DevOps 엔지니어'],
-                'Kakao': ['백엔드 개발자', '프론트엔드 개발자', '안드로이드 개발자', 'iOS 개발자'],
-                'Line': ['백엔드 개발자', '프론트엔드 개발자', '모바일 개발자', '데이터 엔지니어'],
-                'Carrot': ['백엔드 개발자', '프론트엔드 개발자', '안드로이드 개발자', 'iOS 개발자'],
-                'Naver': ['백엔드 개발자', '프론트엔드 개발자', '머신러닝 엔지니어', '보안 엔지니어'],
-                'Delivery': ['백엔드 개발자', '프론트엔드 개발자', '데브옵스 엔지니어', '데이터 엔지니어'],
-                'NCsoft': ['게임 클라이언트 개발자', '게임 서버 개발자', '그래픽스 엔지니어', 'AI 엔지니어'],
-                'Netmable': ['게임 개발자', '서버 개발자', '클라이언트 개발자', 'DevOps 엔지니어'],
-                'Coupang': ['백엔드 개발자', '프론트엔드 개발자', '풀스택 개발자', '시스템 엔지니어'],
-                'Toss': ['백엔드 개발자', '프론트엔드 개발자', '안드로이드 개발자', 'iOS 개발자']
-            };
 
-            // Modal instance
-            let selfIntroModal = null;
+    <!-- 스크립트 섹션 -->
+    <script>
+        // Job roles mapping
+        const jobRoles = {
+            Nexon: ['게임 프로그래밍', '시스템 엔지니어', '정보 보안', '어플리케이션 엔지니어', '데이터 분석 매니저'],
+            Kakao: ['백엔드 개발자(Server)', '백엔드 개발자(Java)', '데이터 엔지니어', 'ML 엔지니어', '시스템 엔지니어', 'NoSQL 엔지니어',
+                'CI/CD 개발자', 'DevOps 개발자', '보안 기술지원 엔지니어'],
+            Line: ['Line Messenger PM', 'Backend', 'Search/ML Engineer', 'Front-end Engineer', 'Server Engineer'],
+            Carrot: ['네트워크/서버/보안', 'Machine Learning', '백엔드-중고거래', '백엔드-커뮤니티', '웹기획(Product Manager)', '웹 개발', 'UI/UX디자인', 'Front-end개발', 'DBA 데이터 관리자'],
+            Naver: ['웹서비스/플랫폼 서버개발', '데이터 분석개발 및 엔지니어', '프론트엔드', '백엔드', '안드로이드 개발'],
+            Delivery: ['로봇딜리버리플랫폼팀 서버 개발자', '프론트엔드 기술자', '보안 시스템 및 솔루션 운영자', '백엔드 시스템 개발자', 'QA Engineer'],
+            NcSoft: ['개발 PM', '서버 프로그래머', '엔진 프로그래머', '게임 보안/안티치트 개발자', '게임 프로그래밍'],
+            Netmable: ['서버 프로그래밍', '클라이언트 프로그래머', '플랫폼 백엔드', '플랫폼 프론트엔드', '인프라'],
+            Coupang: ['Data Analyst', 'Frontend Platform Engineer', 'Call System Developer', 'QA Manager', 'Security Researcher', 'ML Engineer'],
+            Toss: ['Data Analyst', 'Frontend Platform Engineer', 'Call System Developer', 'QA Manager', 'Security Researcher', 'ML Engineer']
+        };
 
-            // Initialize when document is ready
-            document.addEventListener('DOMContentLoaded', function() {
-                selfIntroModal = new bootstrap.Modal(document.getElementById('selfIntroModal'));
-                setupEventListeners();
-            });
+        // Modal instance
+        let selfIntroModal = null;
 
-            // Show modal function
-            function showSelfIntroModal() {
-                selfIntroModal.show();
+        // Initialize when document is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            selfIntroModal = new bootstrap.Modal(document.getElementById('selfIntroModal'));
+            setupEventListeners();
+        });
+
+        // Show modal function
+        function showSelfIntroModal() {
+            selfIntroModal.show();
+        }
+
+        // Setup all event listeners
+        function setupEventListeners() {
+            // Company select change handler
+            document.getElementById('companySelect').addEventListener('change', updateJobRoles);
+
+            // Character counter for textareas
+            document.addEventListener('input', handleTextareaInput);
+
+            // Add question button handler
+            document.addEventListener('click', handleAddQuestion);
+        }
+
+        // Update job roles based on selected company
+        function updateJobRoles() {
+            const companySelect = document.getElementById('companySelect');
+            const jobSelect = document.getElementById('jobSelect');
+            jobSelect.innerHTML = '<option value="">직무 선택하기</option>';
+
+            const roles = jobRoles[companySelect.value] || [];
+            for (let i = 0; i < roles.length; i++) {
+                const option = document.createElement('option');
+                option.value = roles[i];
+                option.textContent = roles[i];
+                jobSelect.appendChild(option);
             }
+        }
 
-            // Setup all event listeners
-            function setupEventListeners() {
-                // Company select change handler
-                document.getElementById('companySelect').addEventListener('change', updateJobRoles);
-
-                // Character counter for textareas
-                document.addEventListener('input', handleTextareaInput);
-
-                // Add question button handler
-                document.addEventListener('click', handleAddQuestion);
-            }
-
-            // Update job roles based on selected company
-            function updateJobRoles() {
-                const companySelect = document.getElementById('companySelect');
-                const jobSelect = document.getElementById('jobSelect');
-                jobSelect.innerHTML = '<option value="">직무 선택하기</option>';
-
-                const roles = jobRoles[companySelect.value] || [];
-                roles.forEach(role => {
-                    const option = document.createElement('option');
-                    option.value = role;
-                    option.textContent = role;
-                    jobSelect.appendChild(option);
-                });
-            }
-
-            // Handle textarea input for character counting
-            function handleTextareaInput(e) {
-                if (e.target.matches('.answer-textarea')) {
-                    const count = e.target.value.length;
-                    const countDisplay = e.target.parentElement.querySelector('.char-count');
-                    if (countDisplay) {
-                        countDisplay.textContent = `${count}자/1000자 (공백포함)`;
-                    }
+        // Handle textarea input for character counting
+        function handleTextareaInput(e) {
+            if (e.target.matches('.answer-textarea')) {
+                const count = e.target.value.length;
+                const countDisplay = e.target.parentElement.querySelector('.char-count');
+                if (countDisplay) {
+                    countDisplay.textContent = count + '자/1000자 (공백포함)';
                 }
             }
+        }
 
-            // Handle adding new question
-            function handleAddQuestion(e) {
-                if (e.target.matches('.add-question') || e.target.closest('.add-question')) {
-                    e.preventDefault();
+        // Handle adding new question
+        function handleAddQuestion(e) {
+            if (e.target.matches('.add-question') || e.target.closest('.add-question')) {
+                e.preventDefault();
 
-                    const questionsContainer = document.getElementById('questions-container');
-                    const questionBlocks = questionsContainer.querySelectorAll('.question-row');
-                    const newQuestionNumber = questionBlocks.length + 1;
+                const questionsContainer = document.getElementById('questions-container');
+                const questionBlocks = questionsContainer.querySelectorAll('.question-row');
+                const newQuestionNumber = questionBlocks.length + 1;
 
-                    const newQuestionBlock = document.createElement('div');
-                    newQuestionBlock.className = 'question-row mb-3';
-                    newQuestionBlock.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <input type="text" class="form-control" name="questions[]"
-                       placeholder="문항${newQuestionNumber}. 자기소개서 문항을 작성하세요.">
-                <button type="button" class="btn btn-outline-primary ms-2 add-question">
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
-            <textarea class="form-control answer-textarea" rows="7" maxlength="1000"
-                      name="answers[]" placeholder="여기에 자기소개서를 작성하세요."></textarea>
-            <div class="text-end mt-1">
-                <small class="char-count">0자/1000자 (공백포함)</small>
-            </div>
-        `;
+                const newQuestionBlock = document.createElement('div');
+                newQuestionBlock.className = 'question-row mb-3';
+                newQuestionBlock.innerHTML =
+                    '<div class="d-flex justify-content-between align-items-center mb-2">' +
+                    '<input type="text" class="form-control" name="questions[]" ' +
+                    'placeholder="문항' + newQuestionNumber + '. 자기소개서 문항을 작성하세요.">' +
+                    '<button type="button" class="btn btn-outline-primary ms-2 add-question">' +
+                    '<i class="fas fa-plus"></i>' +
+                    '</button>' +
+                    '</div>' +
+                    '<textarea class="form-control answer-textarea" rows="7" maxlength="1000" ' +
+                    'name="answers[]" placeholder="여기에 자기소개서를 작성하세요."></textarea>' +
+                    '<div class="text-end mt-1">' +
+                    '<small class="char-count">0자/1000자 (공백포함)</small>' +
+                    '</div>';
 
-                    questionsContainer.appendChild(newQuestionBlock);
-                }
+                questionsContainer.appendChild(newQuestionBlock);
+            }
+        }
+
+        // Form validation function
+        function validateForm() {
+            const form = document.getElementById('selfIntroForm');
+            const title = form.querySelector("input[name='title']").value.trim();
+            const company = form.querySelector("select[name='company']").value;
+            const position = form.querySelector("select[name='position']").value;
+
+            if (!title) {
+                alert("제목을 입력해주세요.");
+                form.querySelector("input[name='title']").focus();
+                return false;
             }
 
-            // Form submission handler
-            function submitForm() {
-                const form = document.getElementById('selfIntroForm');
-                const formData = new FormData(form);
-
-                // Validate form
-                if (!validateForm(formData)) {
-                    return;
-                }
-
-                // Send form data to server
-                fetch('/mypage/save', {
-                    method: 'POST',
-                    body: formData
-                })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert('자기소개서가 저장되었습니다.');
-                                selfIntroModal.hide();
-                                location.reload();
-                            } else {
-                                alert('저장 중 오류가 발생했습니다.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('저장 중 오류가 발생했습니다.');
-                        });
+            if (!company) {
+                alert("기업명을 선택해주세요.");
+                form.querySelector("select[name='company']").focus();
+                return false;
             }
 
-            // Form validation
-            function validateForm(formData) {
-                if (!formData.get('title')) {
-                    alert('제목을 입력해주세요.');
+            if (!position) {
+                alert("직무를 선택해주세요.");
+                form.querySelector("select[name='position']").focus();
+                return false;
+            }
+
+            const questions = form.querySelectorAll("input[name='questions[]']");
+            const answers = form.querySelectorAll("textarea[name='answers[]']");
+
+            for (let i = 0; i < questions.length; i++) {
+                const question = questions[i].value.trim();
+                const answer = answers[i].value.trim();
+
+                if (!question) {
+                    alert((i + 1) + "번 문항을 입력해주세요.");
+                    questions[i].focus();
                     return false;
                 }
 
-                if (!formData.get('company')) {
-                    alert('기업명을 선택해주세요.');
+                if (!answer) {
+                    alert((i + 1) + "번 답변을 입력해주세요.");
+                    answers[i].focus();
                     return false;
                 }
-
-                if (!formData.get('position')) {
-                    alert('직무를 선택해주세요.');
-                    return false;
-                }
-
-                const questions = formData.getAll('questions[]');
-                const answers = formData.getAll('answers[]');
-
-                for (let i = 0; i < questions.length; i++) {
-                    if (!questions[i]) {
-                        alert(`${i + 1}번 문항을 입력해주세요.`);
-                        return false;
-                    }
-                    if (!answers[i]) {
-                        alert(`${i + 1}번 답변을 입력해주세요.`);
-                        return false;
-                    }
-                }
-
-                return true;
             }
-        </script>
 
-        <!-- Bootstrap JS and dependencies -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Custom JS -->
-        <script src="<c:url value='/resources/js/selfIntroModal.js'/>"></script>
+            return true;
+        }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS (if any) -->
+    <script src="<c:url value='/resources/js/selfIntroModal.js'/>"></script>
 </body>
 </html>
