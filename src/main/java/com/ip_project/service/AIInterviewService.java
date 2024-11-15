@@ -2,11 +2,8 @@ package com.ip_project.service;
 
 import com.ip_project.dto.AIInterviewDTO;
 import com.ip_project.entity.AIInterview;
-import com.ip_project.entity.AIInterviewStatus;
-import com.ip_project.entity.Member;
 import com.ip_project.mapper.AIInterviewMapper;
 import com.ip_project.repository.AIInterviewRepository;
-import com.ip_project.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j

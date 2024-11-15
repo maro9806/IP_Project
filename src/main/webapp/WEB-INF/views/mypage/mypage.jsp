@@ -110,7 +110,7 @@
                                     <tr>
                                         <td>(주)삼성전자</td>
                                         <td>2024 상반기 신입공채</td>
-                                        <td>2024.04.15</td>
+                                        <td>${interviews[0].createdAt}</td>
                                         <td>
                                             <button class="btn btn-outline-success btn-small">보러가기</button>
                                         </td>

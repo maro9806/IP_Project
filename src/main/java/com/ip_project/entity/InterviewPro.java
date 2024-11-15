@@ -29,8 +29,11 @@ public class InterviewPro {
     private String iproType; //직무 or 인성
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "INTERVIEW_IDX", referencedColumnName = "INTERVIEW_IDX")
-    private InterviewBoard interviewBoard;
+    @JoinColumn(name = "SELF_IDX", referencedColumnName = "SELF_IDX")
+    private SelfBoard selfBoard;
 
     // getters and setters
+    @ManyToOne
+    @JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME")
+    private Member member;
 }

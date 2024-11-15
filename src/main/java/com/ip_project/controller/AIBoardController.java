@@ -36,7 +36,6 @@ public class AIBoardController {
     private final SelfIntroductionService selfIntroductionService;
     private final SelfBoardService selfBoardService;
     private final MemberRepository memberRepository;
-    private final VirtualService virtualService;
     private final InterviewQuestionService questionService;
     private final RestTemplate restTemplate;
     private final VideoStorageService videoStorageService;
@@ -148,9 +147,14 @@ public class AIBoardController {
     public String aiMakeQuestion(@RequestParam(name = "selfIdx", required = true) Long selfIdx, Model model) {
         log.info("Starting interview question generation for selfIdx: {}", selfIdx);
         try {
+            // 로그인된 사용자 정보에서 USERNAME 가져오기
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            log.info("Generating questions for username: {}", username);
+
             // FastAPI 서버로 요청을 보내서 새로운 질문 생성
-            Map<String, Long> requestBody = new HashMap<>();
+            Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("self_idx", selfIdx);
+            requestBody.put("username", username); // USERNAME 추가username); // USERNAME 추가
 
             // FastAPI 호출
             ResponseEntity<Map> response = restTemplate.postForEntity(

@@ -28,6 +28,44 @@ def get_db_connection():
         print(f"DB 연결 오류: {str(e)}")
         raise
 
+# def get_db_connection():
+#     try:
+#         # 디버그 정보 출력
+#         print("=== 연결 디버그 정보 ===")
+#         oracle_client_path = r"C:\Users\USER\Oracle\instantclient_23_6"
+#         print(f"Oracle Client 경로: {oracle_client_path}")
+#         print(f"환경변수 확인:")
+#         print(f"DB_HOST: {os.getenv('DB_HOST')}")
+#         print(f"DB_PORT: {os.getenv('DB_PORT')}")
+#         print(f"DB_SERVICE: {os.getenv('DB_SERVICE')}")
+#         print(f"DB_USER: {os.getenv('DB_USER')}")
+#         print(f"ORACLE_HOME: {os.environ.get('ORACLE_HOME')}")
+#         print(f"TNS_ADMIN: {os.environ.get('TNS_ADMIN')}")
+#
+#         # Oracle 클라이언트 초기화
+#         try:
+#             oracledb.init_oracle_client(lib_dir=oracle_client_path)
+#         except Exception as init_error:
+#             print(f"Oracle 클라이언트 초기화 오류: {str(init_error)}")
+#             raise
+#
+#         # 연결 시도
+#         dsn = f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_SERVICE')}"
+#         print(f"연결 문자열: {dsn}")
+#
+#         connection = oracledb.connect(
+#             user=os.getenv('DB_USER'),
+#             password=os.getenv('DB_PASSWORD'),
+#             dsn=dsn
+#         )
+#         print("DB 연결 성공")
+#         return connection
+#     except Exception as e:
+#         print(f"DB 연결 오류 상세:")
+#         print(f"오류 타입: {type(e)}")
+#         print(f"오류 메시지: {str(e)}")
+#         raise
+
 def get_data_parallel(self_idx):
     """병렬로 회사 정보와 자기소개서 데이터 가져오기"""
     connection = get_db_connection()
@@ -58,7 +96,7 @@ def get_data_parallel(self_idx):
     finally:
         connection.close()
 
-def generate_and_save_questions(self_idx, company_name, job_position, intro_text):
+def generate_and_save_questions(self_idx, company_name, job_position, intro_text, username):
     """질문 생성 및 저장"""
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
@@ -95,16 +133,16 @@ def generate_and_save_questions(self_idx, company_name, job_position, intro_text
                 # 직무 질문 저장
                 for question in job_questions_list:
                     cursor.execute("""
-                        INSERT INTO INTERVIEW_PRO (IPRO_IDX, IPRO_QUESTION, IPRO_TYPE, SELF_IDX)
-                        VALUES ((SELECT NVL(MAX(IPRO_IDX), 0) + 1 FROM INTERVIEW_PRO), :1, 'position', :2)
-                    """, [question, self_idx])
+                        INSERT INTO INTERVIEW_PRO (IPRO_IDX, IPRO_QUESTION, IPRO_TYPE, SELF_IDX, USERNAME, CREATED_AT)
+                        VALUES ((SELECT NVL(MAX(IPRO_IDX), 0) + 1 FROM INTERVIEW_PRO), :1, 'position', :2, :3, SYSDATE)
+                    """, [question, self_idx, username])
 
                 # 인성 질문 저장
                 for question in personality_questions_list:
                     cursor.execute("""
-                        INSERT INTO INTERVIEW_PRO (IPRO_IDX, IPRO_QUESTION, IPRO_TYPE, SELF_IDX)
-                        VALUES ((SELECT NVL(MAX(IPRO_IDX), 0) + 1 FROM INTERVIEW_PRO), :1, 'personal', :2)
-                    """, [question, self_idx])
+                        INSERT INTO INTERVIEW_PRO (IPRO_IDX, IPRO_QUESTION, IPRO_TYPE, SELF_IDX, USERNAME, CREATED_AT)
+                        VALUES ((SELECT NVL(MAX(IPRO_IDX), 0) + 1 FROM INTERVIEW_PRO), :1, 'personal', :2, :3, SYSDATE)
+                    """, [question, self_idx, username])
 
                 connection.commit()
                 print("질문 저장 완료")
@@ -116,16 +154,16 @@ def generate_and_save_questions(self_idx, company_name, job_position, intro_text
         raise
 
 
-def main(self_idx):
+def main(self_idx, username):
     try:
-        print(f"처리 시작 - self_idx: {self_idx}")
+        print(f"처리 시작 - self_idx: {self_idx}, username: {username}")
 
         company_name, job_position, intro_text = get_data_parallel(self_idx)
         if not all([company_name, job_position, intro_text]):
             print("필요한 데이터가 없습니다")
             return False
 
-        generate_and_save_questions(self_idx, company_name, job_position, intro_text)
+        generate_and_save_questions(self_idx, company_name, job_position, intro_text, username)
         print("처리 완료")
         return True
 
@@ -134,12 +172,14 @@ def main(self_idx):
         return False
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Error: self_idx argument is required")
+    if len(sys.argv) < 3:
+        print("Error: self_idx and username arguments are required")
         sys.exit(1)
 
     try:
-        success = main(int(sys.argv[1]))
+        self_idx = int(sys.argv[1])
+        username = sys.argv[2]
+        success = main(self_idx, username)
         sys.exit(0 if success else 1)
     except Exception as e:
         print(f"Fatal error: {str(e)}")

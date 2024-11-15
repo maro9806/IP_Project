@@ -76,7 +76,7 @@
                                                 <input type="text" class="form-control" name="questions[]"
                                                        placeholder="문항1. 자기소개서 문항을 작성하세요.">
                                                 <button type="button" class="btn btn-outline-primary ms-2 add-question">
-                                                    <i class="bi bi-plus"></i>
+                                                    <i class="fas fa-plus"></i>
                                                 </button>
                                             </div>
                                             <textarea class="form-control answer-textarea" rows="7" maxlength="1000"
@@ -270,7 +270,7 @@
                 <input type="text" class="form-control" name="questions[]"
                        placeholder="문항${newQuestionNumber}. 자기소개서 문항을 작성하세요.">
                 <button type="button" class="btn btn-outline-primary ms-2 add-question">
-                    <i class="bi bi-plus"></i>
+                    <i class="fas fa-plus"></i>
                 </button>
             </div>
             <textarea class="form-control answer-textarea" rows="7" maxlength="1000"

@@ -45,6 +45,7 @@ class FeedbackResponse(BaseModel):
 
 class InterviewRequest(BaseModel):
     self_idx: int
+    username: str
 
 @app.post("/generate-interview")
 async def generate_interview(request: InterviewRequest):
@@ -59,7 +60,7 @@ async def generate_interview(request: InterviewRequest):
 
         # 명령어 실행
         process = subprocess.Popen(
-            [sys.executable, script_path, str(request.self_idx)],
+            [sys.executable, script_path, str(request.self_idx), request.username],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             env=my_env,

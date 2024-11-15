@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ip_project.entity.Member;
 import com.ip_project.repository.MemberRepository;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 public class MemberService {
