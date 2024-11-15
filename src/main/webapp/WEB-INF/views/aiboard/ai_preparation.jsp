@@ -97,13 +97,13 @@
 								<circle cx="12" cy="12" r="10"></circle>
 								<circle cx="12" cy="12" r="3"></circle>
 							</svg>
-							녹화 시작
+							답변 시작
 						</button>
 						<button id="interviewStopButton" onclick="stopRecording()" class="btn-record stop" disabled>
 							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 								<rect x="6" y="6" width="12" height="12"></rect>
 							</svg>
-							녹화 종료
+							답변 종료
 						</button>
 					</div>
 				</div>
@@ -181,7 +181,7 @@
 </div>
 
 <script>
-
+	// 질문 추출 페이지에서 넘어 올 때 바로 자기소개서 로드
 	window.addEventListener('DOMContentLoaded', (event) => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const selfIdx = urlParams.get('selfIdx');
@@ -191,13 +191,152 @@
 		}
 	});
 
-	let currentInterviewId = null;
-	let mediaRecorder;
-	let recordedChunks = [];
+	document.addEventListener('DOMContentLoaded', function () {
+		// 모달 창 관련 요소
+		const loadModal = document.getElementById("loadModal");
+		const loadModalBtn = document.getElementById("loadModalBtn");
+		const loadCloseBtn = loadModal.querySelector(".close");
 
+
+		// 모달 열기
+		loadModalBtn.onclick = function () {
+			loadModal.style.display = "block";
+		};
+
+		// 모달 닫기
+		loadCloseBtn.onclick = function () {
+			loadModal.style.display = "none";
+		};
+
+		// 모달 외부 클릭시 닫기
+		window.onclick = function (event) {
+			if (event.target == loadModal) {
+				loadModal.style.display = "none";
+			}
+		};
+	});
+
+
+	// 전역 변수로 선택된 자기소개서의 position을 저장
+	let selectedPosition = '';
+	let username = '';
+	let selfId = '';
+	let iproAnswers = '';
+
+	function loadSelfIntroduction(selfIdx) {
+		selfId = selfIdx;
+		$.ajax({
+			url: `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/` + selfIdx,
+			method: 'GET',
+			dataType: 'json',
+			success: function (data) {
+				username = data.username;
+				const company = data.company;
+				const position = data.position;
+				const title = data.title;
+				const iproQuestions = data.iproQuestions;
+				iproAnswers = data.iproAnswers;
+
+				// iproAnswers가 배열인지 확인하고, 배열이 아니라면 빈 배열로 설정
+				if (!Array.isArray(iproAnswers)) {
+					iproAnswers = [];
+					console.warn('iproAnswers는 배열이 아니므로 빈 배열로 설정되었습니다.');
+				}
+
+				console.log('로드된 iproAnswers:', iproAnswers); // 디버깅용 로그
+
+				selectedPosition = position;
+
+				const resultDiv = document.getElementById('selectedSelfIntroduction');
+				resultDiv.innerHTML = '<strong>자기소개서</strong>' +
+						'<div class="form-control mb-3"><span>' + company + '</span>' +
+						'<span> / ' + position + '</span></div>';
+
+
+				// 질문 테이블 생성
+				const tableDiv = document.createElement('div');
+				tableDiv.className = 'table-responsive mt-3';
+
+				let tableHtml = '<table class="table">' +
+						'<colgroup>' +
+						'<col style="width: 5%">' +
+						'<col style="width: 85%">' +
+						'<col style="width: 10%">' +
+						'</colgroup>' +
+						'<thead>' +
+						'<tr style="border:transparent;"><th colspan="3"><strong>예상질문</strong></th></tr>'+
+						'</thead>' +
+						'<tbody>';
+
+				if (iproQuestions && iproQuestions.length > 0) {
+					iproQuestions.forEach((question, i) => {
+						tableHtml += '<tr>' +
+								'<td>' + (i + 1) + '</td>' +
+								'<td>' + question + '</td>' +
+								'<td>' +
+								'<input class="form-check-input" type="checkbox" ' +
+								'value="' + question + '" ' +
+								'id="question' + i + '" ' +
+								'name="selectedQuestions">' +
+								'</td>' +
+								'</tr>';
+					});
+				} else {
+					const defaultQuestions = [
+						"1분 자기소개 해주세요.",
+						"이 회사를 선택한 이유는 무엇인가요?",
+						"직무와 관련된 경험을 설명해주세요.",
+						"본인의 강점과 약점은 무엇인가요?",
+						"향후 커리어 계획이 무엇인가요?",
+						"본인만의 차별화된 역량을 설명해주세요."
+					];
+					tableHtml += '<tr><td colspan="3" style="color:gray;">추출된 질문이 없어 기본 질문으로 대체됩니다.</td></tr>'
+
+					defaultQuestions.forEach((question, i) => {
+						tableHtml +=
+								'<tr>' +
+								'<td>' + (i + 1) + '</td>' +
+								'<td>' + question + '</td>' +
+								'<td>' +
+								'<input class="form-check-input" type="checkbox" ' +
+								'value="' + question + '" ' +
+								'id="question' + i + '" ' +
+								'name="selectedQuestions">' +
+								'</td>' +
+								'</tr>';
+					});
+				}
+
+				tableHtml += '</tbody></table>';
+				tableDiv.innerHTML = tableHtml;
+				resultDiv.appendChild(tableDiv);
+				resultDiv.style.display = 'block';
+				loadModal.style.display = "none";
+
+				// 체크박스 이벤트 리스너 추가
+				const checkboxes = document.querySelectorAll('input[name="selectedQuestions"]');
+				checkboxes.forEach(checkbox => {
+					checkbox.addEventListener('change', function () {
+						const checked = document.querySelectorAll('input[name="selectedQuestions"]:checked');
+						if (checked.length > 6) {
+							this.checked = false;
+							alert('최대 6개의 질문만 선택할 수 있습니다.');
+						}
+					});
+				});
+			},
+			error: function (xhr, status, error) {
+				console.error('자기소개서 불러오기 오류:', error);
+				alert('자기소개서를 불러오는데 실패했습니다.');
+			}
+		});
+	}
+
+
+	//  인터뷰 시작 끝 --------------------------------------------------
 	async function startInterview() {
 		try {
-			// 자기소개서가 선택되었는지 확인
+			// Keep all existing code
 			const selfIntroDiv = document.getElementById('selectedSelfIntroduction');
 			const formControl = selfIntroDiv.querySelector('.form-control');
 
@@ -205,15 +344,26 @@
 				alert('자기소개서를 선택해주세요.');
 				return;
 			}
+			// iproAnswers가 존재하는지 확인하고, 없다면 빈 배열로 초기화
+			const answers = Array.isArray(iproAnswers) ? iproAnswers : [];
+			console.log('현재 iproAnswers:', answers); // 디버깅용 로그
 
-			// 선택된 질문들을 배열로 가져오기
+
+			// 체크된 질문들을 선택하고, 해당 인덱스의 답변도 함께 저장
 			const selectedQuestions = Array.from(document.querySelectorAll('input[name="selectedQuestions"]:checked'))
-					.map((checkbox, index) => ({
-						content: checkbox.value,
-						orderNumber: index + 1
-					}));
+					.map((checkbox, index) => {
+						// checkbox의 id에서 원래 질문의 인덱스를 추출 (예: "question0" -> 0)
+						const originalIndex = parseInt(checkbox.id.replace('question', ''));
+						console.log('선택된 질문 인덱스:', originalIndex); // 디버깅용 로그
 
-			// 질문 선택 검증
+
+						return {
+							content: checkbox.value,
+							orderNumber: index + 1,
+							answer: iproAnswers[originalIndex] || '' // 해당 인덱스의 답변 추가
+						};
+					});
+			console.log('최종 선택된 질문과 답변:', selectedQuestions); // 디버깅용 로그
 			if (selectedQuestions.length === 0) {
 				alert('최소 1개의 질문을 선택해주세요.');
 				return;
@@ -223,7 +373,7 @@
 				return;
 			}
 
-			// 요청 데이터 구성
+			// API 요청 데이터에 선택된 답변들도 포함
 			const requestData = {
 				username: null,
 				position: selectedPosition,
@@ -251,21 +401,18 @@
 			const data = await response.json();
 			currentInterviewId = data.id;
 
-			// 화면 전환
+			updateTranscriptList(selectedQuestions);
+
 			document.getElementById('setupSection').classList.add('hidden');
 			document.getElementById('questionSection').classList.remove('hidden');
 
-			// 여기서부터 수정된 코드
 			const questionHeader = document.querySelector('.question-header');
-
-			// 기존 내용을 지우고 새로운 내용으로 대체
 			questionHeader.innerHTML = '<h5>면접 질문</h5>' +
 					'<div class="current-question">' +
 					'<p class="question-number"><strong>Question 1</strong></p>' +
 					'<p class="question-content">' + selectedQuestions[0].content + '</p>' +
 					'</div>';
 
-			// 비디오 녹화 시작
 			await startVideoRecording();
 
 		} catch (error) {
@@ -274,6 +421,176 @@
 		}
 	}
 
+
+	function setupTranscriptItemListeners() {
+		const transcriptItems = document.querySelectorAll('.transcript-item');
+
+		transcriptItems.forEach(item => {
+			item.addEventListener('click', function() {
+				transcriptItems.forEach(otherItem => {
+					if (otherItem !== item) {
+						otherItem.classList.remove('expanded');
+					}
+				});
+
+				// Toggle expanded class on clicked item
+				item.classList.toggle('expanded');
+
+				// 클릭한 질문으로 current-question 업데이트
+				const questionNumber = item.getAttribute('data-question-number');
+				updateCurrentQuestion(parseInt(questionNumber));
+			});
+		});
+	}
+
+	document.addEventListener('DOMContentLoaded', setupTranscriptItemListeners);
+
+	function updateCurrentQuestion(questionNumber) {
+		const transcriptItems = document.querySelectorAll('.transcript-item');
+		const targetItem = transcriptItems[questionNumber - 1];
+
+		if (targetItem) {
+			const questionContent = targetItem.querySelector('.transcript-question').textContent;
+			// "Q1. " 부분을 제거하고 실제 질문 내용만 추출
+			const actualQuestion = questionContent.substring(questionContent.indexOf('. ') + 2);
+
+			const currentQuestionDiv = document.querySelector('.current-question');
+			if (currentQuestionDiv) {
+				currentQuestionDiv.querySelector('.question-number strong').textContent = 'Question ' +questionNumber;
+				currentQuestionDiv.querySelector('.question-content').textContent = actualQuestion;
+			}
+		}
+	}
+
+	function updateTranscriptList(selectedQuestions) {
+		const transcriptList = document.querySelector('.transcript-list');
+		const tableHtml = '<div class="table-responsive"><table class="table"><tbody>' +
+				selectedQuestions.map((question, index) =>
+						'<tr class="transcript-item" data-question-number="' + (index + 1) + '" data-listener-added="false">' +
+						'<td>' +
+						'<p class="transcript-question">Q' + (index + 1) + '. ' + question.content + '</p>' +
+						'<p class="transcript-answer">' + (question.answer || '') + '</p>' +
+						'</td>' +
+						'</tr>'
+				).join('') +
+				'</tbody></table></div>';
+
+		transcriptList.innerHTML = tableHtml;
+		setupTranscriptItemListeners();
+	}
+
+
+	function updateTranscriptAnswer(questionNumber, answer) {
+		const transcriptItems = document.querySelectorAll('.transcript-item');
+		if (transcriptItems[questionNumber - 1]) {
+			const answerElement = transcriptItems[questionNumber - 1].querySelector('.transcript-answer');
+			if (answerElement) {
+				answerElement.textContent = answer;
+			}
+		}
+	}
+
+	// 답변 열고 닫는 기능
+	document.addEventListener('DOMContentLoaded', function() {
+		const transcriptItems = document.querySelectorAll('.transcript-item');
+
+		transcriptItems.forEach(item => {
+			item.addEventListener('click', function() {
+				// If this item is already expanded, collapse it
+				if (this.classList.contains('expanded')) {
+					this.classList.remove('expanded');
+					return;
+				}
+
+				// Collapse any other expanded items
+				const expandedItems = document.querySelectorAll('.transcript-item.expanded');
+				expandedItems.forEach(expandedItem => {
+					if (expandedItem !== this) {
+						expandedItem.classList.remove('expanded');
+					}
+				});
+
+				// Expand this item
+				this.classList.add('expanded');
+
+				// 클릭한 질문으로 current-question 업데이트
+				const questionNumber = this.getAttribute('data-question-number');
+				updateCurrentQuestion(parseInt(questionNumber));
+			});
+		});
+	});
+
+
+
+
+
+	// -------------------------------------------- 카메라 관련 설정 ---------------------------------------------------------
+	let currentInterviewId = null;
+	let mediaRecorder;
+	let recordedChunks = [];
+
+
+	// 페이지 로드 시 카메라 초기화
+	document.addEventListener('DOMContentLoaded', initializeCamera);
+
+	async function initializeCamera() {
+		try {
+			// 먼저 카메라 권한 상태 확인
+			const permissions = await navigator.permissions.query({name: 'camera'});
+			if (permissions.state === 'denied') {
+				throw new Error('카메라 권한이 거부되었습니다. 브라우저 설정에서 카메라 권한을 허용해주세요.');
+			}
+
+			const stream = await navigator.mediaDevices.getUserMedia({
+				video: {
+					width: {ideal: 1280},
+					height: {ideal: 720}
+				},
+				audio: false
+			});
+
+			const videoContainer = document.querySelector('.video-container');
+			if (!videoContainer) {
+				throw new Error('비디오 컨테이너를 찾을 수 없습니다.');
+			}
+
+			const videoElement = document.createElement('video');
+			videoElement.srcObject = stream;
+			videoElement.autoplay = true;
+			videoElement.playsInline = true;
+			videoElement.muted = true;
+			videoElement.style.width = '100%';
+			videoElement.style.height = '100%';
+
+			videoContainer.innerHTML = '';
+			videoContainer.appendChild(videoElement);
+			document.getElementById('setupVideoError-1').style.display = 'none';
+
+		} catch (error) {
+			handleCameraError(error, 'setup');
+		}
+	}
+
+
+	function handleCameraError(error, section = 'setup') {
+		console.error('Camera error:', error);
+		const errorId = section === 'setup' ? 'setupVideoError-1' : 'interviewVideoError-2';
+		const videoError = document.getElementById(errorId);
+
+		if (videoError) {
+			if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+				videoError.textContent = '카메라 권한이 거부되었습니다. 브라우저 설정에서 카메라 권한을 허용해주세요.';
+			} else if (error.name === 'NotFoundError') {
+				videoError.textContent = '카메라를 찾을 수 없습니다. 카메라가 연결되어 있는지 확인해주세요.';
+			} else {
+				videoError.textContent = '카메라 접근에 실패했습니다: ' + error.message;
+			}
+			videoError.style.display = 'block';
+		}
+	}
+
+
+// --------------------- 녹화 시작, 저장, 업로드하고 끝 -----------------------------------------------------------
 	async function startVideoRecording() {
 		try {
 			const stream = await navigator.mediaDevices.getUserMedia({
@@ -360,217 +677,6 @@
 		}
 	}
 
-	function goBack() {
-		cleanupVideoResources();
-
-		// UI 초기화
-		const videoContainer = document.querySelector('#questionSection .video-container');
-		if (videoContainer) {
-			// Check if recording indicator already exists
-			if (!document.getElementById('interviewRecordingIndicator-2')) {
-				const recordingIndicator = document.createElement('div');
-				recordingIndicator.id = 'interviewRecordingIndicator-2';
-				recordingIndicator.className = 'recording-indicator';
-				recordingIndicator.style.display = 'none';
-				recordingIndicator.innerHTML =
-						'<span class="recording-dot"></span>' +
-						'녹화중';
-				videoContainer.appendChild(recordingIndicator);
-			}
-		}
-
-		// 화면 전환
-		document.getElementById('questionSection').classList.add('hidden');
-		document.getElementById('setupSection').classList.remove('hidden');
-
-		// 카메라 다시 초기화
-		initializeCamera();
-	}
-
-
-	// 페이지 로드 시 카메라 초기화
-	document.addEventListener('DOMContentLoaded', initializeCamera);
-
-	async function initializeCamera() {
-		try {
-			// 먼저 카메라 권한 상태 확인
-			const permissions = await navigator.permissions.query({name: 'camera'});
-			if (permissions.state === 'denied') {
-				throw new Error('카메라 권한이 거부되었습니다. 브라우저 설정에서 카메라 권한을 허용해주세요.');
-			}
-
-			const stream = await navigator.mediaDevices.getUserMedia({
-				video: {
-					width: {ideal: 1280},
-					height: {ideal: 720}
-				},
-				audio: false
-			});
-
-			const videoContainer = document.querySelector('.video-container');
-			if (!videoContainer) {
-				throw new Error('비디오 컨테이너를 찾을 수 없습니다.');
-			}
-
-			const videoElement = document.createElement('video');
-			videoElement.srcObject = stream;
-			videoElement.autoplay = true;
-			videoElement.playsInline = true;
-			videoElement.muted = true;
-			videoElement.style.width = '100%';
-			videoElement.style.height = '100%';
-
-			videoContainer.innerHTML = '';
-			videoContainer.appendChild(videoElement);
-			document.getElementById('setupVideoError-1').style.display = 'none';
-
-		} catch (error) {
-			handleCameraError(error, 'setup');
-		}
-	}
-
-
-	function handleCameraError(error, section = 'setup') {
-		console.error('Camera error:', error);
-		const errorId = section === 'setup' ? 'setupVideoError-1' : 'interviewVideoError-2';
-		const videoError = document.getElementById(errorId);
-
-		if (videoError) {
-			if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
-				videoError.textContent = '카메라 권한이 거부되었습니다. 브라우저 설정에서 카메라 권한을 허용해주세요.';
-			} else if (error.name === 'NotFoundError') {
-				videoError.textContent = '카메라를 찾을 수 없습니다. 카메라가 연결되어 있는지 확인해주세요.';
-			} else {
-				videoError.textContent = '카메라 접근에 실패했습니다: ' + error.message;
-			}
-			videoError.style.display = 'block';
-		}
-	}
-
-
-	document.addEventListener('DOMContentLoaded', function () {
-		// 모달 창 관련 요소
-		const loadModal = document.getElementById("loadModal");
-		const loadModalBtn = document.getElementById("loadModalBtn");
-		const loadCloseBtn = loadModal.querySelector(".close");
-
-
-		// 모달 열기
-		loadModalBtn.onclick = function () {
-			loadModal.style.display = "block";
-		};
-
-		// 모달 닫기
-		loadCloseBtn.onclick = function () {
-			loadModal.style.display = "none";
-		};
-
-		// 모달 외부 클릭시 닫기
-		window.onclick = function (event) {
-			if (event.target == loadModal) {
-				loadModal.style.display = "none";
-			}
-		};
-	});
-
-	// 전역 변수로 선택된 자기소개서의 position을 저장
-	let selectedPosition = '';
-	let username = '';
-	let selfId = '';
-
-	function loadSelfIntroduction(selfIdx) {
-		selfId = selfIdx;
-		$.ajax({
-			url: `${pageContext.request.contextPath}/aiboard/loadSelfIntroduction/` + selfIdx,
-			method: 'GET',
-			dataType: 'json',
-			success: function (data) {
-				username = data.username;
-				const company = data.company;
-				const position = data.position;
-				const title = data.title;
-				const iproQuestions = data.iproQuestions;
-
-				selectedPosition = position;
-
-				const resultDiv = document.getElementById('selectedSelfIntroduction');
-				resultDiv.innerHTML = '<strong>자기소개서</strong>' +
-						'<div class="form-control mb-3"><span>' + company + '</span>' +
-						'<span> / ' + position + '</span></div>' +
-						'<strong>예상질문</strong>';
-
-				// 질문 테이블 생성
-				const tableDiv = document.createElement('div');
-				tableDiv.className = 'table-responsive mt-3';
-
-				let tableHtml = '<table class="table">' +
-						'<thead>' +
-						'<tr>' +
-						'<th style="width: 10%"></th>' +
-						'<th style="width: 80%"></th>' +
-						'<th style="width: 10%"></th>' +
-						'</tr>' +
-						'</thead>' +
-						'<tbody>';
-
-				if (iproQuestions && iproQuestions.length > 0) {
-					iproQuestions.forEach((question, i) => {
-						tableHtml += '<tr>' +
-								'<td>' + (i + 1) + '</td>' +
-								'<td>' + question + '</td>' +
-								'<td>' +
-								'<input class="form-check-input" type="checkbox" ' +
-								'value="' + question + '" ' +
-								'id="question' + i + '" ' +
-								'name="selectedQuestions">' +
-								'</td>' +
-								'</tr>';
-					});
-				} else {
-					const defaultQuestions = [
-						"회사를 선택한 이유는 무엇인가요?",
-						"직무와 관련된 경험을 설명해주세요.",
-						"향후 커리어 계획은 무엇인가요?"
-					];
-
-					defaultQuestions.forEach((question, i) => {
-						tableHtml += '<tr>' +
-								'<td>' + (i + 1) + '</td>' +
-								'<td>' + question + '</td>' +
-								'<td>' +
-								'<input class="form-check-input" type="checkbox" ' +
-								'value="' + question + '" ' +
-								'id="question' + i + '" ' +
-								'name="selectedQuestions">' +
-								'</td>' +
-								'</tr>';
-					});
-				}
-
-				tableHtml += '</tbody></table>';
-				tableDiv.innerHTML = tableHtml;
-				resultDiv.appendChild(tableDiv);
-				resultDiv.style.display = 'block';
-				loadModal.style.display = "none";
-
-				// 체크박스 이벤트 리스너 추가
-				const checkboxes = document.querySelectorAll('input[name="selectedQuestions"]');
-				checkboxes.forEach(checkbox => {
-					checkbox.addEventListener('change', function () {
-						const checked = document.querySelectorAll('input[name="selectedQuestions"]:checked');
-						if (checked.length > 6) {
-							this.checked = false;
-							alert('최대 6개의 질문만 선택할 수 있습니다.');
-						}
-					});
-				});
-			},
-			error: function (xhr, status, error) {
-				console.error('자기소개서 불러오기 오류:', error);
-				alert('자기소개서를 불러오는데 실패했습니다.');
-			}
-		});
-	}
 
 	function cleanupVideoResources() {
 		// 모든 비디오 스트림 정지
@@ -640,129 +746,7 @@
 		}
 	}
 
-	function stopRecording() {
-		try {
-			if (!isRecording || !mediaRecorder) {
-				console.error('녹화 중이 아닙니다.');
-				return;
-			}
 
-			const startButton = document.getElementById('interviewStartButton');
-			const stopButton = document.getElementById('interviewStopButton');
-			const recordingIndicator = document.getElementById('interviewRecordingIndicator-2');
-
-			// Update UI
-			if (startButton) startButton.disabled = false;
-			if (stopButton) stopButton.disabled = true;
-			if (recordingIndicator) recordingIndicator.style.display = 'none';
-
-			mediaRecorder.ondataavailable = async (event) => {
-				if (event.data && event.data.size > 0) {
-					recordedChunks.push(event.data);
-					await saveRecording();
-				}
-			};
-
-			mediaRecorder.stop();
-			isRecording = false;
-			console.log('녹화가 중지되었습니다.');
-
-		} catch (error) {
-			console.error('녹화 중지 오류:', error);
-			alert('녹화 중지 중 오류가 발생했습니다.');
-		}
-	}
-
-	async function uploadRecording() {
-		try {
-			if (recordedChunks.length === 0) {
-				throw new Error('녹화된 데이터가 없습니다.');
-			}
-
-			const blob = new Blob(recordedChunks, {type: 'video/webm'});
-			const formData = new FormData();
-			formData.append('video', blob);
-
-			// Spring Security CSRF 토큰
-			const token = document.querySelector("meta[name='_csrf']").content;
-			const header = document.querySelector("meta[name='_csrf_header']").content;
-
-			const response = await fetch('/aiboard/api/interview/video', {
-				method: 'POST',
-				headers: {
-					[header]: token
-				},
-				body: formData
-			});
-
-			if (!response.ok) {
-				throw new Error('서버 응답 오류: ' + response.status);
-			}
-
-			console.log('업로드 완료');
-
-		} catch (error) {
-			console.error('업로드 오류:', error);
-			alert('녹화 파일 업로드 중 오류가 발생했습니다.');
-		}
-	}
-
-	function updateTranscriptList(selectedQuestions) {
-		const transcriptList = document.querySelector('.transcript-list');
-		const tableHtml = '<div class="table-responsive"><table class="table"><tbody>' +
-				selectedQuestions.map((question, index) =>
-						'<tr class="transcript-item" data-question-number="' + (index + 1) + '" data-listener-added="false">' +
-						'<td>' +
-						'<p class="transcript-question">Q' + (index + 1) + '. ' + question.content + '</p>' +
-						'<p class="transcript-answer">' + (dummyAnswers[index + 1] || '') + '</p>' +
-						'</td>' +
-						'</tr>'
-				).join('') +
-				'</tbody></table></div>';
-
-		transcriptList.innerHTML = tableHtml;
-		setupTranscriptItemListeners();
-	}
-
-	function setupTranscriptItemListeners() {
-		const transcriptItems = document.querySelectorAll('.transcript-item');
-
-		transcriptItems.forEach(item => {
-			item.addEventListener('click', function() {
-
-				transcriptItems.forEach(otherItem => {
-					if (otherItem !== item) {
-						otherItem.classList.remove('expanded');
-					}
-				});
-
-				// Toggle expanded class on clicked item
-				item.classList.toggle('expanded');
-			});
-		});
-	}
-	document.addEventListener('DOMContentLoaded', setupTranscriptItemListeners);
-
-
-	// Dummy answers object (DB에서 응답 불러오기 필요)
-	const dummyAnswers = {
-		1: "저는 귀사의 혁신적인 기술 개발과 글로벌 시장에서의 성장 가능성에 매력을 느꼈습니다. 특히 AI 기술을 활용한 서비스 개발에 중점을 두고 있는 점이 제 경력 목표와 잘 맞았습니다.",
-		2: "대학교 3학년 때 진행했던 AI 기반 추천 시스템 프로젝트가 가장 기억에 남습니다. 6명의 팀원들과 함께 3개월간 프로젝트를 진행하면서 팀장을 맡아 일정 관리와 팀원들 간의 의사소통을 조율했습니다.",
-		3: "이건 <br>"+ " 답변 <br>" + " 스크롤 <br>"+" 작동 <br>" + "되는지 테스트 <br>" + " 용도로 만든것<br>"+"입니다.<br>"+"Q.6번 까지 만들었는데 <br>"+"잘 스크롤 되면 굿",
-		4: "제 장점은 문제 해결에 대한 끈기와 열정입니다. 학부 프로젝트에서 겪었던 기술적 어려움을 해결하기 위해 밤늦게까지 공부하고 연구했던 경험이 있습니다.",
-		5: "저는 스트레스 관리를 위해 규칙적인 운동과 취미 활동을 하고 있습니다.",
-		6: "귀사에서 일하게 된다면, 첫 3개월은 회사의 시스템과 업무 프로세스를 완벽히 파악하는 데 집중하고 싶습니다."
-	};
-
-	function updateTranscriptAnswer(questionNumber, answer) {
-		const transcriptItems = document.querySelectorAll('.transcript-item');
-		if (transcriptItems[questionNumber - 1]) {
-			const answerElement = transcriptItems[questionNumber - 1].querySelector('.transcript-answer');
-			if (answerElement) {
-				answerElement.textContent = answer;
-			}
-		}
-	}
 
 	async function saveRecording() {
 		try {
@@ -821,128 +805,109 @@
 		}
 	}
 
-	async function startInterview() {
+	function stopRecording() {
 		try {
-			// Keep all existing code
-			const selfIntroDiv = document.getElementById('selectedSelfIntroduction');
-			const formControl = selfIntroDiv.querySelector('.form-control');
-
-			if (!formControl || formControl.textContent.trim() === '-') {
-				alert('자기소개서를 선택해주세요.');
+			if (!isRecording || !mediaRecorder) {
+				console.error('녹화 중이 아닙니다.');
 				return;
 			}
 
-			// Keep existing question selection code
-			const selectedQuestions = Array.from(document.querySelectorAll('input[name="selectedQuestions"]:checked'))
-					.map((checkbox, index) => ({
-						content: checkbox.value,
-						orderNumber: index + 1
-					}));
+			const startButton = document.getElementById('interviewStartButton');
+			const stopButton = document.getElementById('interviewStopButton');
+			const recordingIndicator = document.getElementById('interviewRecordingIndicator-2');
 
-			if (selectedQuestions.length === 0) {
-				alert('최소 1개의 질문을 선택해주세요.');
-				return;
-			}
-			if (selectedQuestions.length > 6) {
-				alert('최대 6개의 질문만 선택할 수 있습니다.');
-				return;
-			}
+			// Update UI
+			if (startButton) startButton.disabled = false;
+			if (stopButton) stopButton.disabled = true;
+			if (recordingIndicator) recordingIndicator.style.display = 'none';
 
-			// Keep existing API call
-			const requestData = {
-				username: null,
-				position: selectedPosition,
-				questions: selectedQuestions,
-				interviewDate: new Date().toISOString(),
-				videoStatus: null,
-				videoUrl: null,
-				memberId: null
+			mediaRecorder.ondataavailable = async (event) => {
+				if (event.data && event.data.size > 0) {
+					recordedChunks.push(event.data);
+					await saveRecording();
+				}
 			};
 
-			const response = await fetch('/aiboard/api/interview', {
+			mediaRecorder.stop();
+			isRecording = false;
+			console.log('녹화가 중지되었습니다.');
+
+		} catch (error) {
+			console.error('녹화 중지 오류:', error);
+			alert('녹화 중지 중 오류가 발생했습니다.');
+		}
+	}
+
+
+
+	async function uploadRecording() {
+		try {
+			if (recordedChunks.length === 0) {
+				throw new Error('녹화된 데이터가 없습니다.');
+			}
+
+			const blob = new Blob(recordedChunks, {type: 'video/webm'});
+			const formData = new FormData();
+			formData.append('video', blob);
+
+			// Spring Security CSRF 토큰
+			const token = document.querySelector("meta[name='_csrf']").content;
+			const header = document.querySelector("meta[name='_csrf_header']").content;
+
+			const response = await fetch('/aiboard/api/interview/video', {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json'
+					[header]: token
 				},
-				body: JSON.stringify(requestData)
+				body: formData
 			});
 
 			if (!response.ok) {
-				const errorText = await response.text();
-				console.error('Server response:', errorText);
-				throw new Error('면접 시작에 실패했습니다. Status: ' + response.status);
+				throw new Error('서버 응답 오류: ' + response.status);
 			}
 
-			const data = await response.json();
-			currentInterviewId = data.id;
-
-			// Add this one new line
-			updateTranscriptList(selectedQuestions);
-
-			// Keep rest of existing code
-			document.getElementById('setupSection').classList.add('hidden');
-			document.getElementById('questionSection').classList.remove('hidden');
-
-			const questionHeader = document.querySelector('.question-header');
-			questionHeader.innerHTML = '<h5>면접 질문</h5>' +
-					'<div class="current-question">' +
-					'<p class="question-number"><strong>Question 1</strong></p>' +
-					'<p class="question-content">' + selectedQuestions[0].content + '</p>' +
-					'</div>';
-
-			await startVideoRecording();
+			console.log('업로드 완료');
 
 		} catch (error) {
-			console.error('Interview start error:', error);
-			alert(error.message);
+			console.error('업로드 오류:', error);
+			alert('녹화 파일 업로드 중 오류가 발생했습니다.');
 		}
 	}
 
+	// function finishInterview() {
+	// 	cleanupVideoResources();
+	// 	document.getElementById('questionSection').classList.add('hidden');
+	// 	document.getElementById('endingSection').classList.remove('hidden');
+	// 	document.body.style.overflow = "hidden";
+	// }
 
-	document.addEventListener('DOMContentLoaded', function() {
-		const transcriptItems = document.querySelectorAll('.transcript-item');
-
-		transcriptItems.forEach(item => {
-			item.addEventListener('click', function() {
-				// If this item is already expanded, collapse it
-				if (this.classList.contains('expanded')) {
-					this.classList.remove('expanded');
-					return;
-				}
-
-				// Collapse any other expanded items
-				const expandedItems = document.querySelectorAll('.transcript-item.expanded');
-				expandedItems.forEach(expandedItem => {
-					if (expandedItem !== this) {
-						expandedItem.classList.remove('expanded');
-					}
-				});
-
-				// Expand this item
-				this.classList.add('expanded');
-			});
-		});
-	});
-
-	function updateCurrentQuestion(questionNumber) {
-		const questionItems = document.querySelectorAll('.question-item');
-		if (questionNumber <= questionItems.length) {
-			const currentQuestionDiv = document.querySelector('.current-question');
-			const targetQuestion = questionItems[questionNumber - 1];
-
-			currentQuestionDiv.querySelector('.question-number strong').textContent = `Question ${questionNumber}`;
-			currentQuestionDiv.querySelector('.question-content').textContent =
-					targetQuestion.querySelector('.question-content').textContent;
-		}
-	}
-
-	function finishInterview() {
-		cleanupVideoResources();
-		document.getElementById('questionSection').classList.add('hidden');
-		document.getElementById('endingSection').classList.remove('hidden');
-		document.body.style.overflow = "hidden";
-	}
-
+	//
+	// function goBack() {
+	// 	cleanupVideoResources();
+	//
+	// 	// UI 초기화
+	// 	const videoContainer = document.querySelector('#questionSection .video-container');
+	// 	if (videoContainer) {
+	// 		// Check if recording indicator already exists
+	// 		if (!document.getElementById('interviewRecordingIndicator-2')) {
+	// 			const recordingIndicator = document.createElement('div');
+	// 			recordingIndicator.id = 'interviewRecordingIndicator-2';
+	// 			recordingIndicator.className = 'recording-indicator';
+	// 			recordingIndicator.style.display = 'none';
+	// 			recordingIndicator.innerHTML =
+	// 					'<span class="recording-dot"></span>' +
+	// 					'녹화중';
+	// 			videoContainer.appendChild(recordingIndicator);
+	// 		}
+	// 	}
+	//
+	// 	// 화면 전환
+	// 	document.getElementById('questionSection').classList.add('hidden');
+	// 	document.getElementById('setupSection').classList.remove('hidden');
+	//
+	// 	// 카메라 다시 초기화
+	// 	initializeCamera();
+	// }
 </script>
 
 </body>

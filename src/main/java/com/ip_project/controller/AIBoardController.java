@@ -124,13 +124,17 @@ public class AIBoardController {
             // SelfIntroductionDTO 생성
             SelfIntroductionDTO dto = selfIntroductionService.getSelfIntroductions(selfBoard);
 
-            // IPRO_QUESTION 조회
-            List<Map<String, Object>> iproQuestions = questionService.getQuestionsBySelfIdx(idx);
-            if (iproQuestions != null && !iproQuestions.isEmpty()) {
-                List<String> questions = iproQuestions.stream()
-                        .map(q -> (String)q.get("IPRO_QUESTION"))
+            // IPRO_QUESTION 및 IPRO_ANSWER 조회
+            List<Map<String, Object>> iproData = questionService.getQuestionsBySelfIdx(idx);
+            if (iproData != null && !iproData.isEmpty()) {
+                List<String> questions = iproData.stream()
+                        .map(q -> (String) q.get("IPRO_QUESTION"))
+                        .collect(Collectors.toList());
+                List<String> answers = iproData.stream()
+                        .map(a -> (String) a.get("IPRO_ANSWER"))
                         .collect(Collectors.toList());
                 dto.setIproQuestions(questions);
+                dto.setIproAnswers(answers);
             }
 
             return ResponseEntity.ok(dto);
