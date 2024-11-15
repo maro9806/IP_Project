@@ -77,16 +77,19 @@ body {
     color: #1a1a1a;
     border:none;
     width:100%;
+    background-color: inherit;
 }
-
+.title-section{
+    width:60%;
+}
 /* Info Section */
 .info-section {
     display: flex;
     align-items: center;
     gap: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     padding: 1rem;
-    background: #cccccc;
+    background: #f7f7f7;
     border-radius: 12px;
 }
 
@@ -123,31 +126,35 @@ body {
 
 /* Content Box */
 .content-box {
-    background-color: #f9fafb;
+    /*background-color: #f9fafb;*/
     padding: 1rem;
     border-radius: 12px;
     color: #1a1a1a;
     line-height: 1.7;
-    margin-bottom: 1.5rem;
+    /*margin-bottom: 1rem;*/
 }
 .question-input{
     border:1px;
     background-color: inherit;
+    width:90%;
 }
 
 .answer-input{
-    min-height: 200px;
+    min-height: 200px !important;
     width: 100%;
-    border:none;
-    background-color: inherit;
+    border: 1px solid #dddddd;
+    background-color: white;
+    border-radius: 10px;
+    padding: 5px;
 }
 
 /* Meta Info */
 .meta-info {
     color: #666;
     font-size: 0.9rem;
-    padding-top: 1rem;
-    border-top: 1px solid #eaeaea;
+    /* border-top: 1px solid #eaeaea; */
+    padding: 10px;
+    /*text-align: right;*/
 }
 
 /* Navigation Buttons */

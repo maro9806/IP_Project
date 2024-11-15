@@ -3,224 +3,220 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ include file="../header.jsp" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <title>IPro</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/review_board/review_list.css">
+    <%@ include file="../header.jsp" %>
+    <title>My Page</title>
 
+    <link rel="stylesheet" href="<c:url value='/resources/static/mypage/mypagelist.css'/>">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-
 <body>
 <jsp:include page="../navbar.jsp"/>
-<main class="main-content" style="margin-top: 0;">
-	<div class="jumbotron">
-			<h1>기업 면접 후기 & 리뷰</h1>
-			<p>앞으로 근무할 기업은 어떤 모습일까 궁금하시죠?</p>
-			<hr>
-			<p>현직 선배님들의 기업 리뷰와 미리 알아보는 면접 후기</p>
-		</div>
 
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar - col-2 -->
+        <div class="col-md-2">
+            <jsp:include page="mypagebar.jsp"/>
+        </div>
 
-    <div class="container d-flex flex-column" style="gap:0">
-        <!-- Search Section -->
-        <section class="search-section mt-4">
-            <form action="${pageContext.request.contextPath}/review_board/search" method="get" class="search-form">
-                <div class="search-group">
-                    <select name="orderBy" class="search-select">
-                        <option value="all" ${param.orderBy == 'all' ? 'selected' : ''}>합격 여부</option>
-                        <option value="합격" ${param.orderBy == '합격' ? 'selected' : ''}>합격</option>
-                        <option value="불합격" ${param.orderBy == '불합격' ? 'selected' : ''}>불합격</option>
-                        <option value="결과대기중" ${param.orderBy == '결과대기중' ? 'selected' : ''}>결과대기중</option>
-                    </select>
+        <!-- Main Content - col-10 -->
+        <div class="col-md-10">
+            <div class="Content-Section">
+                <!-- Header -->
+                <div class="page-header-container">
+                    <h2 class="page-header">
+                        자기소개서 상세보기
+                        <span class="page-count">(1/3)</span>
+                    </h2>
+                    <a href="#" class="video-btn">
+                        <i data-lucide="video" class="icon"></i>
+                        화상면접 보기
+                    </a>
                 </div>
-                <div class="search-input-group">
-                    <input type="text" name="keyword" class="search-input" placeholder="기업명" value="${param.keyword}">
-                    <button type="submit" class="btn-primary">검색</button>
-                    <button type="button" class="btn-secondary" onclick="location.href='${pageContext.request.contextPath}/review_board'">초기화</button>
-                </div>
-            </form>
-        </section>
 
-        <!--  Reviews Section -->
-        <section class="company-reviews-section">
-<div class="review-title d-flex justify-content-between align-items-center">
-            <h2 style="text-align:center;">면접 후기</h2>
-    <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/review_board/review_write'">
-        <span class="write-icon">✎</span>리뷰 등록하기
-    </button>
-</div>
-            <div class="row row-cols-1 g-1">
-                <c:forEach var="board" items="${list}" varStatus="i">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/review_board/review_view/${board.reviewIdx}">
-                        <div class="col">
-                            <div class="review-card">
-                                <div class="reviewcard-body">
 
-                                    <div class="corpreviewtitle">
-                                        <h5 class="reviewcard-title">${board.reviewCompany}</h5>
-                                        <p class="reviewcard-text">${board.reviewPosition}</p>
-                                        <footer>
-                                            <button type="button" class="result-tag">
-                                                    <c:set var="resultClass" value="" />
-                                                <c:choose>
-                                                <c:when test="${board.result == '합격'}">
-                                                    <c:set var="resultClass" value="pass" />
-                                                </c:when>
-                                                <c:when test="${board.result == '불합격'}">
-                                                    <c:set var="resultClass" value="fail" />
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:set var="resultClass" value="pending" />
-                                                </c:otherwise>
-                                                </c:choose>
-                                                <button type="button" class="result-tag ${resultClass}">
-                                                        ${board.result}
-                                            </button>
-                                        </footer>
-                                    </div>
-                                    <div class="content-wrapper">
-                                        <div class="corpreviewtext1">
-                                            <h5>[${board.period}] ${board.reviewTitle}</h5>
-                                        </div>
-                                        <div class="corpreviewtext2">
-                                            <p><strong>"면접 분위기나 진행방식은 어떠했습니까?"</strong></p>
-                                            <p>${board.atmosphere}</p>
-                                            <p><strong>"면접에서 좋았던 점이나 아쉬웠던 점은 무엇입니까??"</strong></p>
-                                            <p>${board.sorrow}</p>
-                                            <p><strong>"면접 합격 팁이나 조언이 있다면?"</strong></p>
-                                            <p>${board.advice}</p>
-                                        </div>
-                                    </div>
-                                    <span class="review-count">${board.formattedReviewDate}</span>
+                <div class="card">
+                    <div class="card-body">
+
+                        <!-- Info Section -->
+                        <div class="info-section">
+                            <div class="title-section">
+                                <span><input readonly id="title" type="text" value="${selfIntroduction.title}"/></span>
+                            </div>
+                            <div class="info d-flex flex-row">
+                                <div class="info-divider"></div>
+                                <div class="info-item">
+                                    <span class="info-label">직무</span>
+                                    <input readonly class="info-value" value="${selfIntroduction.position}"/>
+                                </div>
+                                <div class="info-divider"></div>
+                                <div class="info-item">
+                                    <span class="info-label">기업</span>
+                                    <input readonly class="info-value" value="${selfIntroduction.company}"/>
                                 </div>
                             </div>
                         </div>
-                    </a>
-                </c:forEach>
+
+                        <c:forEach var="i" begin="0" end="${fn:length(selfIntroduction.questions)-1}">
+                            <!-- Content -->
+                            <div class="content-box" >
+                                <span class="info-label">문항${i+1}</span>
+                                <input class="question-input mb-3" value="${selfIntroduction.questions[i]}"readonly/>
+
+                                <textarea class="answer-input" readonly cols="150" rows="3">${selfIntroduction.answers[i]}</textarea>
+                            </div>
+
+                        </c:forEach>
+                        <!-- Meta Information -->
+                        <div class="meta-info">
+                            <span class="date">${fn:substring(selfIntroduction.date, 0, 10)} ${fn:substring(selfIntroduction.date, 11, 16)}
+                                <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${date}"/></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="navigation-buttons">
+                    <button class="nav-btn prev-btn" onclick="location.href='${pageContext.request.contextPath}/mypage/mypageint'">
+                        <i data-lucide="chevron-left" class="icon"></i>
+                        이전
+                    </button>
+                    <div class="action-buttons">
+                        <button class="action-btn edit-btn" onclick="editIntroduction()">
+                            <i data-lucide="edit-2" class="icon"></i>
+                            수정하기
+                        </button>
+                        <button class="btn btn-outline-danger delete-btn action-btn" style="border: 1px solid #da3544;" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='${pageContext.request.contextPath}/mypage/remove/${selfIntroduction.idx}'">
+                            <i data-lucide="trash-2" class="icon"></i>
+                            삭제하기
+                        </button>
+                        <button class="action-btn save-btn" style="display:none;" onclick="updateIntroduction(${selfIntroduction.idx})">
+                            <i data-lucide="save" class="icon"></i>
+                            저장하기
+                        </button>
+                    </div>
+                    <button class="nav-btn next-btn">
+                        다음
+                        <i data-lucide="chevron-right" class="icon"></i>
+                    </button>
+                </div>
             </div>
-        </section>
-
-        <br>
-
-
+        </div>
     </div>
-</main>
-<jsp:include page="../footer.jsp"/>
-</body>
+</div>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get current URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const itemsPerPage = 5; // Set limit to 5 items per page
+    // Initialize Lucide icons
+    lucide.createIcons();
 
-        // Handle pagination click events
-        function handlePaginationClick(e) {
-            e.preventDefault();
-            const href = this.getAttribute('onclick')?.match(/href='([^']+)'/)?.[1];
-            if (href) {
-                // Preserve existing search parameters while updating page
-                const currentParams = new URLSearchParams(window.location.search);
-                const newParams = new URLSearchParams(href.split('?')[1]);
+    function editIntroduction() {
+        var titleInput = document.getElementById('title');
+        titleInput.removeAttribute('readonly');
+        titleInput.classList.add('form-control');
 
-                // Update page parameter
-                currentParams.set('page', newParams.get('page'));
+        // 기존 CSS 스타일을 덮어쓰는 인라인 스타일 추가
+        titleInput.style.fontSize = '1.3rem';
+        titleInput.style.fontWeight = 'inherit';  // 기존 font-size 제거
+        titleInput.style.color = 'inherit'; // 기존 color 제거
+        titleInput.style.border = '1px solid #ced4da'; // border 스타일 추가 (form-control 스타일)
+        titleInput.style.padding = '10px';
 
-                // Keep existing search parameters
-                const orderBy = currentParams.get('orderBy');
-                const career = currentParams.get('career');
-                const jobType = currentParams.get('jobType');
-                const keyword = currentParams.get('keyword');
-
-                // Construct new URL
-                let newUrl = `?page=${newParams.get('page')}`;
-                if (orderBy) newUrl += `&orderBy=${orderBy}`;
-                if (career) newUrl += `&career=${career}`;
-                if (jobType) newUrl += `&jobType=${jobType}`;
-                if (keyword) newUrl += `&keyword=${keyword}`;
-
-                // Navigate to new URL
-                window.location.href = newUrl;
-
-                // Smooth scroll to reviews section
-                document.querySelector('.reviews-section').scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        }
-
-        // Attach event listeners to pagination buttons
-        const pageButtons = document.querySelectorAll('.page-btn');
-        pageButtons.forEach(button => {
-            button.removeEventListener('click', handlePaginationClick); // Remove any existing listeners
-            button.addEventListener('click', handlePaginationClick);
+        // 모든 info-value 입력 필드 수정 가능하도록 설정
+        var infoInputs = document.querySelectorAll('.info-value');
+        infoInputs.forEach(function(input) {
+            input.removeAttribute('readonly');
+            input.classList.add('form-control'); // "form-control" 클래스 추가
+            input.style.border = '1px solid #ced4da'; // border 스타일 추가
+            input.style.fontWeight = 'inherit'; // border 스타일 추가
+            input.style.backgroundColor = 'white';
         });
 
-        // Handle search form
-        const searchForm = document.querySelector('.search-form');
-        if (searchForm) {
-            searchForm.addEventListener('submit', (e) => {
-                const keyword = searchForm.querySelector('.search-input').value.trim();
+        // 모든 question-input 및 answer-input 입력 필드 수정 가능하도록 설정
+        var questionInputs = document.querySelectorAll('.question-input');
+        questionInputs.forEach(function(input) {
+            input.removeAttribute('readonly');
+            input.classList.add('form-control'); // "form-control" 클래스 추가
+            input.style.border = '1px solid #ced4da'; // border 스타일 추가
+            input.style.backgroundColor = 'white';
+        });
 
-                // Add validation if needed
-                if (keyword.length < 1 && keyword.length > 0) {
-                    e.preventDefault();
-                    alert('검색어는 1글자 이상 입력해주세요.');
-                }
+        var answerInputs = document.querySelectorAll('.answer-input');
+        answerInputs.forEach(function(input) {
+            input.removeAttribute('readonly');
+            input.classList.add('form-control'); // "form-control" 클래스 추가
+            input.style.border = '1px solid #ced4da'; // border 스타일 추가
+            input.style.padding = '10px'; // 패딩 추가
+            input.style.backgroundColor = 'white';
+            input.style.minHeight = '200px';
 
-                // Add page parameter with value 1 when searching
-                const pageInput = document.createElement('input');
-                pageInput.type = 'hidden';
-                pageInput.name = 'page';
-                pageInput.value = '1';
-                searchForm.appendChild(pageInput);
-            });
-        }
-
-        // Handle reset button
-        const resetButton = document.querySelector('.btn-secondary');
-        if (resetButton) {
-            resetButton.addEventListener('click', () => {
-                const inputs = searchForm.querySelectorAll('input, select');
-                inputs.forEach(input => {
-                    if (input.type === 'text') {
-                        input.value = '';
-                    } else if (input.tagName === 'SELECT') {
-                        input.selectedIndex = 0;
-                    }
-                });
-                // Reset to page 1
-                window.location.href = '?page=1';
-            });
-        }
-
-        // Handle responsive table
-        function handleResponsiveTable() {
-            const table = document.querySelector('.reviews-table table');
-            if (table) {
-                const windowWidth = window.innerWidth;
-                if (windowWidth < 768) {
-                    const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
-                    table.querySelectorAll('tbody tr').forEach(row => {
-                        row.querySelectorAll('td').forEach((cell, index) => {
-                            cell.setAttribute('data-label', headers[index]);
-                        });
-                    });
-                }
+            // 레이블 숨기기
+            var label = input.parentNode.querySelector('.info-label'); // 수정된 부분
+            if (label) {
+                label.style.display = 'none'; // 레이블을 보이지 않게 설정
             }
+        });
+
+
+        // 첫 번째 form-control 요소에 포커스 이동
+        if (questionInputs.length > 0) {
+            questionInputs[0].focus(); // 첫 번째 질문 입력 필드에 포커스
         }
 
-        // Initialize responsive table
-        handleResponsiveTable();
-        window.addEventListener('resize', handleResponsiveTable);
-    });
+        // 수정하기 버튼 숨기기
+        $('.edit-btn').hide();
+        // 삭제하기 버튼 숨기기
+        $('.delete-btn').hide();
+        // 저장하기 버튼 보이기
+        $('.save-btn').show();
+    }
+
+
+    function updateIntroduction() {
+        // 입력된 질문과 답변을 배열로 수집
+        const questions = [];
+        const answers = [];
+        $('.question-input').each(function() {
+            questions.push($(this).val());
+        });
+        $('.answer-input').each(function() {
+            answers.push($(this).val());
+        });
+
+        // 제목, 기업, 직무 입력값 추가
+        const title = $('#title').val();
+        const company = $('.info-item').eq(1).find('.info-value').val(); // 기업
+        const position = $('.info-item').eq(0).find('.info-value').val(); // 직무
+
+        // DTO 객체 생성
+        const selfIntroductionDTO = {
+            idx:${selfIntroduction.idx},
+            title: title,
+            company: company,
+            position: position,
+            questions: questions,
+            answers: answers
+        };
+
+        // AJAX 요청
+        $.ajax({
+            url: '${pageContext.request.contextPath}/mypage/updateIntroduction',
+            type: 'POST',
+            contentType: 'application/json', // JSON 형식으로 전송
+            data: JSON.stringify(selfIntroductionDTO), // DTO를 JSON으로 변환
+            success: function(response) {
+                alert('수정 완료!');
+                location.reload(); // 페이지 새로고침
+            },
+            error: function(xhr, status, error) {
+                alert('수정 실패: ' + error);
+            }
+        });
+    }
 </script>
-
-
-
 </body>
-
 </html>
