@@ -400,6 +400,7 @@
 
 			const data = await response.json();
 			currentInterviewId = data.id;
+			console.log('Interview started with ID:', currentInterviewId);
 
 			updateTranscriptList(selectedQuestions);
 
@@ -705,6 +706,10 @@
 
 	function startRecording() {
 		try {
+			if (!currentInterviewId) {
+				throw new Error('면접 ID가 설정되지 않았습니다.');
+			}
+
 			const startButton = document.getElementById('interviewStartButton');
 			const stopButton = document.getElementById('interviewStopButton');
 			const videoContainer = document.querySelector('#questionSection .video-container');
@@ -727,18 +732,15 @@
 				throw new Error('MediaRecorder가 준비되지 않았거나 이미 녹화 중입니다.');
 			}
 
-			// Reset recorded chunks
 			recordedChunks = [];
 
-			// Update UI
 			if (startButton) startButton.disabled = true;
 			if (stopButton) stopButton.disabled = false;
 			if (recordingIndicator) recordingIndicator.style.display = 'flex';
 
-			// Start recording
 			mediaRecorder.start();
 			isRecording = true;
-			console.log('녹화가 시작되었습니다.');
+			console.log('녹화가 시작되었습니다. Interview ID:', currentInterviewId);
 
 		} catch (error) {
 			console.error('녹화 시작 오류:', error);
@@ -746,10 +748,13 @@
 		}
 	}
 
-
-
 	async function saveRecording() {
 		try {
+			if (!currentInterviewId) {
+				console.error('Current interview ID:', currentInterviewId);
+				throw new Error('면접 ID를 찾을 수 없습니다.');
+			}
+
 			if (recordedChunks.length === 0) {
 				throw new Error('녹화된 데이터가 없습니다.');
 			}
@@ -762,41 +767,43 @@
 
 			// FormData 구성
 			const formData = new FormData();
-			formData.append('video', blob);
-			formData.append('questionNumber', currentQuestionNumber);
+			const fileName = `${currentInterviewId}_${currentQuestionNumber}.webm`;
+			const videoFile = new File([blob], fileName, { type: 'video/webm' });
 
-			// CSRF 토큰
-			const token = document.querySelector("meta[name='_csrf']").content;
-			const header = document.querySelector("meta[name='_csrf_header']").content;
+			formData.append('video', videoFile);
+			formData.append('questionNumber', currentQuestionNumber.toString());
 
-			// 서버에 업로드
+			console.log('Uploading video:', {
+				interviewId: currentInterviewId,
+				questionNumber: currentQuestionNumber,
+				fileName: fileName,
+				fileSize: blob.size,
+				fileType: blob.type
+			});
+
 			const response = await fetch(`/aiboard/api/interview/${currentInterviewId}/video`, {
 				method: 'POST',
-				headers: {
-					[header]: token
-				},
 				body: formData
 			});
 
 			if (!response.ok) {
-				throw new Error('서버 업로드 실패');
+				const errorText = await response.text();
+				console.error('Server response:', errorText);
+				throw new Error(`서버 응답 오류: ${response.status} - ${errorText}`);
 			}
 
 			const result = await response.json();
-			console.log('Video uploaded successfully:', result.url);
+			console.log('Upload successful:', result);
 
-			// 트랜스크립트 업데이트
 			updateTranscriptAnswer(currentQuestionNumber, "답변이 녹화되었습니다.");
 
-			// 다음 질문으로 이동하거나 인터뷰 종료
-			const totalQuestions = document.querySelectorAll('input[name="selectedQuestions"]:checked').length;
+			const totalQuestions = document.querySelectorAll('.transcript-item').length;
 			if (currentQuestionNumber < totalQuestions) {
 				updateCurrentQuestion(currentQuestionNumber + 1);
 			} else {
-				finishInterview();
+				await finishInterview();
 			}
 
-			// 녹화 데이터 초기화
 			recordedChunks = [];
 
 		} catch (error) {
@@ -824,7 +831,73 @@
 			mediaRecorder.ondataavailable = async (event) => {
 				if (event.data && event.data.size > 0) {
 					recordedChunks.push(event.data);
-					await saveRecording();
+
+					try {
+						// ID 체크 및 로깅
+						console.log('Current Interview ID before upload:', currentInterviewId);
+
+						if (!currentInterviewId) {
+							console.error('No interview ID available');
+							throw new Error('면접 ID를 찾을 수 없습니다');
+						}
+
+						const blob = new Blob(recordedChunks, { type: 'video/webm' });
+						const currentQuestionNumber = parseInt(
+								document.querySelector('.current-question .question-number strong')
+										.textContent.split(' ')[1]
+						);
+
+						// 디버깅용 로그
+						console.log('Preparing video upload:', {
+							interviewId: currentInterviewId,
+							questionNumber: currentQuestionNumber,
+							blobSize: blob.size
+						});
+
+						const formData = new FormData();
+						// 파일명에 interviewId와 questionNumber 포함
+						const videoFile = new File(
+								[blob],
+								`interview_${currentInterviewId}_q${currentQuestionNumber}.webm`,
+								{ type: 'video/webm' }
+						);
+						formData.append('video', videoFile);
+						formData.append('questionNumber', currentQuestionNumber.toString());
+
+						// URL 구성 (앞뒤 슬래시 정규화)
+						const baseUrl = `/aiboard/api/interview/${currentInterviewId}/video`;
+						const url = baseUrl.replace(/\+/g, '/');
+						console.log('Upload URL:', url);
+
+						const response = await fetch(url, {
+							method: 'POST',
+							body: formData
+						});
+
+						console.log('Response status:', response.status);
+
+						if (!response.ok) {
+							const errorText = await response.text();
+							console.error('Server error response:', errorText);
+							throw new Error(`서버 응답 오류: ${response.status} - ${errorText}`);
+						}
+
+						const result = await response.json();
+						console.log('Upload successful:', result);
+
+						updateTranscriptAnswer(currentQuestionNumber, "답변이 녹화되었습니다.");
+
+						const totalQuestions = document.querySelectorAll('.transcript-item').length;
+						if (currentQuestionNumber < totalQuestions) {
+							updateCurrentQuestion(currentQuestionNumber + 1);
+						} else {
+							await finishInterview();
+						}
+
+					} catch (error) {
+						console.error('Error saving recording:', error);
+						alert('녹화 파일 저장 중 오류가 발생했습니다: ' + error.message);
+					}
 				}
 			};
 
@@ -874,40 +947,6 @@
 		}
 	}
 
-	// function finishInterview() {
-	// 	cleanupVideoResources();
-	// 	document.getElementById('questionSection').classList.add('hidden');
-	// 	document.getElementById('endingSection').classList.remove('hidden');
-	// 	document.body.style.overflow = "hidden";
-	// }
-
-	//
-	// function goBack() {
-	// 	cleanupVideoResources();
-	//
-	// 	// UI 초기화
-	// 	const videoContainer = document.querySelector('#questionSection .video-container');
-	// 	if (videoContainer) {
-	// 		// Check if recording indicator already exists
-	// 		if (!document.getElementById('interviewRecordingIndicator-2')) {
-	// 			const recordingIndicator = document.createElement('div');
-	// 			recordingIndicator.id = 'interviewRecordingIndicator-2';
-	// 			recordingIndicator.className = 'recording-indicator';
-	// 			recordingIndicator.style.display = 'none';
-	// 			recordingIndicator.innerHTML =
-	// 					'<span class="recording-dot"></span>' +
-	// 					'녹화중';
-	// 			videoContainer.appendChild(recordingIndicator);
-	// 		}
-	// 	}
-	//
-	// 	// 화면 전환
-	// 	document.getElementById('questionSection').classList.add('hidden');
-	// 	document.getElementById('setupSection').classList.remove('hidden');
-	//
-	// 	// 카메라 다시 초기화
-	// 	initializeCamera();
-	// }
 </script>
 
 </body>

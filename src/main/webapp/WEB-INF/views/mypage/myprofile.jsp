@@ -245,6 +245,7 @@
                   </div>
                </div>
                <!-- Preferred Location Section -->
+               <!-- Preferred Location Section -->
                <div class="mb-4">
                   <h4 class="mb-3">희망 취업지역</h4>
                   <div class="row g-3">
@@ -424,6 +425,24 @@
          "세종특별자치시"
       ]
    };
+
+   // 시/도 선택 시 구/군 선택 박스 업데이트 함수
+   document.getElementById('regionSelect').addEventListener('change', function() {
+      const selectedRegion = this.value;
+      const districtSelect = document.getElementById('districtSelect');
+
+      // 구/군 선택 박스 초기화
+      districtSelect.innerHTML = '<option value="">구/군 선택</option>';
+
+      if(selectedRegion && regions[selectedRegion]) {
+         regions[selectedRegion].forEach(function(district) {
+            const option = document.createElement('option');
+            option.value = district;
+            option.textContent = district;
+            districtSelect.appendChild(option);
+         });
+      }
+   });
 
    // 시/도 선택 시 구/군 선택 박스 업데이트 함수
    document.getElementById('regionSelect').addEventListener('change', function() {
