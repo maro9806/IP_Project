@@ -18,4 +18,5 @@ public class SelfIntroductionDTO {
     private List<String> questions;  // 질문 목록
     private List<String> answers;  // 답변 목록
     private List<String> iproQuestions;  // AI 면접 예상 질문 목록
+    private List<String> iproAnswers;
 }
