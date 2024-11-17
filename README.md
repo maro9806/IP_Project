@@ -27,3 +27,22 @@
 | 데이터베이스   | <img src="https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=Oracle&logoColor=white"/> <img src="https://img.shields.io/badge/Pinecone-F80000?style=for-the-badge&logo=Pinecone&logoColor=white"/>|
 | 협업 도구     | <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white"/> <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"/> |
 | 인프라 구조     |  <img src="https://img.shields.io/badge/Google Cloud-569A31?style=for-the-badge&logo=Google-Cloud&logoColor=white">|
+
+### ⚙ 시스템 아키텍처
+![시스템 아키텍처](https://github.com/user-attachments/assets/7170da39-c31b-4a94-8ec6-217e7b054041)
+
+### 📌 SW 유스케이스
+![SW 유스케이스](https://github.com/user-attachments/assets/41e451bc-ec1e-4f30-a6fa-6edeec57559f)
+
+### 📌 서비스 흐름도
+![서비스 흐름도](https://github.com/user-attachments/assets/e279e867-1c01-4a6c-8f9b-ecdcbeee84e6)
+
+### 📌 ER 다이어그램
+![ER 다이어그램](https://github.com/user-attachments/assets/578b7c43-0aaf-4871-9bad-94b7827edbc3)
+
+
+### 🖥 화면 구성
+![화면 구성](https://github.com/user-attachments/assets/1a17a8c2-fa65-4c14-bf12-b34bab86b0a7)
+
+### 👨‍👩‍👦‍👦 팀원 역할
+![image](https://github.com/user-attachments/assets/cd3dbe52-f472-4d0e-b83e-0f3c9117bb5b)
