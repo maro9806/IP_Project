@@ -33,12 +33,12 @@
                             <div class="status-number">${fn:length(selfBoards)}</div>
                         </div>
                         <div class="status-item">
-                            <div>면접 현황</div>
+                            <div>AI 면접</div>
                             <div class="status-number">3</div>
                         </div>
                         <div class="status-item">
                             <div>관심 기업</div>
-                            <div class="status-number">2</div>
+                            <div class="status-number">${fn:length(favoriteCompanies)}</div>
                         </div>
                         <div class="status-item">
                             <div>면접 후기</div>
@@ -151,26 +151,29 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>(주)네이버</td>
-                                        <td><span class="status-badge status-completed">채용중</span></td>
-                                        <td>
-                                            <button class="btn btn-outline-primary btn-small">기업분석</button>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-outline-danger btn-small">삭제</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>(주)카카오</td>
-                                        <td><span class="status-badge status-pending">준비중</span></td>
-                                        <td>
-                                            <button class="btn btn-outline-primary btn-small">기업분석</button>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-outline-danger btn-small">삭제</button>
-                                        </td>
-                                    </tr>
+                                    <c:forEach var="likeCompany" items="${favoriteCompanies}">
+                                        <tr>
+                                            <!-- 관심 기업명 -->
+                                            <td>${likeCompany.company.companyName}</td>
+
+                                            <!-- 채용 상태: 실제 채용 상태 데이터가 있다면 표시, 없으면 대체 텍스트 사용 -->
+                                            <td><span class="status-badge status-pending">채용중</span></td>
+
+                                            <!-- 기업 분석 버튼 -->
+                                            <td>
+                                                <a href="<c:url value='${pageContext.request.contextPath}/company/corp?companyIdx=${likeCompany.company.companyIdx}&corp=${likeCompany.company.companyName}'/>"
+                                                   class="btn btn-outline-primary btn-small">기업분석</a>
+                                            </td>
+
+                                            <!-- 관심 기업 삭제 버튼 -->
+                                            <td>
+                                                <form action="/mypage/favorites/remove" method="post" onsubmit="return confirm('정말로 관심 기업에서 삭제하시겠습니까?');">
+                                                    <input type="hidden" name="companyIdx" value="${likeCompany.company.companyIdx}">
+                                                    <button type="submit" class="btn btn-outline-danger btn-small">삭제</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
