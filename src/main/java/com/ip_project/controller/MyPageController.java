@@ -1,10 +1,9 @@
 package com.ip_project.controller;
 
 import com.ip_project.dto.SelfIntroductionDTO;
-import com.ip_project.entity.Member;
+import com.ip_project.entity.LikeCompany;
 import com.ip_project.entity.SelfBoard;
 import com.ip_project.entity.SelfIntroduction;
-import com.ip_project.repository.MemberRepository;
 import com.ip_project.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +27,7 @@ public class MyPageController {
     private final SelfIntroductionService selfIntroductionService;
     private final ReviewService reviewService;
     private final InterviewQuestionService interviewProService;
-    private final MemberRepository memberRepository;
-
+    private final LikeCompanyService likeCompanyService;
 
     @GetMapping("/mypage")
     public String myPage(Model model) {
@@ -44,37 +42,6 @@ public class MyPageController {
         interviewProService.listByUsername(model, username);
 
         return "mypage/mypage";
-    }
-
-    //자소서 저장
-    @PostMapping("/saveIntroduction")
-    public String saveIntroduction(@ModelAttribute SelfIntroductionDTO selfIntroDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-
-        Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
-
-        SelfBoard selfBoard = SelfBoard.builder()
-                .selfCompany(selfIntroDto.getCompany())
-                .selfTitle(selfIntroDto.getTitle())
-                .selfPosition(selfIntroDto.getPosition())
-                .selfDate(LocalDateTime.now())
-                .member(member)
-                .build();
-
-        selfBoardService.save(selfBoard);
-
-        for (int i = 0; i < selfIntroDto.getQuestions().size(); i++) {
-            SelfIntroduction selfIntroduction = SelfIntroduction.builder()
-                    .introQuestion(selfIntroDto.getQuestions().get(i))
-                    .introAnswer(selfIntroDto.getAnswers().get(i))
-                    .selfBoard(selfBoard)
-                    .build();
-            selfIntroductionService.saveSelfIntroduction(selfIntroduction);
-        }
-
-        return "redirect:/mypage/mypageint";
     }
 
     @PostMapping("/updateIntroduction")
@@ -157,5 +124,28 @@ public class MyPageController {
         selfIntroductionService.deleteSelfIntroduction(selfBoard);
         selfBoardService.deleteById(idx);
         return "redirect:/mypage/mypageint";
+    }
+
+    // 관심 기업 목록을 모든 요청에 모델에 추가
+    @ModelAttribute("favoriteCompanies")
+    public List<LikeCompany> addFavoriteCompaniesToModel() {
+        // 현재 로그인한 사용자의 username 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // 해당 사용자의 관심 기업 목록 가져오기
+        return likeCompanyService.getFavoriteCompanies(username);
+    }
+
+
+    @PostMapping("/favorites/remove")
+    public String removeFavoriteCompany(@RequestParam("companyIdx") Long companyIdx) {
+        // 현재 로그인한 사용자의 username 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        likeCompanyService.removeFavoriteCompany(username, companyIdx);
+
+        return "redirect:/mypage/mypage";
     }
 }

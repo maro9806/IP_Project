@@ -52,4 +52,9 @@ public class MemberService {
         return repository.findByIdx(idx)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
     }
+
+    public Member findByUsername(String username) {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다."));  // Optional을 처리
+    }
 }
